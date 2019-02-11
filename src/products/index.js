@@ -5,8 +5,19 @@ function fetchProductByID(id, client) {
   return client.product.fetch(id);
 }
 
-function getProduct(id) {
+function fetchProductsByIDs(ids, client) {
+  return client.product.fetchMultiple(ids);
+}
+
+function getProduct(id = false) {
   return fetchProductByID(id, buildClient() );
 }
 
-export default getProduct;
+function getProducts(ids = []) {
+  return fetchProductsByIDs(ids, buildClient() );
+}
+
+export {
+  getProduct,
+  getProducts
+}

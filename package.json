@@ -4,7 +4,7 @@
   "description": "A very light API wrapper over the official Shopify JS Buy SDK used for WP Shopify",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'"
   },
   "author": "WP Shopify",
   "license": "GPL-2.0-or-later",
