@@ -2,7 +2,7 @@
 
 [![npm (scoped)](https://img.shields.io/npm/v/@wpshopify/api.svg?style=flat)](https://www.npmjs.com/package/@wpshopify/api)
 
-📦 A very light API wrapper over the official Shopify JS Buy SDK used for WP Shopify
+📦 A light wrapper over the official Shopify JS Buy SDK https://shopify.github.io/js-buy-sdk/
 
 ## Install
 
