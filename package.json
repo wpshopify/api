@@ -19,6 +19,9 @@
     "woocommerce"
   ],
   "dependencies": {
+    "await-to-js": "^2.1.1",
+    "axios": "^0.18.0",
+    "lodash": "^4.17.11",
     "shopify-buy": "^2.0.1"
   }
 }

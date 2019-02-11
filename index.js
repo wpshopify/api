@@ -1,3 +1,2 @@
-import { init } from './src/client';
-
-export { init }
+export { default as buildClient } from './src/client';
+export { default as getProduct } from './src/products';
