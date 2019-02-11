@@ -1,0 +1,24 @@
+{
+  "name": "@wpshopify/api",
+  "version": "0.1.0",
+  "description": "A very light API wrapper over the official Shopify JS Buy SDK used for WP Shopify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "WP Shopify",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpshopify/api.git"
+  },
+  "keywords": [
+    "wordpres",
+    "shopify",
+    "ecommerce",
+    "woocommerce"
+  ],
+  "dependencies": {
+    "shopify-buy": "^2.0.1"
+  }
+}
