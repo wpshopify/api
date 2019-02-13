@@ -1,4 +1,3 @@
-
 import Client from 'shopify-buy';
 import { noticeConfigBadCredentials } from './notices';
 
