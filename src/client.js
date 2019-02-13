@@ -1,3 +1,4 @@
+
 import Client from 'shopify-buy';
 import { noticeConfigBadCredentials } from './notices';
 
@@ -8,7 +9,7 @@ upon initial bootstrap for ease of use.
 
 */
 function clientActive() {
-console.log('WP_Shopify.client ', WP_Shopify.client);
+
   if ( !WP_Shopify.client ) {
     return false;
   }
@@ -45,11 +46,8 @@ function buildClient() {
 
   // If client cached, just return it
   if ( clientActive() ) {
-    console.log('Client already cached, returning ...');
     return getClient();
   }
-
-  console.log('Client NOT cached, building ...');
 
   if (!creds) {
     return noticeConfigBadCredentials();
@@ -59,6 +57,7 @@ function buildClient() {
   return setClient( initClient(creds) );
 
 }
+
 
 export {
   buildClient

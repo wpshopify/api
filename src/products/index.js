@@ -9,7 +9,7 @@ function fetchProductsByIDs(ids, client) {
   return client.product.fetchMultiple(ids);
 }
 
-function getProduct(id = false) {
+function getProduct(id) {
   return fetchProductByID(id, buildClient() );
 }
 
