@@ -1,2 +1,3 @@
-export { default as buildClient } from './src/client';
+export { buildClient } from './src/client';
+export { ClientContext } from './src/context';
 export { getProduct, getProducts, queryProducts } from './src/products';
