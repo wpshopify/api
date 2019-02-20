@@ -1,25 +1,35 @@
 import { buildClient } from '../client';
 
 
+/*
+
+Direct API functions
+
+*/
 function fetchProductByID(id, client) {
-  return client.product.fetch(id);
+   return client.product.fetch(id);
 }
 
 function fetchProductsByIDs(ids, client) {
-  return client.product.fetchMultiple(ids);
+   return client.product.fetchMultiple(ids);
 }
 
 function fetchProductsByQuery(params, client) {
-  return client.product.fetchQuery(params);
+   return client.product.fetchQuery(params);
 }
 
 
+/*
+
+Convience wrappers
+
+*/
 function getProduct(id) {
-  return fetchProductByID(id, buildClient() );
+   return fetchProductByID(id, buildClient());
 }
 
 function getProducts(ids = []) {
-  return fetchProductsByIDs(ids, buildClient() );
+   return fetchProductsByIDs(ids, buildClient());
 }
 
 /*
@@ -49,11 +59,11 @@ Example:
 
 */
 function queryProducts(params) {
-  return fetchProductsByQuery(params, buildClient() );
+   return fetchProductsByQuery(params, buildClient());
 }
 
 export {
-  getProduct,
-  getProducts,
-  queryProducts
+   getProduct,
+   getProducts,
+   queryProducts
 }

@@ -1,23 +1,23 @@
-function setCache(name, value) => {
-  return localStorage.setItem(name, value);
+function setCache(name, value) {
+   return localStorage.setItem(name, value);
 }
 
-function getCache(name) => {
-  return localStorage.getItem(name);
+function getCache(name) {
+   return localStorage.getItem(name);
 }
 
-function deleteCache(name = false) => {
+function deleteCache(name = false) {
 
-  if ( !name ) {
-    return localStorage.clear();
-  }
+   if (!name) {
+      return localStorage.clear();
+   }
 
-  return localStorage.removeItem(name);
+   return localStorage.removeItem(name);
 
 }
 
 export {
-  setCache,
-  getCache,
-  deleteCache
+   setCache,
+   getCache,
+   deleteCache
 }
