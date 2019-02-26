@@ -1,6 +1,7 @@
 import { buildClient } from '../client';
 
 
+
 /*
 
 Direct API functions
@@ -15,6 +16,8 @@ function fetchProductsByIDs(ids, client) {
 }
 
 function fetchProductsByQuery(params, client) {
+   console.log('REAL FINAL params.query :::: ', params.query);
+
    return client.product.fetchQuery(params);
 }
 

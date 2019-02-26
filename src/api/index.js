@@ -19,6 +19,7 @@ title
 updated_at
 vendor
 
+AND tag:er tag:kaosjd
 
 {
    filter: 'title',
@@ -111,7 +112,7 @@ Query looks like: title:Sm*
 function fetchByTitleParams(value) {
 
    return fetchBuilder({
-      pageSize: 20,
+      pageSize: 9,
       sortKey: 'TITLE',
       query: queryByTitleParam(value),
       reverse: false
@@ -128,7 +129,7 @@ Query looks like: tag:Sm*
 function fetchByTagParams(value) {
 
    return fetchBuilder({
-      pageSize: 20,
+      pageSize: 9,
       sortKey: 'TITLE',
       query: queryByTagParam(value),
       reverse: false
@@ -136,7 +137,25 @@ function fetchByTagParams(value) {
 
 }
 
+
+/*
+
+Query looks like: tag:Sm*
+
+*/
+function fetchByQueryParams(query) {
+
+   return fetchBuilder({
+      pageSize: 9,
+      sortKey: 'TITLE',
+      query: query,
+      reverse: false
+   });
+
+}
+
 export {
    fetchByTitleParams,
-   fetchByTagParams
+   fetchByTagParams,
+   fetchByQueryParams
 }
