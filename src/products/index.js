@@ -16,9 +16,11 @@ function fetchProductsByIDs(ids, client) {
 }
 
 function fetchProductsByQuery(params, client) {
-   console.log('REAL FINAL params.query :::: ', params.query);
+
+   console.log('Final query :: ', params.query);
 
    return client.product.fetchQuery(params);
+
 }
 
 function fetchAllProducts(client) {
