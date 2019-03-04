@@ -62,6 +62,8 @@ best_selling
 */
 function fetchBuilder(params) {
 
+   console.log('fetchBuilder params ', params);
+
    return {
       first: params.pageSize,
       sortKey: params.sortKey,
@@ -126,36 +128,18 @@ function fetchByTitleParams(value) {
 Query looks like: tag:Sm*
 
 */
-function fetchByTagParams(value) {
+function fetchByQueryParams(params) {
 
    return fetchBuilder({
-      pageSize: 9,
-      sortKey: 'TITLE',
-      query: queryByTagParam(value),
-      reverse: false
-   });
-
-}
-
-
-/*
-
-Query looks like: tag:Sm*
-
-*/
-function fetchByQueryParams(query) {
-
-   return fetchBuilder({
-      pageSize: 9,
-      sortKey: 'TITLE',
-      query: query,
-      reverse: false
+      pageSize: params.pageSize,
+      sortKey: params.sortKey,
+      query: params.query,
+      reverse: params.reverse
    });
 
 }
 
 export {
    fetchByTitleParams,
-   fetchByTagParams,
    fetchByQueryParams
 }
