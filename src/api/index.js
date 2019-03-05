@@ -114,7 +114,7 @@ Query looks like: title:Sm*
 function fetchByTitleParams(value) {
 
    return fetchBuilder({
-      pageSize: 9,
+      pageSize: 10,
       sortKey: 'TITLE',
       query: queryByTitleParam(value),
       reverse: false
@@ -131,7 +131,7 @@ Query looks like: tag:Sm*
 function fetchByQueryParams(params) {
 
    return fetchBuilder({
-      pageSize: params.pageSize,
+      first: params.pageSize,
       sortKey: params.sortKey,
       query: params.query,
       reverse: params.reverse
