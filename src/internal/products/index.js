@@ -21,6 +21,9 @@ function endpointGetAllProductVendors() {
    return 'products/vendors';
 }
 
+function endpointGetAllProductTypes() {
+   return 'products/types';
+}
 
 
 /*
@@ -67,11 +70,16 @@ function getAllVendors() {
    return get(endpointGetAllProductVendors());
 }
 
+function getAllTypes() {
+   return get(endpointGetAllProductTypes());
+}
+
 
 function getFilterData() {
    return Promise.all([
       getAllTags(),
-      getAllVendors()
+      getAllVendors(),
+      getAllTypes()
    ]);
 }
 

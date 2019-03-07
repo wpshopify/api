@@ -65,7 +65,7 @@ function fetchBuilder(params) {
    console.log('fetchBuilder params ', params);
 
    return {
-      first: params.pageSize,
+      first: params.first,
       sortKey: params.sortKey,
       query: params.query,
       reverse: params.reverse
@@ -114,7 +114,7 @@ Query looks like: title:Sm*
 function fetchByTitleParams(value) {
 
    return fetchBuilder({
-      pageSize: 10,
+      first: 10,
       sortKey: 'TITLE',
       query: queryByTitleParam(value),
       reverse: false
@@ -129,9 +129,10 @@ Query looks like: tag:Sm*
 
 */
 function fetchByQueryParams(params) {
+   console.log('fetchByQueryParams params ', params);
 
    return fetchBuilder({
-      first: params.pageSize,
+      first: params.first,
       sortKey: params.sortKey,
       query: params.query,
       reverse: params.reverse
