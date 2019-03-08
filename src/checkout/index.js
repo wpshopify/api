@@ -114,11 +114,15 @@ function buildCheckout(client) {
 
    // Calls LS
    var existingCheckoutID = getCheckoutID();
+   console.log('existingCheckoutID ', existingCheckoutID);
 
    if (!emptyCheckoutID(existingCheckoutID)) {
+      console.log('Checkout is cached, returning ...');
+
       return getCheckoutByID(client, existingCheckoutID);
    }
 
+   console.log('Checkout is NOT cached, building ...');
    return createCheckout(client);
 
 }

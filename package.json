@@ -34,11 +34,11 @@
     "await-to-js": "^2.1.1",
     "axios": "^0.18.0",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "^24.1.0",
+    "jest": "^24.3.1",
     "jest-chain": "^1.1.2",
     "jest-extended": "^0.11.1",
     "lodash": "^4.17.11",
     "node-fetch": "^2.3.0",
-    "shopify-buy": "^2.1.0"
+    "shopify-buy": "^2.1.1"
   }
 }
