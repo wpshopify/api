@@ -1,5 +1,7 @@
 import Client from 'shopify-buy';
+import to from 'await-to-js';
 import { noticeConfigBadCredentials } from './notices';
+
 
 /*
 
@@ -45,17 +47,19 @@ function buildClient() {
 
    // If client cached, just return it
    if (clientActive(WP_Shopify.client)) {
-      console.log('Client is cached, returning ...');
       return getClient();
    }
-   console.log('Client is NOT cached, making new ...');
+
    if (!creds) {
-      console.log('Client has bad creds, throwing notice ...');
       return noticeConfigBadCredentials();
    }
-   console.log('Client building ...');
+
    // If creds look good, build the Client!
-   return setClient(initClient(creds));
+   const client = initClient(creds);
+
+   setClient(client);
+
+   return client;
 
 }
 

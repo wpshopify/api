@@ -1,6 +1,6 @@
 import { buildClient } from '../client';
 import to from 'await-to-js';
-import { getCache } from '../cache';
+import { getCache, setCache } from '../cache';
 
 
 /*
@@ -28,9 +28,18 @@ function addCheckoutAttributes(client, checkout, data) {
    return client.checkout.updateAttributes(checkout.id, { customAttributes: data });
 }
 
-function addLineItems(client, checkoutID, options) {
-   return client.checkout.addLineItems(checkoutID, options);
+
+function addLineItemsAPI(client, checkout, lineItems) {
+   return client.checkout.addLineItems(checkout.id, lineItems);
 }
+
+
+
+
+
+
+
+
 
 
 /*
@@ -62,6 +71,10 @@ function getCheckoutID() {
    return getCache('wps-last-checkout-id');
 }
 
+function setCheckoutID(checkoutID) {
+   return setCache('wps-last-checkout-id', checkoutID);
+}
+
 function emptyCheckoutID(cartID) {
 
    if (cartID === undefined || cartID === 'undefined' || cartID == false || cartID == null) {
@@ -72,8 +85,6 @@ function emptyCheckoutID(cartID) {
    }
 
 }
-
-
 
 
 /*
@@ -104,6 +115,51 @@ function createLineItemsFromVariants(options, client) {
 }
 
 
+function buildInstances() {
+
+   return new Promise(async function (resolve, reject) {
+
+      const client = buildClient();
+
+      if (!client) {
+         reject(client);
+      }
+
+      const [checkoutError, checkout] = await to(buildCheckout(client));
+
+      if (checkoutError) {
+         console.error('checkoutError', checkoutError);
+         reject(checkoutError);
+      }
+
+      resolve({
+         client: client,
+         checkout: checkout
+      });
+
+   });
+
+
+}
+
+
+async function addLineItems(lineItems) {
+
+   var [instancesError, { client, checkout }] = await to(buildInstances());
+
+   console.log('client ', client);
+   console.log('checkout ', checkout);
+
+   if (instancesError) {
+      return new Promise((resolve, reject) => reject(instancesError));
+   }
+
+   return addLineItemsAPI(client, checkout, lineItems);
+
+}
+
+
+
 /*
 
 Fetch Cart
@@ -112,21 +168,30 @@ Returns: Promise
 */
 function buildCheckout(client) {
 
-   // Calls LS
-   var existingCheckoutID = getCheckoutID();
-   console.log('existingCheckoutID ', existingCheckoutID);
+   return new Promise(async (resolve, reject) => {
 
-   if (!emptyCheckoutID(existingCheckoutID)) {
-      console.log('Checkout is cached, returning ...');
+      // Calls LS
+      var existingCheckoutID = getCheckoutID();
 
-      return getCheckoutByID(client, existingCheckoutID);
-   }
+      if (!emptyCheckoutID(existingCheckoutID)) {
+         return resolve(getCheckoutByID(client, existingCheckoutID));
+      }
 
-   console.log('Checkout is NOT cached, building ...');
-   return createCheckout(client);
+      const [checkoutError, checkout] = await to(createCheckout(client));
+
+      if (checkoutError) {
+         reject(checkoutError);
+      }
+
+      setCheckoutID(checkout.id);
+
+      resolve(checkout);
+
+   });
 
 }
 
 export {
-   buildCheckout
+   buildCheckout,
+   addLineItems
 }

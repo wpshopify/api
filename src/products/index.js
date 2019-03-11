@@ -23,6 +23,10 @@ function fetchProductsByQuery(params, client) {
 
 }
 
+function findVariantFromSelectedOptions(product, selectedOptions) {
+   return buildClient().product.helpers.variantForOptions(product, selectedOptions);
+}
+
 function fetchAllProducts(client) {
    return client.product.fetchAll();
 }
@@ -41,8 +45,10 @@ function getProduct(id) {
    return fetchProductByID(id, buildClient());
 }
 
-function getProducts(ids = []) {
+async function getProducts(ids = []) {
+
    return fetchProductsByIDs(ids, buildClient());
+
 }
 
 function getAllProducts() {
@@ -67,5 +73,6 @@ export {
    getAllProducts,
    queryProducts,
    getNextPage,
-   getAllTags
+   getAllTags,
+   findVariantFromSelectedOptions
 }
