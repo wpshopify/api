@@ -192,6 +192,7 @@ function buildCheckout(client) {
 }
 
 export {
+   buildInstances,
    buildCheckout,
    addLineItems
 }

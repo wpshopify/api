@@ -1,4 +1,6 @@
 export { buildClient } from './src/client';
+export { buildCheckout, buildInstances } from './src/checkout';
+
 export { addLineItems } from './src/checkout';
 
 export {
