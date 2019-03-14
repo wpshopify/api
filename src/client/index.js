@@ -1,7 +1,7 @@
 import Client from 'shopify-buy';
 import to from 'await-to-js';
-import { noticeConfigBadCredentials } from './notices';
-
+import { noticeConfigBadCredentials } from '../notices/notices';
+import { getCache, setCache } from '../cache';
 
 /*
 
@@ -20,12 +20,12 @@ function clientActive(client) {
 }
 
 function getClient() {
-   return WP_Shopify.client;
+   return getCache('wps-client');
 }
 
 function setClient(client) {
 
-   WP_Shopify.client = client;
+   setCache('wps-client', client);
 
    return client;
 

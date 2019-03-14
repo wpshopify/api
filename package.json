@@ -39,6 +39,7 @@
     "jest-extended": "^0.11.1",
     "lodash": "^4.17.11",
     "node-fetch": "^2.3.0",
-    "shopify-buy": "^2.1.1"
+    "shopify-buy": "^2.1.1",
+    "store": "^2.0.12"
   }
 }

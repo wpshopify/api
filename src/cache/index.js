@@ -1,18 +1,20 @@
+import store from 'store';
+
 function setCache(name, value) {
-   return localStorage.setItem(name, value);
+   return store.set(name, value);
 }
 
 function getCache(name) {
-   return localStorage.getItem(name);
+   return store.get(name);
 }
 
 function deleteCache(name = false) {
 
    if (!name) {
-      return localStorage.clear();
+      return store.clearAll();
    }
 
-   return localStorage.removeItem(name);
+   return store.remove(name);
 
 }
 
