@@ -1,6 +1,9 @@
 import { getCache, setCache } from './index';
 import uniqBy from 'lodash/uniqBy';
 import find from 'lodash/find';
+import differenceWith from 'lodash/differenceWith';
+import isEmpty from 'lodash/isEmpty';
+
 
 /*
 
@@ -35,32 +38,41 @@ function mergeCheckoutCacheVariants(existingCache, newVariant) {
    return uniqBy(existingCache.concat(existingCache, newVariant), 'id');
 }
 
-function mergeCheckoutCacheLineItems(existingLineItems, newLineItem) {
+function getUniqueValuesOfKey(array, key) {
+   return array.reduce(function (carry, item) {
+      if (item[key] && !~carry.indexOf(item[key])) carry.push(item[key]);
+      return carry;
+   }, []);
+}
 
-   console.log('...................... existingLineItems', existingLineItems);
-   console.log('...................... newLineItem', newLineItem);
+// Assumption: every item in existingLineItems will be unique 
+function mergeCheckoutCacheLineItems(existingLineItems, newLineItems) {
 
-   if (!find(existingLineItems, { variantId: newLineItem.variantId })) {
-      existingLineItems.push(newLineItem);
-      console.log('existingLineItems', existingLineItems);
+   console.log('existingLineItems', existingLineItems);
+   console.log('newLineItems', newLineItems);
 
-      return existingLineItems;
+   var hasExistingNewLineItems = differenceWith(newLineItems, existingLineItems, function (array1, array2) {
+      return array1.variantId === array2.variantId;
+   });
+
+   // Whatever was added is completely new ...
+   if (!isEmpty(hasExistingNewLineItems)) {
+      return existingLineItems.concat(newLineItems);
    }
 
-   return existingLineItems.map(existingLineItem => {
+   return existingLineItems.map((existingLineItem) => {
+      console.log('existingLineItem', existingLineItem);
+      console.log('newLineItems', newLineItems);
 
-      if (existingLineItem.variantId === newLineItem.variantId) {
-         existingLineItem.quantity = existingLineItem.quantity + newLineItem.quantity;
+      var found = find(newLineItems, function (o) { return o.variantId === existingLineItem.variantId; });
 
-      } else {
-
+      if (found) {
+         existingLineItem.quantity = Number(existingLineItem.quantity) + Number(found.quantity);
       }
 
       return existingLineItem;
 
    });
-
-   //return uniqBy(existingLineItems.concat(existingLineItems, newLineItem), 'id');
 
 }
 
