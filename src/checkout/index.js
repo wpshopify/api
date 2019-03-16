@@ -128,8 +128,7 @@ function buildInstances() {
       const [checkoutError, checkout] = await to(buildCheckout(client));
 
       if (checkoutError) {
-         console.error('checkoutError', checkoutError);
-         reject(checkoutError);
+         return reject(checkoutError);
       }
 
       resolve({
@@ -146,9 +145,6 @@ function buildInstances() {
 async function addLineItems(lineItems) {
 
    var [instancesError, { client, checkout }] = await to(buildInstances());
-
-   console.log('client ', client);
-   console.log('checkout ', checkout);
 
    if (instancesError) {
       return new Promise((resolve, reject) => reject(instancesError));
@@ -174,18 +170,28 @@ function buildCheckout(client) {
       var existingCheckoutID = getCheckoutID();
 
       if (!emptyCheckoutID(existingCheckoutID)) {
-         return resolve(getCheckoutByID(client, existingCheckoutID));
+
+         const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID));
+
+         if (checkoutError) {
+            return reject(checkoutError);
+
+         } else {
+            return resolve(checkout);
+         }
+
       }
 
       const [checkoutError, checkout] = await to(createCheckout(client));
 
       if (checkoutError) {
          reject(checkoutError);
+      } else {
+
+         setCheckoutID(checkout.id);
+         resolve(checkout);
+
       }
-
-      setCheckoutID(checkout.id);
-
-      resolve(checkout);
 
    });
 

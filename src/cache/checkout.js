@@ -48,10 +48,7 @@ function getUniqueValuesOfKey(array, key) {
 // Assumption: every item in existingLineItems will be unique 
 function mergeCheckoutCacheLineItems(existingLineItems, newLineItems) {
 
-   console.log('existingLineItems', existingLineItems);
-   console.log('newLineItems', newLineItems);
-
-   var hasExistingNewLineItems = differenceWith(newLineItems, existingLineItems, function (array1, array2) {
+   const hasExistingNewLineItems = differenceWith(newLineItems, existingLineItems, function (array1, array2) {
       return array1.variantId === array2.variantId;
    });
 
@@ -61,8 +58,6 @@ function mergeCheckoutCacheLineItems(existingLineItems, newLineItems) {
    }
 
    return existingLineItems.map((existingLineItem) => {
-      console.log('existingLineItem', existingLineItem);
-      console.log('newLineItems', newLineItems);
 
       var found = find(newLineItems, function (o) { return o.variantId === existingLineItem.variantId; });
 

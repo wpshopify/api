@@ -62,8 +62,6 @@ best_selling
 */
 function fetchBuilder(params) {
 
-   console.log('fetchBuilder params ', params);
-
    return {
       first: params.first,
       sortKey: params.sortKey,
@@ -129,7 +127,6 @@ Query looks like: tag:Sm*
 
 */
 function fetchByQueryParams(params) {
-   console.log('fetchByQueryParams params ', params);
 
    return fetchBuilder({
       first: params.first,

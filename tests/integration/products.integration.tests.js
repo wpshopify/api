@@ -11,24 +11,24 @@ Depends on the return value of the JS SDK
 */
 function productFields() {
 
-  return [
-    'availableForSale',
-    'createdAt',
-    'description',
-    'descriptionHtml',
-    'handle',
-    'id',
-    'onlineStoreUrl',
-    'options',
-    'productType',
-    'publishedAt',
-    'type',
-    'title',
-    'variants',
-    'images',
-    'updatedAt',
-    'vendor'
-  ]
+   return [
+      'availableForSale',
+      'createdAt',
+      'description',
+      'descriptionHtml',
+      'handle',
+      'id',
+      'onlineStoreUrl',
+      'options',
+      'productType',
+      'publishedAt',
+      'type',
+      'title',
+      'variants',
+      'images',
+      'updatedAt',
+      'vendor'
+   ]
 
 }
 
@@ -40,13 +40,13 @@ It should return valid product
 */
 it('Should return valid product', async () => {
 
-  // ID comes from the WPS dev store -- should never change
-  var data = await getProduct('Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY5MjIwMzI=');
+   // ID comes from the WPS dev store -- should never change
+   var data = await getProduct('Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY5MjIwMzI=');
 
-  expect(data)
-    .toBeTruthy()
-    .toBeObject()
-    .toContainKeys( productFields() );
+   expect(data)
+      .toBeTruthy()
+      .toBeObject()
+      .toContainKeys(productFields());
 
 });
 
@@ -58,16 +58,16 @@ It should return invalid product id error
 */
 it('Should return product availabilty error', async () => {
 
-  try {
-    await getProduct('Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY3MjU0MjQ');
+   try {
+      await getProduct('Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY3MjU0MjQ');
 
-  } catch (e) {
+   } catch (e) {
 
-    expect(e).toContainObject({
-      message: "Variable id of type ID! was provided invalid value"
-    });
+      expect(e).toContainObject({
+         message: "Variable id of type ID! was provided invalid value"
+      });
 
-  }
+   }
 
 });
 
@@ -79,16 +79,16 @@ It should return invalid product id error
 */
 it('Should return invalid product id error', async () => {
 
-  try {
-    await getProduct('1111');
+   try {
+      await getProduct('1111');
 
-  } catch (e) {
+   } catch (e) {
 
-    expect(e).toContainObject({
-      message: 'Variable id of type ID! was provided invalid value'
-    });
+      expect(e).toContainObject({
+         message: 'Variable id of type ID! was provided invalid value'
+      });
 
-  }
+   }
 
 });
 
@@ -100,24 +100,24 @@ It should get multiple products by ids
 */
 it('Should return valid products', async () => {
 
-  var productIds = [
-    'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY4NTY0OTY=',
-    'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY3NTgxOTI='
-  ]
+   var productIds = [
+      'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY4NTY0OTY=',
+      'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzIyMDY4MjY3NTgxOTI='
+   ]
 
-  var data = await getProducts(productIds);
+   var data = await getProducts(productIds);
 
-  expect(data)
-    .toBeTruthy()
-    .toBeArray()
-    .toBeArrayOfSize(2);
-
-  data.forEach(function(product) {
-    expect(product)
+   expect(data)
       .toBeTruthy()
-      .toBeObject()
-      .toContainKeys( productFields() );
-  });
+      .toBeArray()
+      .toBeArrayOfSize(2);
+
+   data.forEach(function (product) {
+      expect(product)
+         .toBeTruthy()
+         .toBeObject()
+         .toContainKeys(productFields());
+   });
 
 });
 
@@ -138,31 +138,29 @@ title:Sm*
 */
 it('Should return valid products query result', async () => {
 
-  var params = {
-    first: 20,
-    sortKey: 'PRICE',
-    query: "title:Sm*",
-    reverse: false
-  }
+   var params = {
+      first: 20,
+      sortKey: 'PRICE',
+      query: "title:Sm*",
+      reverse: false
+   }
 
 
-  var result = await queryProducts(params);
+   var result = await queryProducts(params);
 
-  // console.log('result ', result);
+   console.log(result.map(product => product.title));
 
-  console.log(result.map( product => product.title));
-
-  // expect(result)
-  //   .toBeTruthy()
-  //   .toBeArray()
-  //   .toBeArrayOfSize(2);
-  //
-  // result.forEach(function(product) {
-  //   expect(product)
-  //     .toBeTruthy()
-  //     .toBeObject()
-  //     .toContainKeys( productFields() );
-  // });
+   // expect(result)
+   //   .toBeTruthy()
+   //   .toBeArray()
+   //   .toBeArrayOfSize(2);
+   //
+   // result.forEach(function(product) {
+   //   expect(product)
+   //     .toBeTruthy()
+   //     .toBeObject()
+   //     .toContainKeys( productFields() );
+   // });
 
 });
 
@@ -171,6 +169,6 @@ it('Should return valid products query result', async () => {
 
 
 
-afterAll( async done => {
-  done();
+afterAll(async done => {
+   done();
 });
