@@ -1,7 +1,7 @@
 {
   "name": "@wpshopify/api",
-  "version": "0.1.0",
-  "description": "A very light API wrapper over the official Shopify JS Buy SDK used for WP Shopify",
+  "version": "0.1.1",
+  "description": "A very light wrapper over the official Shopify JS Buy SDK. Tailored for WP Shopify",
   "main": "index.js",
   "scripts": {
     "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'"
