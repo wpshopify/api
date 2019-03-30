@@ -1,10 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
-import {
-   getRestAPINonce,
-   getRestAPIPrefix
-} from './state';
-
+import { getRestAPINonce, getRestAPIPrefix } from './state'
 
 /*
 
@@ -14,9 +10,8 @@ endpoint - string representing the API enpoint
 
 */
 function get(endpoint) {
-   return request('get', getRestAPIPrefix() + endpoint);
+   return request('get', getRestAPIPrefix() + endpoint)
 }
-
 
 /*
 
@@ -27,27 +22,21 @@ data - the POST data object
 
 */
 function post(endpoint, data = {}) {
-   return request('post', getRestAPIPrefix() + endpoint, data);
+   return request('post', getRestAPIPrefix() + endpoint, data)
 }
 
-
 function getHeaders() {
-
    return {
       'X-WP-Nonce': getRestAPINonce()
    }
-
 }
 
-
 function getRestErrorContents(error) {
-
    return {
       statusCode: error.status,
       message: error.data.message,
       action_name: error.data.code
    }
-
 }
 
 /*
@@ -56,9 +45,7 @@ Main request function
 
 */
 function request(method, endpoint, data = {}) {
-
    return new Promise((resolve, reject) => {
-
       axios({
          method: method,
          url: endpoint,
@@ -66,14 +53,8 @@ function request(method, endpoint, data = {}) {
          headers: getHeaders()
       })
          .then(response => resolve(response))
-         .catch(error => reject(getRestErrorContents(error.response)));
-
-   });
-
+         .catch(error => reject(getRestErrorContents(error.response)))
+   })
 }
 
-
-export {
-   get,
-   post
-}
+export { get, post }
