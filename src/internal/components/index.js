@@ -23,6 +23,9 @@ async function getComponentOptions(componentOptionsIds = {}) {
    //    return Promise.resolve(cachedResult)
    // }
    // console.log('zz')
+
+   console.log('componentOptionsIds .....', componentOptionsIds)
+
    return new Promise(async (resolve, reject) => {
       const result = await post(endpointComponentOptions(), componentOptionsIds)
 
