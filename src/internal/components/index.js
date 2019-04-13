@@ -24,13 +24,10 @@ async function getComponentOptions(componentOptionsIds = {}) {
    // }
    // console.log('zz')
 
-   console.log('componentOptionsIds .....', componentOptionsIds)
+   // console.log('componentOptionsIds .....', componentOptionsIds)
 
    return new Promise(async (resolve, reject) => {
       const result = await post(endpointComponentOptions(), componentOptionsIds)
-
-      console.log('result ........ 🔥', result)
-
       // setCache('wps-component-options-' + componentOptionsIds.data.join('-'), result.data)
 
       resolve(result.data)
