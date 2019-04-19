@@ -1,4 +1,5 @@
-import { getProduct, getProductsFromIds, queryProducts, fetchByCollectionTitle } from '../../src/products'
+import { getProduct, getProductsFromIds, queryProducts, fetchByCollectionTitle, graphQuery, queryParams } from '../../src/products'
+import { fetchNextPage } from '../../src/pagination'
 import to from 'await-to-js'
 
 /*
@@ -135,23 +136,53 @@ it('Should return valid products query result', async () => {
    // });
 })
 
-it('Should return valid products query result', async () => {
-   // var params = {
-   //    first: 20,
-   //    sortKey: 'PRICE',
-   //    query: 'collection:Test',
-   //    reverse: false
-   // }
+// it('Should return valid products query result', async () => {
+//    // var params = {
+//    //    first: 20,
+//    //    sortKey: 'PRICE',
+//    //    query: 'collection:Test',
+//    //    reverse: false
+//    // }
+//    // var result = await fetchByCollectionTitle()
+//    // console.log('result', result)
+//    // console.log('# of products found: ', result.model.collections[0].products.length)
+//    // console.log('Product title: ', result.model.collections[0].products[0].title)
+// })
 
-   var result = await fetchByCollectionTitle()
+// it('.....', async () => {
+//    var result = await graphQuery('products', {
+//       first: 10,
+//       query: [2216878145584, 2216921399344, 2323924713520, 2216868610096, 2216830206000],
+//       sortKey: 'TITLE'
+//    })
 
-   console.log('result', result.data)
+// console.log('result ....', result)
 
-   // expect(result)
-   //    .toBeTruthy()
-   //    .toBeArray()
-   //    .toBeArrayOfSize(20)
-})
+// console.log('result data', result.data.products.edges[0].node)
+
+// console.log('result length', result.model.products.length)
+// console.log('result', result.model.products[0].title)
+// console.log('result', result.model.products[1].title)
+// console.log('result', result.model.products[2].title)
+// console.log('result', result.model.products[3].title)
+
+// result.model.products.map(product => console.log('Product: ', product.title))
+
+// console.log('result.model.products', result.model.products)
+
+// const nextPageOfResults = await fetchNextPage(result.model.products)
+// // console.log('nextPageOfResults', nextPageOfResults)
+
+// console.log('next result 1 title', nextPageOfResults.model[0].title)
+// console.log('next result 2 title', nextPageOfResults.model[1].title)
+
+// const nextNextPageOfResults = await fetchNextPage(nextPageOfResults.model)
+
+// console.log('nextNextPageOfResults', nextNextPageOfResults.model.length) // should be zero
+
+// console.log('# of products found: ', result.model.collections[0].products.length)
+// console.log('Product title: ', result.model.collections[0].products[0].title)
+// })
 
 afterAll(async done => {
    done()

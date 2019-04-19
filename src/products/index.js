@@ -1,4 +1,5 @@
 import { buildClient } from '../client'
+import has from 'lodash/has'
 
 /*
 
@@ -27,18 +28,157 @@ function fetchAllProducts(client) {
 
 function fetchByCollectionTitle() {
    const result = buildClient().graphQLClient.query(shop => {
-      shop.addConnection('collections', { args: { first: 100, query: 'title:Test*' } }, collection => {
-         console.log('collection', collection)
-
-         collection.addConnection('products', { args: { first: 100 } }, product => {
-            console.log('product', product)
-
+      shop.addConnection('collections', { args: { first: 10, query: 'title:Test' } }, collection => {
+         collection.addConnection('products', { args: { first: 10, query: 'title:Aerodynamic Aluminum Bottle' } }, product => {
+            product.add('id')
             product.add('title')
+            product.add('availableForSale')
+            product.add('createdAt')
+
+            product.add('description')
+            product.add('descriptionHtml')
+            product.add('handle')
+            product.add('onlineStoreUrl')
+            product.add('productType')
+            product.add('publishedAt')
+            product.add('updatedAt')
+            product.add('vendor')
+
+            // product.add('images')
+            product.addConnection('images', { args: { first: 50 } }, image => {
+               image.add('altText')
+               image.add('src')
+            })
+            product.add('options', option => {
+               option.add('name')
+               option.add('values')
+            })
+
+            product.addConnection('variants', variants => {
+               variants.add('id')
+               variants.add('product')
+               variants.add('title')
+               variants.add('price')
+               variants.add('availableForSale')
+               variants.add('compareAtPrice')
+               variants.add('selectedOptions')
+               variants.add('sku')
+               variants.add('weight')
+               variants.add('image', image => {
+                  image.add('src')
+                  image.add('id')
+                  image.add('altText')
+               })
+            })
+
+            // product.addConnection('options',
          })
       })
    })
 
    return buildClient().graphQLClient.send(result)
+}
+
+/*
+
+Add product fields to the GQL query
+
+*/
+function addProductFields(product) {
+   product.add('id')
+   product.add('title')
+   product.add('availableForSale')
+   product.add('createdAt')
+   product.add('description')
+   product.add('descriptionHtml')
+   product.add('handle')
+   product.add('onlineStoreUrl')
+   product.add('productType')
+   product.add('publishedAt')
+   product.add('updatedAt')
+   product.add('vendor')
+
+   product.addConnection('images', { args: { first: 250 } }, image => {
+      image.add('altText')
+      image.add('src')
+   })
+
+   product.add('options', option => {
+      option.add('name')
+      option.add('values')
+   })
+
+   product.addConnection('variants', { args: { first: 250 } }, variants => {
+      variants.add('id')
+      variants.add('product')
+      variants.add('title')
+      variants.add('price')
+      variants.add('image', image => {
+         image.add('src')
+         image.add('id')
+         image.add('altText')
+      })
+   })
+}
+
+function enumValue(client, queryParams) {
+   return client.graphQLClient.enum(queryParams.sortKey)
+}
+
+/*
+
+queryParams:
+
+{  
+   first: 20, 
+   sortKey: 'CREATED_AT', 
+   reverse: true
+}
+
+
+sortKeys that work:
+UPDATED_AT
+CREATED_AT
+TITLE
+BEST_SELLING
+PRICE
+
+*/
+function graphQuery(type, queryParams) {
+   const client = buildClient()
+
+   if (has(queryParams, 'sortKey')) {
+      queryParams.sortKey = enumValue(client, queryParams)
+   }
+
+   return client.graphQLClient.send(
+      client.graphQLClient.query(shop => {
+         resourceQuery(shop, type, queryParams)
+      })
+   )
+}
+
+function resourceQuery(shop, type, queryParams) {
+   switch (type) {
+      case 'products':
+         productsQuery(shop, queryParams)
+         break
+
+      default:
+         break
+   }
+}
+
+function formatIdsForQuery(query) {
+   return query.map(id => 'id:' + id).join(' OR ')
+}
+
+function productsQuery(shop, queryParams) {
+   queryParams.query = formatIdsForQuery(queryParams.query)
+
+   shop.addConnection('products', { args: queryParams }, product => {
+      addProductFields(product)
+   })
 }
 
 /*
@@ -70,4 +210,4 @@ function getProductsFromQuery(queryParams) {
    return queryProducts(queryParams)
 }
 
-export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle }
+export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle, graphQuery }
