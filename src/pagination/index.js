@@ -1,15 +1,12 @@
-import { buildClient } from '../client';
-
+import { buildClient } from '../client'
 
 /*
 
 Direct API functions
 
 */
-function fetchNextPage(products) {
-   return buildClient().fetchNextPage(products);
+function fetchNextPage(payload) {
+   return buildClient().fetchNextPage(payload)
 }
 
-export {
-   fetchNextPage
-}
+export { fetchNextPage }

@@ -29,19 +29,16 @@ AND tag:er tag:kaosjd
 
 */
 function queryBuilder(params) {
-
    // params.isPhrase
 
-   var query = params.filter + ':' + params.value;
+   var query = params.filter + ':' + params.value
 
    if (params.isPrefix) {
-      query = query + "*";
+      query = query + '*'
    }
 
-   return query;
-
+   return query
 }
-
 
 /*
 
@@ -61,16 +58,13 @@ best_selling
 
 */
 function fetchBuilder(params) {
-
    return {
       first: params.first,
       sortKey: params.sortKey,
       query: params.query,
       reverse: params.reverse
    }
-
 }
-
 
 /*
 
@@ -78,15 +72,12 @@ Query by title
 
 */
 function queryByTitleParam(value) {
-
    return queryBuilder({
       filter: 'title',
       isPrefix: true,
       value: value
-   });
-
+   })
 }
-
 
 /*
 
@@ -94,15 +85,12 @@ Query by tag
 
 */
 function queryByTagParam(value) {
-
    return queryBuilder({
       filter: 'tag',
       isPrefix: true,
       value: value
-   });
-
+   })
 }
-
 
 /*
 
@@ -110,34 +98,26 @@ Query looks like: title:Sm*
 
 */
 function fetchByTitleParams(value) {
-
    return fetchBuilder({
       first: 10,
       sortKey: 'TITLE',
       query: queryByTitleParam(value),
       reverse: false
-   });
-
+   })
 }
-
 
 /*
 
 Query looks like: tag:Sm*
 
 */
-function fetchByQueryParams(params) {
-
+function buildFetchQueryParams(params) {
    return fetchBuilder({
       first: params.first,
       sortKey: params.sortKey,
       query: params.query,
       reverse: params.reverse
-   });
-
+   })
 }
 
-export {
-   fetchByTitleParams,
-   fetchByQueryParams
-}
+export { fetchByTitleParams, buildFetchQueryParams }

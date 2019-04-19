@@ -1,4 +1,5 @@
 import { buildClient } from '../client'
+import { buildFetchQueryParams } from '../api'
 
 /*
 
@@ -25,8 +26,20 @@ function fetchAllProducts(client) {
    return client.product.fetchAll()
 }
 
-function fetchNextPage(items, client) {
-   return client.fetchNextPage(items)
+function fetchByCollectionTitle() {
+   const result = buildClient().graphQLClient.query(shop => {
+      shop.addConnection('collections', { args: { first: 100, query: 'title:Test*' } }, collection => {
+         console.log('collection', collection)
+
+         collection.addConnection('products', { args: { first: 100 } }, product => {
+            console.log('product', product)
+
+            product.add('title')
+         })
+      })
+   })
+
+   return buildClient().graphQLClient.send(result)
 }
 
 /*
@@ -38,7 +51,7 @@ function getProduct(id) {
    return fetchProductByID(id, buildClient())
 }
 
-async function getProducts(ids = []) {
+function getProductsFromIds(ids = []) {
    return fetchProductsByIDs(ids, buildClient())
 }
 
@@ -50,12 +63,13 @@ function queryProducts(params) {
    return fetchProductsByQuery(params, buildClient())
 }
 
-function getNextPage(items) {
-   return fetchNextPage(items, buildClient())
-}
-
 function getAllTags() {
    return fetchAllTags()
 }
 
-export { getProduct, getProducts, getAllProducts, queryProducts, getNextPage, getAllTags, findVariantFromSelectedOptions }
+function getProductsFromQuery(queryParams) {
+   // return queryProducts(buildFetchQueryParams(queryParams))
+   return queryProducts(queryParams)
+}
+
+export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle }
