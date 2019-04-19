@@ -3,7 +3,7 @@ export { buildCheckout, buildInstances, getCheckoutID } from './src/checkout'
 
 export { addLineItems } from './src/checkout'
 
-export { getProduct, getProductsFromIds, queryProducts, getAllProducts, findVariantFromSelectedOptions, fetchByCollectionTitle, getProductsFromQuery } from './src/products'
+export { getProduct, getProductsFromIds, queryProducts, getAllProducts, findVariantFromSelectedOptions, fetchByCollectionTitle, getProductsFromQuery, graphQuery } from './src/products'
 
 export { getShopInfo } from './src/shop'
 export { fetchNextPage } from './src/pagination'
