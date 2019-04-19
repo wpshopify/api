@@ -113,6 +113,13 @@ function addProductFields(product) {
       variants.add('product')
       variants.add('title')
       variants.add('price')
+      variants.add('availableForSale')
+
+      variants.add('selectedOptions', options => {
+         options.add('name')
+         options.add('value')
+      })
+
       variants.add('image', image => {
          image.add('src')
          image.add('id')
@@ -149,6 +156,11 @@ function graphQuery(type, queryParams) {
 
    if (has(queryParams, 'sortKey')) {
       queryParams.sortKey = enumValue(client, queryParams)
+   }
+
+   // Defaults to 10
+   if (!has(queryParams, 'first') || !has(queryParams, 'last')) {
+      queryParams.first = 10
    }
 
    return client.graphQLClient.send(
