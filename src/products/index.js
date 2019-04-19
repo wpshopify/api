@@ -1,5 +1,4 @@
 import { buildClient } from '../client'
-import { buildFetchQueryParams } from '../api'
 
 /*
 
@@ -51,7 +50,7 @@ function getProduct(id) {
    return fetchProductByID(id, buildClient())
 }
 
-function getProductsFromIds(ids = []) {
+async function getProductsFromIds(ids = []) {
    return fetchProductsByIDs(ids, buildClient())
 }
 
@@ -68,7 +67,6 @@ function getAllTags() {
 }
 
 function getProductsFromQuery(queryParams) {
-   // return queryProducts(buildFetchQueryParams(queryParams))
    return queryProducts(queryParams)
 }
 
