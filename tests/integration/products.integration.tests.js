@@ -152,17 +152,18 @@ it('Should return valid products query result', async () => {
 
 it('.....', async () => {
    var result = await graphQuery('products', {
-      query: [2216921399344],
-      sortKey: 'TITLE'
+      first: 2,
+      query: ['2216996241456', '2216808972336', '2216820572208', '2216928542768', '2216830206000', '2216868610096', '2216958951472', '2216921399344'],
+      reverse: true
    })
 
-   // console.log('result', result.model.products[0].variants[0].selectedOptions[0].name)
+   console.log('result', result.model.products.length)
 
    // console.log('result', result.model.products[1].title)
    // console.log('result', result.model.products[2].title)
    // console.log('result', result.model.products[3].title)
 
-   // result.model.products.map(product => console.log('Product: ', product.title))
+   result.model.products.map(product => console.log('Product: ', product.title))
 
    // console.log('result.model.products', result.model.products)
 

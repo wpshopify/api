@@ -159,7 +159,7 @@ function graphQuery(type, queryParams) {
    }
 
    // Defaults to 10
-   if (!has(queryParams, 'first') || !has(queryParams, 'last')) {
+   if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
    }
 
