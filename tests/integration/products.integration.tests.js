@@ -167,8 +167,8 @@ it('.....', async () => {
 
    // console.log('result.model.products', result.model.products)
 
-   // const nextPageOfResults = await fetchNextPage(result.model.products)
-   // // console.log('nextPageOfResults', nextPageOfResults)
+   const nextPageOfResults = await fetchNextPage(result.model.products)
+   console.log('nextPageOfResults', nextPageOfResults)
 
    // console.log('next result 1 title', nextPageOfResults.model[0].title)
    // console.log('next result 2 title', nextPageOfResults.model[1].title)
