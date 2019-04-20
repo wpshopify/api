@@ -164,16 +164,16 @@ function graphQuery(type, queryParams) {
    }
 
    return client.graphQLClient.send(
-      client.graphQLClient.query(shop => {
-         resourceQuery(shop, type, queryParams)
+      client.graphQLClient.query(root => {
+         resourceQuery(root, type, queryParams)
       })
    )
 }
 
-function resourceQuery(shop, type, queryParams) {
+function resourceQuery(root, type, queryParams) {
    switch (type) {
       case 'products':
-         productsQuery(shop, queryParams)
+         productsQuery(root, queryParams)
          break
 
       default:
@@ -185,10 +185,10 @@ function formatIdsForQuery(query) {
    return query.map(id => 'id:' + id).join(' OR ')
 }
 
-function productsQuery(shop, queryParams) {
+function productsQuery(root, queryParams) {
    queryParams.query = formatIdsForQuery(queryParams.query)
 
-   shop.addConnection('products', { args: queryParams }, product => {
+   root.addConnection('products', { args: queryParams }, product => {
       addProductFields(product)
    })
 }
