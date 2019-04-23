@@ -181,13 +181,7 @@ function resourceQuery(root, type, queryParams) {
    }
 }
 
-function formatIdsForQuery(query) {
-   return query.map(id => 'id:' + id).join(' OR ')
-}
-
 function productsQuery(root, queryParams) {
-   queryParams.query = formatIdsForQuery(queryParams.query)
-
    root.addConnection('products', { args: queryParams }, product => {
       addProductFields(product)
    })
