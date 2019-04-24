@@ -151,26 +151,25 @@ it('Should return valid products query result', async () => {
 // })
 
 it('.....', async () => {
-   var result = await graphQuery('products', {
-      first: 3,
-      query: ['2216996241456', '2216808972336', '2216820572208', '2216928542768', '2216830206000', '2216868610096', '2216958951472', '2216921399344'],
+   var result = await graphQuery('collections', {
+      query: ['90178420784'],
       reverse: false
    })
 
-   // console.log('result', result.model)
+   console.log('result', result)
 
    // console.log('result', result.model.products[1].title)
    // console.log('result', result.model.products[2].title)
    // console.log('result', result.model.products[3].title)
 
-   result.model.products.map(product => console.log('Product: ', product.title))
+   // result.model.products.map(product => console.log('Product: ', product.title))
 
    // console.log('result.model.products', result.model.products)
 
-   const nextPageOfResults = await fetchNextPage(result.model.products)
-   console.log('nextPageOfResults', nextPageOfResults.model)
+   // const nextPageOfResults = await fetchNextPage(result.model.products)
+   // console.log('nextPageOfResults', nextPageOfResults.model)
 
-   nextPageOfResults.model.map(product => console.log('Product: ', product.title))
+   // nextPageOfResults.model.map(product => console.log('Product: ', product.title))
 
    // console.log('next result 1 title', nextPageOfResults.model[0].title)
    // console.log('next result 2 title', nextPageOfResults.model[1].title)
