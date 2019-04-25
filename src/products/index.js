@@ -128,6 +128,30 @@ function addProductFields(product) {
    })
 }
 
+function addCollectionFields(collection) {
+   collection.add('id')
+   collection.add('title')
+   collection.add('description')
+   collection.add('descriptionHtml')
+   collection.add('handle')
+   collection.add('updatedAt')
+
+   collection.add('image', image => {
+      image.add('id')
+      image.add('altText')
+      image.add('src')
+      image.add('originalSrc')
+   })
+
+   collection.addConnection('products', { args: { first: 10 } }, product => {
+      // product.add('title')
+
+      addProductFields(product)
+
+      // addProductFields(product)
+   })
+}
+
 function enumValue(client, queryParams) {
    return client.graphQLClient.enum(queryParams.sortKey)
 }
@@ -176,6 +200,12 @@ function resourceQuery(root, type, queryParams) {
          productsQuery(root, queryParams)
          break
 
+      case 'collections':
+         console.log('queryParams', queryParams)
+
+         collectionsQuery(root, queryParams)
+         break
+
       default:
          break
    }
@@ -184,6 +214,12 @@ function resourceQuery(root, type, queryParams) {
 function productsQuery(root, queryParams) {
    root.addConnection('products', { args: queryParams }, product => {
       addProductFields(product)
+   })
+}
+
+function collectionsQuery(root, queryParams) {
+   root.addConnection('collections', { args: queryParams }, collection => {
+      addCollectionFields(collection)
    })
 }
 

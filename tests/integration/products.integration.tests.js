@@ -151,12 +151,16 @@ it('Should return valid products query result', async () => {
 // })
 
 it('.....', async () => {
-   var result = await graphQuery('collections', {
-      query: ['90178420784'],
-      reverse: false
+   function formatIdsIntoQuery(ids) {
+      return ids.map(id => 'id:' + id).join(' OR ')
+   }
+
+   var resulttttt = await graphQuery('collections', {
+      query: formatIdsIntoQuery(['86362882096'])
    })
 
-   console.log('result', result)
+   // console.log('resulttttt ERR', resulttttt)
+   console.log('......image', resulttttt.model.collections[0].image)
 
    // console.log('result', result.model.products[1].title)
    // console.log('result', result.model.products[2].title)
