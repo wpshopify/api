@@ -128,7 +128,7 @@ function addProductFields(product) {
    })
 }
 
-function addCollectionFields(collection) {
+function addCollectionFields(collection, connectionParams) {
    collection.add('id')
    collection.add('title')
    collection.add('description')
@@ -143,7 +143,24 @@ function addCollectionFields(collection) {
       image.add('originalSrc')
    })
 
-   collection.addConnection('products', { args: { first: 10 } }, product => {
+   /*
+   
+   sortKey values:
+
+   TITLE	
+   COLLECTION_DEFAULT	
+   CREATED	
+   ID	
+   MANUAL	
+   PRICE	
+   RELEVANCE	
+   BEST_SELLING	
+
+   */
+
+   console.log(' ((((((((((((((((((( connectionParams', connectionParams)
+
+   collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
       // product.add('title')
 
       addProductFields(product)
@@ -175,11 +192,15 @@ BEST_SELLING
 PRICE
 
 */
-function graphQuery(type, queryParams) {
+function graphQuery(type, queryParams, connectionParams = false) {
    const client = buildClient()
 
    if (has(queryParams, 'sortKey')) {
       queryParams.sortKey = enumValue(client, queryParams)
+   }
+
+   if (has(connectionParams, 'sortKey')) {
+      connectionParams.sortKey = enumValue(client, connectionParams)
    }
 
    // Defaults to 10
@@ -189,12 +210,12 @@ function graphQuery(type, queryParams) {
 
    return client.graphQLClient.send(
       client.graphQLClient.query(root => {
-         resourceQuery(root, type, queryParams)
+         resourceQuery(root, type, queryParams, connectionParams)
       })
    )
 }
 
-function resourceQuery(root, type, queryParams) {
+function resourceQuery(root, type, queryParams, connectionParams = false) {
    switch (type) {
       case 'products':
          productsQuery(root, queryParams)
@@ -203,7 +224,7 @@ function resourceQuery(root, type, queryParams) {
       case 'collections':
          console.log('queryParams', queryParams)
 
-         collectionsQuery(root, queryParams)
+         collectionsQuery(root, queryParams, connectionParams)
          break
 
       default:
@@ -217,9 +238,9 @@ function productsQuery(root, queryParams) {
    })
 }
 
-function collectionsQuery(root, queryParams) {
+function collectionsQuery(root, queryParams, connectionParams = false) {
    root.addConnection('collections', { args: queryParams }, collection => {
-      addCollectionFields(collection)
+      addCollectionFields(collection, connectionParams)
    })
 }
 
