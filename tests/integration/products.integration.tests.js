@@ -1,4 +1,7 @@
 import { getProduct, getProductsFromIds, queryProducts, fetchByCollectionTitle, graphQuery, queryParams } from '../../src/products'
+
+import { fetchCollectionWithProductsById } from '../../src/collections'
+
 import { fetchNextPage } from '../../src/pagination'
 import to from 'await-to-js'
 
@@ -155,23 +158,51 @@ it('.....', async () => {
       return ids.map(id => 'id:' + id).join(' OR ')
    }
 
-   var resulttttt = await graphQuery('collections', {
-      query: formatIdsIntoQuery(['86362882096'])
-   })
+   var resulttttt = await graphQuery(
+      'collections',
+      {
+         query: formatIdsIntoQuery(['90178420784'])
+      },
+      {
+         first: 2,
+         sortKey: 'COLLECTION_DEFAULT'
+      }
+   )
 
    // console.log('resulttttt ERR', resulttttt)
-   console.log('......image', resulttttt.model.collections[0].image)
+   // console.log('......', resulttttt.model.collections[0].products)
+
+   resulttttt.model.collections[0].products.map(product => console.log('Product: ', product.title))
+
+   const nextPageOfResults = await fetchNextPage(resulttttt.model.collections[0].products)
+   // console.log('nextPageOfResults', nextPageOfResults.model)
+
+   nextPageOfResults.model.map(product => console.log('Product: ', product.title))
+
+   // gid://shopify/Collection/90178420784
+
+   // Featured
+   // Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzkwMTc4NDIwNzg0
+
+   // All
+   // Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzkwNzg0Mzk5NDA4
+
+   // const okook = await fetchCollectionWithProductsById('Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzkwNzg0Mzk5NDA4')
+
+   // okook.products.map(product => console.log('Product: ', product.title))
+
+   // // console.log('result', result.model.products[1].title)
+
+   // const nextNextPageOfResults = await fetchNextPage(okook.products)
+   // // console.log('nextNextPageOfResults', nextNextPageOfResults.model)
+
+   // nextNextPageOfResults.model.map(product => console.log('Product: ', product.title))
 
    // console.log('result', result.model.products[1].title)
    // console.log('result', result.model.products[2].title)
    // console.log('result', result.model.products[3].title)
 
-   // result.model.products.map(product => console.log('Product: ', product.title))
-
    // console.log('result.model.products', result.model.products)
-
-   // const nextPageOfResults = await fetchNextPage(result.model.products)
-   // console.log('nextPageOfResults', nextPageOfResults.model)
 
    // nextPageOfResults.model.map(product => console.log('Product: ', product.title))
 

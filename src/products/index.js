@@ -156,9 +156,9 @@ function addCollectionFields(collection, connectionParams) {
    RELEVANCE	
    BEST_SELLING	
 
-   */
+   https://help.shopify.com/en/api/graphql-admin-api/reference/enum/productcollectionsortkeys
 
-   console.log(' ((((((((((((((((((( connectionParams', connectionParams)
+   */
 
    collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
       // product.add('title')
@@ -169,8 +169,8 @@ function addCollectionFields(collection, connectionParams) {
    })
 }
 
-function enumValue(client, queryParams) {
-   return client.graphQLClient.enum(queryParams.sortKey)
+function enumValue(client, params) {
+   return client.graphQLClient.enum(params.sortKey)
 }
 
 /*
@@ -200,6 +200,16 @@ function graphQuery(type, queryParams, connectionParams = false) {
    }
 
    if (has(connectionParams, 'sortKey')) {
+      console.log('BEFORE UPPERCASE connectionParams.sortKey', connectionParams.sortKey)
+
+      // console.log('WITHOUT UPPERCASE', connectionParams.sortKey)
+      // console.log('WITH UPPERCASE', connectionParams.sortKey.toUpperCase())
+      // console.log('connectionParams.sortKey', connectionParams.sortKey);
+
+      connectionParams.sortKey = connectionParams.sortKey.toUpperCase()
+
+      console.log('AFTER UPPERCASE connectionParams.sortKey', connectionParams.sortKey)
+
       connectionParams.sortKey = enumValue(client, connectionParams)
    }
 
@@ -207,6 +217,8 @@ function graphQuery(type, queryParams, connectionParams = false) {
    if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
    }
+
+   console.log('connectionParams', connectionParams)
 
    return client.graphQLClient.send(
       client.graphQLClient.query(root => {

@@ -5,6 +5,8 @@ export { addLineItems } from './src/checkout'
 
 export { getProduct, getProductsFromIds, queryProducts, getAllProducts, findVariantFromSelectedOptions, fetchByCollectionTitle, getProductsFromQuery, graphQuery } from './src/products'
 
+export { fetchCollectionWithProductsById } from './src/collections'
+
 export { getShopInfo } from './src/shop'
 export { fetchNextPage } from './src/pagination'
 export { fetchByTitleParams, buildFetchQueryParams } from './src/api'
