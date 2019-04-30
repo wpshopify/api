@@ -1,5 +1,6 @@
 import { buildClient } from '../client'
 import has from 'lodash/has'
+import isString from 'lodash/isString'
 
 /*
 
@@ -192,24 +193,25 @@ BEST_SELLING
 PRICE
 
 */
+
+function maybeUppercaseSortKey(sortKey) {
+   if (isString(sortKey)) {
+      return sortKey.toUpperCase()
+   }
+
+   return sortKey
+}
+
 function graphQuery(type, queryParams, connectionParams = false) {
    const client = buildClient()
 
    if (has(queryParams, 'sortKey')) {
+      queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
       queryParams.sortKey = enumValue(client, queryParams)
    }
 
    if (has(connectionParams, 'sortKey')) {
-      console.log('BEFORE UPPERCASE connectionParams.sortKey', connectionParams.sortKey)
-
-      // console.log('WITHOUT UPPERCASE', connectionParams.sortKey)
-      // console.log('WITH UPPERCASE', connectionParams.sortKey.toUpperCase())
-      // console.log('connectionParams.sortKey', connectionParams.sortKey);
-
-      connectionParams.sortKey = connectionParams.sortKey.toUpperCase()
-
-      console.log('AFTER UPPERCASE connectionParams.sortKey', connectionParams.sortKey)
-
+      connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
       connectionParams.sortKey = enumValue(client, connectionParams)
    }
 
@@ -217,8 +219,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
    if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
    }
-
-   console.log('connectionParams', connectionParams)
 
    return client.graphQLClient.send(
       client.graphQLClient.query(root => {
@@ -234,8 +234,6 @@ function resourceQuery(root, type, queryParams, connectionParams = false) {
          break
 
       case 'collections':
-         console.log('queryParams', queryParams)
-
          collectionsQuery(root, queryParams, connectionParams)
          break
 
