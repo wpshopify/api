@@ -1,3 +1,5 @@
+import isEmpty from 'lodash/isEmpty'
+
 /*
 
 Supported filter parameters: https://help.shopify.com/en/api/graphql-admin-api/reference/queryroot#products
@@ -120,4 +122,12 @@ function buildFetchQueryParams(params) {
    })
 }
 
-export { fetchByTitleParams, buildFetchQueryParams }
+function formatIdsIntoQuery(ids) {
+   if (isEmpty(ids) || !ids) {
+      return false
+   }
+
+   return ids.map(id => 'id:' + id).join(' OR ')
+}
+
+export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery }
