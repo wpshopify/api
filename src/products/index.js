@@ -160,6 +160,7 @@ function addCollectionFields(collection, connectionParams) {
    https://help.shopify.com/en/api/graphql-admin-api/reference/enum/productcollectionsortkeys
 
    */
+   console.log('connectionParams', connectionParams)
 
    collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
       // product.add('title')

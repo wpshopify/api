@@ -154,30 +154,37 @@ it('Should return valid products query result', async () => {
 // })
 
 it('.....', async () => {
-   function formatIdsIntoQuery(ids) {
-      return ids.map(id => 'id:' + id).join(' OR ')
-   }
+   // function formatIdsIntoQuery(ids) {
+   //    return ids.map(id => 'id:' + id).join(' OR ')
+   // }
 
-   var resulttttt = await graphQuery(
+   // var titlesResult = await graphQuery('products', {
+   //    first: 10,
+   //    query: 'title:"Aerodynamic Steel Knife" OR title:"Awesome Concrete Keyboard" OR title:"Awesome Leather Hat"'
+   // })
+
+   var idsResult = await graphQuery(
       'collections',
       {
-         query: formatIdsIntoQuery(['90178420784'])
+         first: 10,
+         query: 'title:Featured'
       },
       {
          first: 2,
-         sortKey: 'COLLECTION_DEFAULT'
+         sortKey: 'TITLE'
       }
    )
 
-   // console.log('resulttttt ERR', resulttttt)
+   console.log('idsResult', idsResult)
+   console.log('idsResult', idsResult.model.collections.length)
    // console.log('......', resulttttt.model.collections[0].products)
 
-   resulttttt.model.collections[0].products.map(product => console.log('Product: ', product.title))
+   // resulttttt.model.collections[0].products.map(product => console.log('Product: ', product.title))
 
-   const nextPageOfResults = await fetchNextPage(resulttttt.model.collections[0].products)
-   // console.log('nextPageOfResults', nextPageOfResults.model)
+   // const nextPageOfResults = await fetchNextPage(resulttttt.model.collections[0].products)
+   // // console.log('nextPageOfResults', nextPageOfResults.model)
 
-   nextPageOfResults.model.map(product => console.log('Product: ', product.title))
+   // nextPageOfResults.model.map(product => console.log('Product: ', product.title))
 
    // gid://shopify/Collection/90178420784
 
