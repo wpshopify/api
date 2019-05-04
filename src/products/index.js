@@ -160,7 +160,6 @@ function addCollectionFields(collection, connectionParams) {
    https://help.shopify.com/en/api/graphql-admin-api/reference/enum/productcollectionsortkeys
 
    */
-   console.log('connectionParams', connectionParams)
 
    collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
       // product.add('title')
@@ -204,6 +203,10 @@ function maybeUppercaseSortKey(sortKey) {
 }
 
 function graphQuery(type, queryParams, connectionParams = false) {
+   console.log('type', type)
+   console.log('queryParams', queryParams)
+   console.log('connectionParams', connectionParams)
+
    const client = buildClient()
 
    if (has(queryParams, 'sortKey')) {
@@ -231,10 +234,13 @@ function graphQuery(type, queryParams, connectionParams = false) {
 function resourceQuery(root, type, queryParams, connectionParams = false) {
    switch (type) {
       case 'products':
+         console.log('inside')
+
          productsQuery(root, queryParams)
          break
 
       case 'collections':
+         console.log('of here')
          collectionsQuery(root, queryParams, connectionParams)
          break
 
