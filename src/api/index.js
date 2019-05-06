@@ -1,4 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
+import first from 'lodash/first'
+import has from 'lodash/has'
 
 /*
 
@@ -130,4 +132,30 @@ function formatIdsIntoQuery(ids) {
    return ids.map(id => 'id:' + id).join(' OR ')
 }
 
-export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery }
+function findLastCursorId(shopifyResponse, dataType) {
+   var data = false
+
+   if (has(shopifyResponse.data, dataType)) {
+      data = shopifyResponse.data[dataType]
+   }
+
+   if (!data || isEmpty(data.edges)) {
+      console.log('cursorId no data', data)
+      return {
+         after: ''
+      }
+   }
+
+   var cursorId = first(data.edges).cursor
+   console.log('cursorId', cursorId)
+
+   return {
+      after: cursorId
+   }
+}
+
+function findTypeFromPayload(payload) {
+   return payload.type.name.split('Connection')[0].toLowerCase() + 's'
+}
+
+export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload }

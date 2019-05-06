@@ -9,7 +9,7 @@ export { fetchCollectionWithProductsById } from './src/collections'
 
 export { getShopInfo } from './src/shop'
 export { fetchNextPage } from './src/pagination'
-export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery } from './src/api'
+export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload } from './src/api'
 
 export { getAllTags, getFilterData } from './src/internal/products'
 export { getComponentOptions } from './src/internal/components'
