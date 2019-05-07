@@ -158,4 +158,4 @@ function findTypeFromPayload(payload) {
    return payload.type.name.split('Connection')[0].toLowerCase() + 's'
 }
 
-export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload }
+export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload, queryByTitleParam }
