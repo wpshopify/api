@@ -202,11 +202,13 @@ function maybeUppercaseSortKey(sortKey) {
    return sortKey
 }
 
-function graphQuery(type, queryParams, connectionParams = false) {
-   console.log('type', type)
-   console.log('queryParams', queryParams)
-   console.log('connectionParams', connectionParams)
+function refetchQuery(node) {
+   const client = buildClient()
 
+   return client.graphQLClient.refetch(node)
+}
+
+function graphQuery(type, queryParams, connectionParams = false) {
    const client = buildClient()
 
    if (has(queryParams, 'sortKey')) {
@@ -234,13 +236,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
 function resourceQuery(root, type, queryParams, connectionParams = false) {
    switch (type) {
       case 'products':
-         console.log('inside')
-
          productsQuery(root, queryParams)
          break
 
       case 'collections':
-         console.log('of here')
          collectionsQuery(root, queryParams, connectionParams)
          break
 
@@ -290,4 +289,4 @@ function getProductsFromQuery(queryParams) {
    return queryProducts(queryParams)
 }
 
-export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle, graphQuery }
+export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle, graphQuery, refetchQuery }

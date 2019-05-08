@@ -1,4 +1,4 @@
-import { getProduct, getProductsFromIds, queryProducts, fetchByCollectionTitle, graphQuery, queryParams } from '../../src/products'
+import { getProduct, getProductsFromIds, queryProducts, fetchByCollectionTitle, graphQuery, queryParams, refetchQuery } from '../../src/products'
 
 import { fetchCollectionWithProductsById } from '../../src/collections'
 
@@ -175,8 +175,13 @@ it('.....', async () => {
       }
    )
 
-   console.log('idsResult', idsResult)
-   console.log('idsResult', idsResult.model.collections.length)
+   console.log('idsResult', idsResult.model.collections[0].refetchQuery)
+
+   const okokokok = await refetchQuery(idsResult.model.collections[0])
+
+   console.log('okokokok?????', okokokok)
+
+   // console.log('idsResult', idsResult.model.collections.length)
    // console.log('......', resulttttt.model.collections[0].products)
 
    // resulttttt.model.collections[0].products.map(product => console.log('Product: ', product.title))

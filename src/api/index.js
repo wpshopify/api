@@ -140,14 +140,12 @@ function findLastCursorId(shopifyResponse, dataType) {
    }
 
    if (!data || isEmpty(data.edges)) {
-      console.log('cursorId no data', data)
       return {
          after: ''
       }
    }
 
    var cursorId = first(data.edges).cursor
-   console.log('cursorId', cursorId)
 
    return {
       after: cursorId
