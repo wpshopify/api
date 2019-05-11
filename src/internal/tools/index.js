@@ -1,21 +1,20 @@
-import {
-   post
-} from '../request';
-
+import { post } from '../request'
 
 function endpointToolsClearCache() {
-   return 'cache';
+   return 'cache'
 }
 
 function endpointToolsClearAll() {
-   return 'clear/all';
+   return 'clear/all'
 }
 
 function endpointToolsClearSynced() {
-   return 'clear/synced';
+   return 'clear/synced'
 }
 
-
+function endpointTurnOffCacheCleared() {
+   return 'cache/toggle'
+}
 
 /*
 
@@ -25,10 +24,11 @@ Returns: promise
 
 */
 function clearCache() {
-   return post(endpointToolsClearCache());
+   return post(endpointToolsClearCache())
 }
 
-
-export {
-   clearCache
+function turnOffCacheCleared() {
+   return post(endpointTurnOffCacheCleared())
 }
+
+export { clearCache, turnOffCacheCleared }

@@ -13,6 +13,7 @@ export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLast
 
 export { getAllTags, getFilterData } from './src/internal/products'
 export { getComponentOptions } from './src/internal/components'
+export { turnOffCacheCleared } from './src/internal/tools'
 
-export { setCache, getCache, deleteCache } from './src/cache'
+export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cache'
 export { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems } from './src/cache/checkout'

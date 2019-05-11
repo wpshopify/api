@@ -4,13 +4,14 @@ import isEmpty from 'lodash/isEmpty'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
 import to from 'await-to-js'
+import compact from 'lodash/compact'
 
 function endpointComponentOptions() {
    return 'components/options'
 }
 
 function onlyActiveComponentIds(components) {
-   return filter(components, option => !isEmpty(option.componentOptionIds)).map(option => option.componentOptionIds)
+   return filter(components, option => !isEmpty(option.componentId)).map(option => option.componentId)
 }
 
 function createCacheNameFromIds(componentIds) {
@@ -19,6 +20,8 @@ function createCacheNameFromIds(componentIds) {
 
 // Returns a promise
 function getComponentOptionsFromIds(componentOptionIds) {
+   console.log('post -- componentOptionIds', componentOptionIds)
+
    return post(endpointComponentOptions(), componentOptionIds)
 }
 
@@ -38,15 +41,18 @@ function combineComponentIdWithOptions(options, componentOptionIds) {
    })
 }
 
-function hasCachedComponentOptions(componentOptionIds) {
-   const activeComponentIds = onlyActiveComponentIds(componentOptionIds)
+function cachedComponentOptions(componentOptions) {
+   const activeComponentIds = onlyActiveComponentIds(componentOptions)
 
    console.log('activeComponentIds...........', activeComponentIds)
+   // const cacheName = createCacheNameFromIds(activeComponentIds)
 
-   const cacheName = createCacheNameFromIds(activeComponentIds)
+   // console.log('cacheName ::::::::::::', cacheName)
 
-   const cachedResults = getCache('wps-component-options-' + cacheName)
-   console.log('cachedResults ', cachedResults)
+   const cachedResults = compact(activeComponentIds.map(id => getCache('wps-component-options-' + id)))
+   console.log('cachedComponentOptions result ', cachedResults)
+
+   return cachedResults
 
    // console.log('cachedResult', cachedResult)
 
@@ -56,8 +62,7 @@ function hasCachedComponentOptions(componentOptionIds) {
    // }
 
    return {
-      cachedResults: cachedResults,
-      cacheName: cacheName
+      cachedResults: cachedResults
    }
 }
 
@@ -66,12 +71,12 @@ function hasCachedComponentOptions(componentOptionIds) {
 Gets the component options for our react app
 
 */
-async function getComponentOptions(componentOptionHashes = {}) {
-   const componentOptionIds = componentOptionHashes.data
-   console.log('componentOptionHashes', componentOptionHashes)
+async function getComponentOptions(componentOptions) {
+   // const components = componentOptionHashes.data
+   // console.log('componentOptionHashesssssssss', componentOptionHashes)
    // console.log('componentOptionHashes.data.join()', componentOptionHashes.data.join('-'))
 
-   // const activeComponentIds = onlyActiveComponentIds(componentOptionIds)
+   // const activeComponentIds = onlyActiveComponentIds(components)
 
    // console.log('activeComponentIds...........', activeComponentIds)
 
@@ -80,34 +85,38 @@ async function getComponentOptions(componentOptionHashes = {}) {
    // const cachedResults = getCache('wps-component-options-' + joined)
    // console.log('cachedResults ', cachedResults)
 
-   const { cachedResults, cacheName } = hasCachedComponentOptions(componentOptionIds)
+   const cachedResults = cachedComponentOptions(componentOptions)
+   console.log('cachedResults', cachedResults)
 
    // console.log('cachedResult', cachedResult)
 
-   if (cachedResults) {
+   if (!isEmpty(cachedResults)) {
       console.log('Has cached component Ids')
       return Promise.resolve(cachedResults)
    }
 
-   // console.log('zz')
+   // console.log('componentOptionHashes', componentOptionHashes)
 
-   return new Promise(async (resolve, reject) => {
-      const [error, success] = await to(getComponentOptionsFromIds(componentOptionHashes))
+   const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
+   console.log('asdfsfd')
+   if (error) {
+      console.log('error in component option hash request', error)
+   }
 
-      if (error) {
-         console.log('error in component option hash request', error)
-      }
+   console.log('success', success.data)
 
-      console.log('success.data', success.data)
+   // const options = combineComponentIdWithOptions(success.data, components)
 
-      const options = combineComponentIdWithOptions(success.data, componentOptionIds)
+   // console.log('okokokokokokokok', options)
 
-      console.log('okokokokokokokok', options)
+   // setCache('wps-component-options-' + cacheName, options)
 
-      setCache('wps-component-options-' + cacheName, options)
+   return Promise.resolve(success.data)
+   // resolve()
 
-      resolve(options)
-   })
+   // return new Promise(async (resolve, reject) => {
+
+   // })
 }
 
 export { getComponentOptions }
