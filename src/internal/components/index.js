@@ -11,6 +11,8 @@ function endpointComponentOptions() {
 }
 
 function onlyActiveComponentIds(components) {
+   console.log('onlyActiveComponentIds ::', components)
+
    return filter(components, option => !isEmpty(option.componentId)).map(option => option.componentId)
 }
 
@@ -72,6 +74,8 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
+   console.log('getComponentOptionsgetComponentOptions', componentOptions)
+
    // const components = componentOptionHashes.data
    // console.log('componentOptionHashesssssssss', componentOptionHashes)
    // console.log('componentOptionHashes.data.join()', componentOptionHashes.data.join('-'))
