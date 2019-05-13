@@ -11,8 +11,6 @@ function endpointComponentOptions() {
 }
 
 function onlyActiveComponentIds(components) {
-   console.log('onlyActiveComponentIds ::', components)
-
    return filter(components, option => !isEmpty(option.componentId)).map(option => option.componentId)
 }
 
@@ -22,8 +20,6 @@ function createCacheNameFromIds(componentIds) {
 
 // Returns a promise
 function getComponentOptionsFromIds(componentOptionIds) {
-   console.log('post -- componentOptionIds', componentOptionIds)
-
    return post(endpointComponentOptions(), componentOptionIds)
 }
 
@@ -46,13 +42,7 @@ function combineComponentIdWithOptions(options, componentOptionIds) {
 function cachedComponentOptions(componentOptions) {
    const activeComponentIds = onlyActiveComponentIds(componentOptions)
 
-   console.log('activeComponentIds...........', activeComponentIds)
-   // const cacheName = createCacheNameFromIds(activeComponentIds)
-
-   // console.log('cacheName ::::::::::::', cacheName)
-
    const cachedResults = compact(activeComponentIds.map(id => getCache('wps-component-options-' + id)))
-   console.log('cachedComponentOptions result ', cachedResults)
 
    return cachedResults
 
@@ -74,8 +64,6 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
-   console.log('getComponentOptionsgetComponentOptions', componentOptions)
-
    // const components = componentOptionHashes.data
    // console.log('componentOptionHashesssssssss', componentOptionHashes)
    // console.log('componentOptionHashes.data.join()', componentOptionHashes.data.join('-'))
@@ -90,24 +78,19 @@ async function getComponentOptions(componentOptions) {
    // console.log('cachedResults ', cachedResults)
 
    const cachedResults = cachedComponentOptions(componentOptions)
-   console.log('cachedResults', cachedResults)
 
    // console.log('cachedResult', cachedResult)
 
    if (!isEmpty(cachedResults)) {
-      console.log('Has cached component Ids')
       return Promise.resolve(cachedResults)
    }
 
    // console.log('componentOptionHashes', componentOptionHashes)
 
    const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
-   console.log('asdfsfd')
-   if (error) {
-      console.log('error in component option hash request', error)
-   }
 
-   console.log('success', success.data)
+   if (error) {
+   }
 
    // const options = combineComponentIdWithOptions(success.data, components)
 

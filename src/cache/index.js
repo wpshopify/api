@@ -18,14 +18,7 @@ function deleteCache(name = false) {
 }
 
 function deleteCacheContains(contains) {
-   console.log('contains', contains)
-   console.log('store. . . . . . . .', store)
-
    return store.each(function(value, key) {
-      console.log('vvvvvvvvv', value)
-      console.log('kkkkkkkkkkkkk', key)
-
-      console.log(key, '==', value)
       if (startsWith(key, contains)) {
          console.log('ffffounnddd key', key)
          console.log('ffffounnddd value', value)
