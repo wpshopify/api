@@ -211,6 +211,10 @@ function refetchQuery(node) {
 function graphQuery(type, queryParams, connectionParams = false) {
    const client = buildClient()
 
+   console.log('graphQuery :::::::::::::::: queryParams', queryParams)
+   console.log('graphQuery :::::::::::::::: connectionParams', connectionParams)
+   console.log('graphQuery :::::::::::::::: type', type)
+
    if (has(queryParams, 'sortKey')) {
       queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
       queryParams.sortKey = enumValue(client, queryParams)
@@ -255,6 +259,9 @@ function productsQuery(root, queryParams) {
 }
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
+   console.log('collectionsQuery ... queryParams', queryParams)
+   console.log('collectionsQuery ... connectionParams', connectionParams)
+
    root.addConnection('collections', { args: queryParams }, collection => {
       addCollectionFields(collection, connectionParams)
    })
