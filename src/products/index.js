@@ -244,6 +244,9 @@ function resourceQuery(root, type, queryParams, connectionParams = false) {
          break
 
       case 'collections':
+         console.log('.......... queryParams', queryParams)
+         console.log('.......... connectionParams', connectionParams)
+
          collectionsQuery(root, queryParams, connectionParams)
          break
 
