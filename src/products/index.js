@@ -234,19 +234,12 @@ function graphQuery(type, queryParams, connectionParams = false) {
 }
 
 function resourceQuery(root, type, queryParams, connectionParams = false) {
-   console.log('type', type)
-   console.log('queryParams', queryParams)
-   console.log('connectionParams', connectionParams)
-
    switch (type) {
       case 'products':
          productsQuery(root, queryParams)
          break
 
       case 'collections':
-         console.log('.......... queryParams', queryParams)
-         console.log('.......... connectionParams', connectionParams)
-
          collectionsQuery(root, queryParams, connectionParams)
          break
 
