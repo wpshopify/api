@@ -23,8 +23,11 @@ function removeAllLineItems(client, checkout) {
    return client.checkout.removeLineItems(checkout.id, checkout.lineItems)
 }
 
-function updateCheckoutAttributesAPI(client, checkout, customAttributes) {
-   return client.checkout.updateAttributes(checkout.id, { customAttributes: customAttributes })
+function updateCheckoutAttributesAPI(client, checkout, customAttributes = false, note = false) {
+   return client.checkout.updateAttributes(checkout.id, {
+      customAttributes: customAttributes,
+      note: note
+   })
 }
 
 function addLineItemsAPI(client, checkout, lineItems) {
@@ -134,14 +137,14 @@ async function replaceLineItems(lineItems) {
    return replaceLineItemsAPI(client, checkout, lineItems)
 }
 
-async function updateCheckoutAttributes(customAttributes) {
+async function updateCheckoutAttributes(attributes) {
    var [instancesError, { client, checkout }] = await to(buildInstances())
 
    if (instancesError) {
       return new Promise((resolve, reject) => reject(instancesError))
    }
 
-   return updateCheckoutAttributesAPI(client, checkout, customAttributes)
+   return updateCheckoutAttributesAPI(client, checkout, attributes.customAttributes, attributes.note)
 }
 
 /*
