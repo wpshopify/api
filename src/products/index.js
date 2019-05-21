@@ -115,6 +115,7 @@ function addProductFields(product) {
       variants.add('title')
       variants.add('price')
       variants.add('availableForSale')
+      variants.add('compareAtPrice')
 
       variants.add('selectedOptions', options => {
          options.add('name')
