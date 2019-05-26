@@ -62,6 +62,7 @@ function fetchByCollectionTitle() {
                variants.add('price')
                variants.add('availableForSale')
                variants.add('compareAtPrice')
+               variants.add('handle')
                variants.add('selectedOptions')
                variants.add('sku')
                variants.add('weight')
