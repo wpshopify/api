@@ -1,25 +1,11 @@
-import { buildClient } from '../client';
+import { buildClient } from '../client'
 
-
-/*
-
-Direct API functions
-
-*/
 function fetchShopInfo(client) {
-   return client.shop.fetchInfo();
+   return client.shop.fetchInfo()
 }
 
-
-/*
-
-Convience wrappers
-
-*/
 function getShopInfo() {
-   return fetchShopInfo(buildClient());
+   return fetchShopInfo(buildClient())
 }
 
-export {
-   getShopInfo
-}
+export { getShopInfo, fetchShopInfo }

@@ -1,6 +1,7 @@
 import { buildClient } from '../client'
 import to from 'await-to-js'
 import { getCache, setCache } from '../cache'
+import { fetchShopInfo } from '../shop'
 
 /*
 
@@ -104,15 +105,22 @@ function buildInstances() {
          reject(client)
       }
 
-      const [checkoutError, checkout] = await to(buildCheckout(client))
+      const [errors, data] = await to(Promise.all([buildCheckout(client), fetchShopInfo(client)]))
 
-      if (checkoutError) {
-         return reject(checkoutError)
+      if (errors) {
+         return reject(errors)
       }
+
+      // const [shopError, shop] = await to()
+
+      // if (shopError) {
+      //    return reject(shopError)
+      // }
 
       resolve({
          client: client,
-         checkout: checkout
+         checkout: data[0],
+         shop: data[1]
       })
    })
 }
