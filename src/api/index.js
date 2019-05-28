@@ -6,21 +6,16 @@ import has from 'lodash/has'
 
 Supported filter parameters: https://help.shopify.com/en/api/graphql-admin-api/reference/queryroot#products
 
-Search Syntax: https://help.shopify.com/en/api/getting-started/search-syntax
+Search Syntax: https://help.shopify.com/en/manual/sell-online/online-store/storefront-search#prefix-search
 
-barcode
-created_at
-delivery_profile_id
-error_feedback
-gift_card
-inventory_total
-out_of_stock_somewhere
+body
+handle
 product_type
-published_status
-sku
 tag
 title
-updated_at
+variants.barcode
+variants.sku
+variants.title
 vendor
 
 AND tag:er tag:kaosjd
@@ -32,16 +27,20 @@ AND tag:er tag:kaosjd
 }
 
 */
-function queryBuilder(params) {
-   // params.isPhrase
+function queryBuilder(params = { isPrefix: false, filter: 'title', value: '*', phrase: false }) {
+   // var query = '';
 
-   var query = params.filter + ':' + params.value
-
-   if (params.isPrefix) {
-      query = query + '*'
+   if (!params.value) {
+      return
    }
 
-   return query
+   if (params.phrase) {
+      params.value = '"' + params.value + '"'
+   } else {
+      params.value = params.value + '*'
+   }
+
+   return params.filter + ':' + params.value
 }
 
 /*
@@ -156,4 +155,4 @@ function findTypeFromPayload(payload) {
    return payload.type.name.split('Connection')[0].toLowerCase() + 's'
 }
 
-export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload, queryByTitleParam }
+export { fetchByTitleParams, buildFetchQueryParams, formatIdsIntoQuery, findLastCursorId, findTypeFromPayload, queryByTitleParam, queryBuilder }

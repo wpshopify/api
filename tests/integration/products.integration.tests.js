@@ -124,8 +124,6 @@ it('Should return valid products query result', async () => {
 
    var result = await queryProducts(params)
 
-   //console.log(result.map(product => product.title))
-
    expect(result)
       .toBeTruthy()
       .toBeArray()
