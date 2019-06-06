@@ -97,7 +97,7 @@ function createLineItemsFromVariants(options, client) {
    })
 }
 
-function buildInstances() {
+function buildInstances(forceNew = false) {
    return new Promise(async function(resolve, reject) {
       const client = buildClient()
 
@@ -105,7 +105,7 @@ function buildInstances() {
          reject(client)
       }
 
-      const [errors, data] = await to(Promise.all([buildCheckout(client), fetchShopInfo(client)]))
+      const [errors, data] = await to(Promise.all([buildCheckout(client, forceNew), fetchShopInfo(client)]))
 
       if (errors) {
          return reject(errors)
@@ -161,18 +161,20 @@ Fetch Cart
 Returns: Promise
 
 */
-function buildCheckout(client) {
+function buildCheckout(client, forceNew = false) {
    return new Promise(async (resolve, reject) => {
-      // Calls LS
-      var existingCheckoutID = getCheckoutID()
+      if (!forceNew) {
+         // Calls LS
+         var existingCheckoutID = getCheckoutID()
 
-      if (!emptyCheckoutID(existingCheckoutID)) {
-         const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
+         if (!emptyCheckoutID(existingCheckoutID)) {
+            const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
 
-         if (checkoutError) {
-            return reject(checkoutError)
-         } else {
-            return resolve(checkout)
+            if (checkoutError) {
+               return reject(checkoutError)
+            } else {
+               return resolve(checkout)
+            }
          }
       }
 
