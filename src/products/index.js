@@ -1,6 +1,9 @@
 import { buildClient } from '../client'
+import { maybeAlterErrorMessage } from '../errors'
 import has from 'lodash/has'
 import isString from 'lodash/isString'
+import to from 'await-to-js';
+
 
 /*
 
@@ -271,8 +274,20 @@ function getProduct(id) {
    return fetchProductByID(id, buildClient())
 }
 
-async function getProductsFromIds(ids = []) {
-   return fetchProductsByIDs(ids, buildClient())
+function getProductsFromIds(ids = []) {
+
+   return new Promise(async (resolve, reject) => {
+
+      const [productsError, products] = await to(fetchProductsByIDs(ids, buildClient()))
+
+      if (productsError) {       
+         return reject(maybeAlterErrorMessage(productsError))
+      }
+              
+      resolve(products)
+
+   })
+   
 }
 
 function getAllProducts() {

@@ -2,6 +2,7 @@ import { buildClient } from '../client'
 import to from 'await-to-js'
 import { getCache, setCache } from '../cache'
 import { fetchShopInfo } from '../shop'
+import { maybeAlterErrorMessage } from '../errors'
 
 /*
 
@@ -111,12 +112,6 @@ function buildInstances(forceNew = false) {
          return reject(errors)
       }
 
-      // const [shopError, shop] = await to()
-
-      // if (shopError) {
-      //    return reject(shopError)
-      // }
-
       resolve({
          client: client,
          checkout: data[0],
@@ -163,25 +158,30 @@ Returns: Promise
 */
 function buildCheckout(client, forceNew = false) {
    return new Promise(async (resolve, reject) => {
+      
       if (!forceNew) {
          // Calls LS
          var existingCheckoutID = getCheckoutID()
 
          if (!emptyCheckoutID(existingCheckoutID)) {
+            
             const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
 
             if (checkoutError) {
-               return reject(checkoutError)
+               return reject(maybeAlterErrorMessage(checkoutError))
             } else {
                return resolve(checkout)
             }
          }
       }
 
+
       const [checkoutError, checkout] = await to(createCheckout(client))
 
       if (checkoutError) {
-         reject(checkoutError)
+
+         reject(maybeAlterErrorMessage(checkoutError))
+
       } else {
          setCheckoutID(checkout.id)
          resolve(checkout)

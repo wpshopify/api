@@ -47,10 +47,12 @@ function buildClient() {
 
    // If client cached, just return it
    if (clientActive(WP_Shopify.client)) {
+      console.log('buildClient 4');
       return getClient();
    }
 
    if (!creds) {
+      console.log('buildClient 6');
       return noticeConfigBadCredentials();
    }
 
