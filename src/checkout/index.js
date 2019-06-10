@@ -130,14 +130,22 @@ async function addLineItems(lineItems) {
    return addLineItemsAPI(client, checkout, lineItems)
 }
 
-async function replaceLineItems(lineItems) {
-   var [instancesError, { client, checkout }] = await to(buildInstances())
+function replaceLineItems(lineItems) {
+   return new Promise(async (resolve, reject) => {
+      var [instancesError, { client, checkout }] = await to(buildInstances())
 
-   if (instancesError) {
-      return new Promise((resolve, reject) => reject(instancesError))
-   }
+      if (instancesError) {
+         return reject(instancesError)
+      }
 
-   return replaceLineItemsAPI(client, checkout, lineItems)
+      const [stuffErrro, stuff] = await to(replaceLineItemsAPI(client, checkout, lineItems))
+
+      if (stuffErrro) {
+         return reject(maybeAlterErrorMessage(stuffErrro))
+      }
+
+      resolve(stuff)
+   })
 }
 
 async function updateCheckoutAttributes(attributes) {
@@ -158,13 +166,11 @@ Returns: Promise
 */
 function buildCheckout(client, forceNew = false) {
    return new Promise(async (resolve, reject) => {
-      
       if (!forceNew) {
          // Calls LS
          var existingCheckoutID = getCheckoutID()
 
          if (!emptyCheckoutID(existingCheckoutID)) {
-            
             const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
 
             if (checkoutError) {
@@ -175,13 +181,10 @@ function buildCheckout(client, forceNew = false) {
          }
       }
 
-
       const [checkoutError, checkout] = await to(createCheckout(client))
 
       if (checkoutError) {
-
          reject(maybeAlterErrorMessage(checkoutError))
-
       } else {
          setCheckoutID(checkout.id)
          resolve(checkout)

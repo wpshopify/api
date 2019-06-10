@@ -1,30 +1,28 @@
-import { post, get } from '../request';
-
+import { post, get } from '../request'
 
 function endpointProducts() {
-   return 'products';
+   return 'products'
 }
 
 function endpointProductsCount() {
-   return 'products/count';
+   return 'products/count'
 }
 
 function endpointPublishedProductIds() {
-   return 'products/ids';
+   return 'products/ids'
 }
 
 function endpointGetAllProductTags() {
-   return 'products/tags';
+   return 'products/tags'
 }
 
 function endpointGetAllProductVendors() {
-   return 'products/vendors';
+   return 'products/vendors'
 }
 
 function endpointGetAllProductTypes() {
-   return 'products/types';
+   return 'products/types'
 }
-
 
 /*
 
@@ -34,9 +32,8 @@ Returns: promise
 
 */
 function getProducts(data = {}) {
-   return post(endpointProducts(), data);
+   return post(endpointProducts(), data)
 }
-
 
 /*
 
@@ -46,9 +43,8 @@ Returns: promise
 
 */
 function getProductsCount() {
-   return post(endpointProductsCount());
+   return post(endpointProductsCount())
 }
-
 
 /*
 
@@ -58,36 +54,23 @@ Returns: promise
 
 */
 function getPublishedProductIds() {
-   return post(endpointPublishedProductIds());
+   return post(endpointPublishedProductIds())
 }
 
-
 function getAllTags() {
-   return get(endpointGetAllProductTags());
+   return get(endpointGetAllProductTags())
 }
 
 function getAllVendors() {
-   return get(endpointGetAllProductVendors());
+   return get(endpointGetAllProductVendors())
 }
 
 function getAllTypes() {
-   return get(endpointGetAllProductTypes());
+   return get(endpointGetAllProductTypes())
 }
-
 
 function getFilterData() {
-   return Promise.all([
-      getAllTags(),
-      getAllVendors(),
-      getAllTypes()
-   ]);
+   return Promise.all([getAllTags(), getAllVendors(), getAllTypes()])
 }
 
-
-export {
-   getProductsCount,
-   getProducts,
-   getPublishedProductIds,
-   getAllTags,
-   getFilterData
-}
+export { getProductsCount, getProducts, getPublishedProductIds, getAllTags, getFilterData }

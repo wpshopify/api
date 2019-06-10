@@ -2,8 +2,7 @@ import { buildClient } from '../client'
 import { maybeAlterErrorMessage } from '../errors'
 import has from 'lodash/has'
 import isString from 'lodash/isString'
-import to from 'await-to-js';
-
+import to from 'await-to-js'
 
 /*
 
@@ -214,28 +213,48 @@ function refetchQuery(node) {
 }
 
 function graphQuery(type, queryParams, connectionParams = false) {
-   const client = buildClient()
+   return new Promise(async (resolve, reject) => {
+      console.log('queryParams', queryParams)
 
-   if (has(queryParams, 'sortKey')) {
-      queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
-      queryParams.sortKey = enumValue(client, queryParams)
-   }
+      if (!queryParams) {
+         return reject(maybeAlterErrorMessage('Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page.'))
+      }
 
-   if (has(connectionParams, 'sortKey')) {
-      connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
-      connectionParams.sortKey = enumValue(client, connectionParams)
-   }
+      const client = buildClient()
 
-   // Defaults to 10
-   if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
-      queryParams.first = 10
-   }
+      if (has(queryParams, 'sortKey')) {
+         queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
+         queryParams.sortKey = enumValue(client, queryParams)
+      }
 
-   return client.graphQLClient.send(
-      client.graphQLClient.query(root => {
-         resourceQuery(root, type, queryParams, connectionParams)
-      })
-   )
+      if (has(connectionParams, 'sortKey')) {
+         connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
+         connectionParams.sortKey = enumValue(client, connectionParams)
+      }
+
+      // Defaults to 10
+      if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
+         queryParams.first = 10
+      }
+
+      const [requestError, response] = await to(
+         client.graphQLClient.send(
+            client.graphQLClient.query(root => {
+               resourceQuery(root, type, queryParams, connectionParams)
+            })
+         )
+      )
+
+      if (requestError) {
+         return reject(maybeAlterErrorMessage(requestError))
+      }
+
+      if (has(response, 'errors')) {
+         return reject(maybeAlterErrorMessage(response.errors))
+      }
+
+      resolve(response)
+   })
 }
 
 function resourceQuery(root, type, queryParams, connectionParams = false) {
@@ -275,19 +294,15 @@ function getProduct(id) {
 }
 
 function getProductsFromIds(ids = []) {
-
    return new Promise(async (resolve, reject) => {
-
       const [productsError, products] = await to(fetchProductsByIDs(ids, buildClient()))
 
-      if (productsError) {       
+      if (productsError) {
          return reject(maybeAlterErrorMessage(productsError))
       }
-              
-      resolve(products)
 
+      resolve(products)
    })
-   
 }
 
 function getAllProducts() {
