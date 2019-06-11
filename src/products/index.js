@@ -284,11 +284,6 @@ function collectionsQuery(root, queryParams, connectionParams = false) {
    })
 }
 
-/*
-
-Convience wrappers
-
-*/
 function getProduct(id) {
    return fetchProductByID(id, buildClient())
 }

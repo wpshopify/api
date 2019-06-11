@@ -26,6 +26,11 @@ function removeAllLineItems(client, checkout) {
 }
 
 function updateCheckoutAttributesAPI(client, checkout, customAttributes = false, note = false) {
+   console.log('ddddddddddddddddd', {
+      customAttributes: customAttributes,
+      note: note
+   })
+
    return client.checkout.updateAttributes(checkout.id, {
       customAttributes: customAttributes,
       note: note
@@ -131,6 +136,8 @@ async function addLineItems(lineItems) {
 }
 
 function replaceLineItems(lineItems) {
+   var lineItemsNew = lineItems
+
    return new Promise(async (resolve, reject) => {
       var [instancesError, { client, checkout }] = await to(buildInstances())
 
@@ -138,24 +145,34 @@ function replaceLineItems(lineItems) {
          return reject(instancesError)
       }
 
-      const [stuffErrro, stuff] = await to(replaceLineItemsAPI(client, checkout, lineItems))
+      const [lineItemsError, lineItems] = await to(replaceLineItemsAPI(client, checkout, lineItemsNew))
 
-      if (stuffErrro) {
-         return reject(maybeAlterErrorMessage(stuffErrro))
+      if (lineItemsError) {
+         return reject(maybeAlterErrorMessage(lineItemsError))
       }
 
-      resolve(stuff)
+      resolve(lineItems)
    })
 }
 
-async function updateCheckoutAttributes(attributes) {
-   var [instancesError, { client, checkout }] = await to(buildInstances())
+function updateCheckoutAttributes(attributes) {
+   var attributesCopy = attributes
 
-   if (instancesError) {
-      return new Promise((resolve, reject) => reject(instancesError))
-   }
+   return new Promise(async function(resolve, reject) {
+      var [instancesError, { client, checkout }] = await to(buildInstances())
 
-   return updateCheckoutAttributesAPI(client, checkout, attributes.customAttributes, attributes.note)
+      if (instancesError) {
+         return reject(maybeAlterErrorMessage(instancesError))
+      }
+
+      const [checkoutAttrsError, checkoutAttrsResponse] = await to(updateCheckoutAttributesAPI(client, checkout, attributesCopy.customAttributes, attributesCopy.note))
+
+      if (checkoutAttrsError) {
+         return reject(maybeAlterErrorMessage(checkoutAttrsError))
+      }
+
+      resolve(checkoutAttrsResponse)
+   })
 }
 
 /*
