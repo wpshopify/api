@@ -214,8 +214,6 @@ function refetchQuery(node) {
 
 function graphQuery(type, queryParams, connectionParams = false) {
    return new Promise(async (resolve, reject) => {
-      console.log('queryParams', queryParams)
-
       if (!queryParams) {
          return reject(maybeAlterErrorMessage('Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page.'))
       }

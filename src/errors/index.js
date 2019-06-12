@@ -2,8 +2,6 @@ import isString from 'lodash/isString'
 import isError from 'lodash/isError'
 
 function findErrorMessage(maybeErrorMessage) {
-   console.log('maybeErrorMessage', maybeErrorMessage)
-
    let finalErrorMessage = ''
 
    if (isString(maybeErrorMessage)) {
@@ -24,8 +22,6 @@ function findErrorMessage(maybeErrorMessage) {
 function maybeAlterErrorMessage(errorMessage) {
    let finalError = ''
    let foundErrorMessage = findErrorMessage(errorMessage)
-
-   console.log('foundErrorMessage', foundErrorMessage)
 
    switch (foundErrorMessage) {
       case 'TypeError: Failed to fetch':

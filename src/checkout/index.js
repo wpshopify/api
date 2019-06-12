@@ -1,5 +1,6 @@
-import { buildClient } from '../client'
 import to from 'await-to-js'
+import isEmpty from 'lodash/isEmpty'
+import { buildClient } from '../client'
 import { getCache, setCache } from '../cache'
 import { fetchShopInfo } from '../shop'
 import { maybeAlterErrorMessage } from '../errors'
@@ -26,15 +27,25 @@ function removeAllLineItems(client, checkout) {
 }
 
 function updateCheckoutAttributesAPI(client, checkout, customAttributes = false, note = false) {
-   console.log('ddddddddddddddddd', {
-      customAttributes: customAttributes,
-      note: note
-   })
+   let attributes = {}
 
-   return client.checkout.updateAttributes(checkout.id, {
-      customAttributes: customAttributes,
-      note: note
-   })
+   if (!isEmpty(customAttributes)) {
+      attributes.customAttributes = customAttributes
+   }
+
+   if (note) {
+      let trimmedNote = note.trim()
+
+      if (!isEmpty(trimmedNote)) {
+         attributes.note = trimmedNote
+      }
+   }
+
+   if (isEmpty(attributes)) {
+      return new Promise((resolve, reject) => resolve(checkout))
+   }
+
+   return client.checkout.updateAttributes(checkout.id, attributes)
 }
 
 function addLineItemsAPI(client, checkout, lineItems) {
