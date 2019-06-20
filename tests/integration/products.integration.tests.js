@@ -146,9 +146,6 @@ it('Should return valid products query result', async () => {
 //    //    reverse: false
 //    // }
 //    // var result = await fetchByCollectionTitle()
-//    // console.log('result', result)
-//    // console.log('# of products found: ', result.model.collections[0].products.length)
-//    // console.log('Product title: ', result.model.collections[0].products[0].title)
 // })
 
 it('.....', async () => {
@@ -173,11 +170,9 @@ it('.....', async () => {
       }
    )
 
-   console.log('idsResult', idsResult.model.collections[0].refetchQuery)
+   // console.log('idsResult', idsResult.model.collections[0].refetchQuery)
 
    const okokokok = await refetchQuery(idsResult.model.collections[0])
-
-   console.log('okokokok?????', okokokok)
 
    // console.log('idsResult', idsResult.model.collections.length)
    // console.log('......', resulttttt.model.collections[0].products)
