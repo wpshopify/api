@@ -235,6 +235,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
          queryParams.first = 10
       }
 
+      console.log('type', type)
+      console.log('queryParams', connectionParams)
+      console.log('connectionParams', connectionParams)
+
       const [requestError, response] = await to(
          client.graphQLClient.send(
             client.graphQLClient.query(root => {
