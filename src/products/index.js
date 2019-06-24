@@ -212,6 +212,14 @@ function refetchQuery(node) {
    return client.graphQLClient.refetch(node)
 }
 
+function hasValidCredentials(client) {
+   if (client.config.domain && client.config.storefrontAccessToken) {
+      return true
+   }
+
+   return false
+}
+
 function graphQuery(type, queryParams, connectionParams = false) {
    return new Promise(async (resolve, reject) => {
       if (!queryParams) {
@@ -219,6 +227,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
       }
 
       const client = buildClient()
+
+      if (!hasValidCredentials(client)) {
+         return reject(maybeAlterErrorMessage('You still need to connect your store or the Shopify credentials are missing. Double check the "connect" tab within the plugin settings.'))
+      }
 
       if (has(queryParams, 'sortKey')) {
          queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
@@ -234,10 +246,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
       if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
          queryParams.first = 10
       }
-
-      console.log('type', type)
-      console.log('queryParams', connectionParams)
-      console.log('connectionParams', connectionParams)
 
       const [requestError, response] = await to(
          client.graphQLClient.send(
