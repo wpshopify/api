@@ -298,12 +298,56 @@ function getProduct(id) {
    return fetchProductByID(id, buildClient())
 }
 
+function refetchLineItems(ids, client) {
+   return new Promise(async (resolve, reject) => {
+      var allPromises = ids.map(async id => {
+         const [err, succ] = await to(fetchProductByID(id, client))
+
+         if (!err) {
+            return succ
+         }
+         return err
+      })
+
+      var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises))
+
+      if (allPromiseError) {
+         reject(allPromiseError)
+      }
+
+      resolve(allPromiseResponse)
+   })
+}
+
+function isTypeError(data) {
+   return data instanceof Error
+}
+
+function withoutTypeErrors(results) {
+   return results.filter(result => !isTypeError(result))
+}
+
 function getProductsFromIds(ids = []) {
    return new Promise(async (resolve, reject) => {
-      const [productsError, products] = await to(fetchProductsByIDs(ids, buildClient()))
+      const client = buildClient()
+      const [productsError, products] = await to(fetchProductsByIDs(ids, client))
 
+      /*
+      
+      If productsError, most likely the product was hidden from the sales channel
+
+      */
       if (productsError) {
-         return reject(maybeAlterErrorMessage(productsError))
+         console.error('wpshopify error 💩 ', productsError)
+
+         const [refetchError, results] = await to(refetchLineItems(ids, client))
+
+         if (refetchError) {
+            console.error('wpshopify error 💩 ', refetchError)
+            return reject(maybeAlterErrorMessage(refetchError))
+         }
+
+         resolve(withoutTypeErrors(results))
       }
 
       resolve(products)
