@@ -4,11 +4,6 @@ import has from 'lodash/has'
 import isString from 'lodash/isString'
 import to from 'await-to-js'
 
-/*
-
-Direct API functions
-
-*/
 function fetchProductByID(id, client) {
    return client.product.fetch(id)
 }

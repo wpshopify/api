@@ -2,8 +2,9 @@ import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
 import { buildClient } from '../client'
 import { getCache, setCache } from '../cache'
-import { fetchShopInfo } from '../shop'
+import { maybeFetchShop } from '../shop'
 import { maybeAlterErrorMessage } from '../errors'
+import localforage from 'localforage'
 
 /*
 
@@ -121,17 +122,24 @@ function buildInstances(forceNew = false) {
       if (!client) {
          reject(client)
       }
+      console.log('111111111111111111')
 
-      const [errors, data] = await to(Promise.all([buildCheckout(client, forceNew), fetchShopInfo(client)]))
+      const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
+
+      console.log('2222222222222222222', shop)
+      console.log('checkout', checkout)
+      console.log('shop', shop)
 
       if (errors) {
          return reject(errors)
       }
 
+      localforage.setItem('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, shop)
+
       resolve({
          client: client,
-         checkout: data[0],
-         shop: data[1]
+         checkout: checkout,
+         shop: shop
       })
    })
 }

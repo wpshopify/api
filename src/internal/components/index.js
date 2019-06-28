@@ -54,8 +54,11 @@ async function getComponentOptions(componentOptions) {
    const cachedResults = cachedComponentOptions(createCacheNameFromIds(activeComponentIds))
 
    if (!isEmpty(cachedResults)) {
+      console.log('found cached component options')
       return Promise.resolve(cachedResults)
    }
+
+   console.log('NO cached component options found')
 
    const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
 
