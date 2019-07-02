@@ -160,13 +160,15 @@ function addCollectionFields(collection, connectionParams) {
 
    */
 
-   collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
-      // product.add('title')
+   if (connectionParams) {
+      collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
+         // product.add('title')
 
-      addProductFields(product)
+         addProductFields(product)
 
-      // addProductFields(product)
-   })
+         // addProductFields(product)
+      })
+   }
 }
 
 function enumValue(client, params) {
