@@ -122,13 +122,8 @@ function buildInstances(forceNew = false) {
       if (!client) {
          reject(client)
       }
-      console.log('111111111111111111')
 
       const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
-
-      console.log('2222222222222222222', shop)
-      console.log('checkout', checkout)
-      console.log('shop', shop)
 
       if (errors) {
          return reject(errors)
