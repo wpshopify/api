@@ -1,7 +1,10 @@
 import to from 'await-to-js'
 import isEmpty from 'lodash/isEmpty'
+import uniq from 'lodash/uniq'
 import { buildClient } from '../client'
 import { getCache, setCache } from '../cache'
+import { getProductsFromIds } from '../products'
+import { getCheckoutCache } from '../cache/checkout'
 import { maybeFetchShop } from '../shop'
 import { maybeAlterErrorMessage } from '../errors'
 import localforage from 'localforage'
@@ -223,4 +226,28 @@ function buildCheckout(client, forceNew = false) {
    })
 }
 
-export { buildInstances, buildCheckout, addLineItems, replaceLineItems, getCheckoutID, updateCheckoutAttributes }
+function variantsFromCache() {
+   var cache = getCheckoutCache(getCheckoutID())
+
+   if (cache && !isEmpty(cache.variants)) {
+      return cache.variants
+   }
+
+   return []
+}
+
+function getUniqueProductIdsFromVariants(variants) {
+   return uniq(variants.map(lineItem => lineItem.productId))
+}
+
+async function getProductIdsFromLineItems() {
+   const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
+
+   if (isEmpty(uniqueIds)) {
+      return new Promise(resolve => resolve([]))
+   }
+
+   return await getProductsFromIds(uniqueIds)
+}
+
+export { buildInstances, buildCheckout, addLineItems, replaceLineItems, getCheckoutID, updateCheckoutAttributes, getProductIdsFromLineItems }
