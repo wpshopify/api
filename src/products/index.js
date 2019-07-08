@@ -243,6 +243,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
       if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
          queryParams.first = 10
       }
+      console.log('queryParams', queryParams)
 
       const [requestError, response] = await to(
          client.graphQLClient.send(
