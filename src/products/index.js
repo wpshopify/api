@@ -175,26 +175,6 @@ function enumValue(client, params) {
    return client.graphQLClient.enum(params.sortKey)
 }
 
-/*
-
-queryParams:
-
-{  
-   first: 20, 
-   sortKey: 'CREATED_AT', 
-   reverse: true
-}
-
-
-sortKeys that work:
-UPDATED_AT
-CREATED_AT
-TITLE
-BEST_SELLING
-PRICE
-
-*/
-
 function maybeUppercaseSortKey(sortKey) {
    if (isString(sortKey)) {
       return sortKey.toUpperCase()
