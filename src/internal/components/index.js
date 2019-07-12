@@ -61,6 +61,7 @@ async function getComponentOptions(componentOptions) {
 
    if (error) {
       console.error('getComponentOptions :: ', error)
+      return Promise.reject(error)
    }
 
    const finalOptions = combineComponentIdWithOptions(success.data, componentOptions)

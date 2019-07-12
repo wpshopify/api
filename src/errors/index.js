@@ -1,5 +1,6 @@
 import isString from 'lodash/isString'
 import isError from 'lodash/isError'
+import isArray from 'lodash/isArray'
 
 function findErrorMessage(maybeErrorMessage) {
    let finalErrorMessage = ''
@@ -9,14 +10,17 @@ function findErrorMessage(maybeErrorMessage) {
    }
 
    if (isError(maybeErrorMessage)) {
-      console.error('wpshopify error 💩 ', maybeErrorMessage)
-      finalErrorMessage = maybeErrorMessage.name + ': ' + maybeErrorMessage.message
+      console.error('wpshopify 1 error 💩 ', maybeErrorMessage)
+      return maybeErrorMessage.name + ': ' + maybeErrorMessage.message
    } else {
-      console.error('wpshopify error 💩 ', maybeErrorMessage)
-      finalErrorMessage = maybeErrorMessage[0].message
-   }
+      console.error('wpshopify 2 error 💩 ', maybeErrorMessage)
 
-   return finalErrorMessage
+      if (isArray(maybeErrorMessage)) {
+         return maybeErrorMessage[0].message
+      } else {
+         return maybeErrorMessage.message
+      }
+   }
 }
 
 function maybeAlterErrorMessage(errorMessage) {
@@ -34,6 +38,10 @@ function maybeAlterErrorMessage(errorMessage) {
 
       case 'Parse error on "}" (RCURLY) at [1, 10]':
          finalError = 'Uh oh, it looks like an error occurred. Please contact the plugin developer with this message to fix.'
+         break
+
+      case 'Network Error':
+         finalError = 'Uh oh, it looks like a network error occurred. Please ensure that your site is using a valid HTTPS certificate on all pages.'
          break
 
       default:

@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import isError from 'lodash/isError'
 import { getRestAPINonce, getRestAPIPrefix } from './state'
 
 /*
@@ -32,10 +32,18 @@ function getHeaders() {
 }
 
 function getRestErrorContents(error) {
-   return {
-      statusCode: error.status,
-      message: error.data.message,
-      action_name: error.data.code
+   if (isError(error)) {
+      return {
+         statusCode: 'unknown',
+         message: error.message,
+         action_name: error.name
+      }
+   } else {
+      return {
+         statusCode: error.response.status,
+         message: error.response.data.message,
+         action_name: error.response.data.code
+      }
    }
 }
 
@@ -53,7 +61,9 @@ function request(method, endpoint, data = {}) {
          headers: getHeaders()
       })
          .then(response => resolve(response))
-         .catch(error => reject(getRestErrorContents(error.response)))
+         .catch(error => {
+            reject(getRestErrorContents(error))
+         })
    })
 }
 
