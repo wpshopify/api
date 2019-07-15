@@ -127,9 +127,7 @@ function buildInstances(forceNew = false) {
       }
 
       const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
-console.log('checkout :: ', checkout)
-console.log('shop :: ', shop)
-console.log('errors :: ', errors)
+
       if (errors) {
          return reject(errors)
       }
@@ -202,52 +200,37 @@ Returns: Promise
 */
 function buildCheckout(client, forceNew = false) {
    return new Promise(async (resolve, reject) => {
-      console.log('buildCheckout 1')
       if (!forceNew) {
-         console.log('buildCheckout 2')
          // Calls LS
          var existingCheckoutID = getCheckoutID()
-console.log('buildCheckout 3')
+
          if (!emptyCheckoutID(existingCheckoutID)) {
-            console.log('buildCheckout 4', existingCheckoutID)
-            console.log('buildCheckout 4', client)
             const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
-console.log('buildCheckout 5', checkout)
 
             if (checkout === null) {
-               console.log('5 2 STALE CHECKOUT ID, BUILDING A NEW ONE')
-
                const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
-               // need to build a new checkout
 
                if (checkoutErrorNew) {
-         console.log('buildCheckout 5 3')
-         reject(maybeAlterErrorMessage(checkoutErrorNew))
-      } else {
-         console.log('buildCheckout 5 4')
-         setCheckoutID(checkoutNew.id)
-         resolve(checkoutNew)
-      }
-      
+                  reject(maybeAlterErrorMessage(checkoutErrorNew))
+               } else {
+                  setCheckoutID(checkoutNew.id)
+                  resolve(checkoutNew)
+               }
             }
 
             if (checkoutError) {
-               console.log('buildCheckout 6')
                return reject(maybeAlterErrorMessage(checkoutError))
             } else {
-               console.log('buildCheckout 7')
                return resolve(checkout)
             }
          }
       }
-console.log('buildCheckout 8')
+
       const [checkoutError, checkout] = await to(createCheckout(client))
-console.log('buildCheckout 9')
+
       if (checkoutError) {
-         console.log('buildCheckout 10')
          reject(maybeAlterErrorMessage(checkoutError))
       } else {
-         console.log('buildCheckout 11')
          setCheckoutID(checkout.id)
          resolve(checkout)
       }
