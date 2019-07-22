@@ -123,7 +123,11 @@ function buildInstances(forceNew = false) {
       const client = buildClient()
 
       if (!client) {
-         reject(client)
+         return reject(client)
+      }
+
+      if (!hasCredsSet(client)) {
+         return reject('Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.')
       }
 
       const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
@@ -192,6 +196,18 @@ function updateCheckoutAttributes(attributes) {
    })
 }
 
+function hasCredsSet(client) {
+   if (!client) {
+      return false
+   }
+
+   if (isEmpty(client.config.domain) || isEmpty(client.config.storefrontAccessToken)) {
+      return false
+   }
+
+   return true
+}
+
 /*
 
 Fetch Cart
@@ -208,6 +224,10 @@ function buildCheckout(client, forceNew = false) {
             const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
 
             if (checkout === null) {
+               if (!hasCredsSet(client)) {
+                  return reject('Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.')
+               }
+
                const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
 
                if (checkoutErrorNew) {
@@ -224,6 +244,10 @@ function buildCheckout(client, forceNew = false) {
                return resolve(checkout)
             }
          }
+      }
+
+      if (!hasCredsSet(client)) {
+         return reject('Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.')
       }
 
       const [checkoutError, checkout] = await to(createCheckout(client))
