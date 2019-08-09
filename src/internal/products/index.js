@@ -73,4 +73,4 @@ function getFilterData() {
    return Promise.all([getAllTags(), getAllVendors(), getAllTypes()])
 }
 
-export { getProductsCount, getProducts, getPublishedProductIds, getAllTags, getFilterData }
+export { getProducts, getPublishedProductIds, getAllTags, getFilterData }

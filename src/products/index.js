@@ -20,64 +20,6 @@ function findVariantFromSelectedOptions(product, selectedOptions) {
    return buildClient().product.helpers.variantForOptions(product, selectedOptions)
 }
 
-function fetchAllProducts(client) {
-   return client.product.fetchAll()
-}
-
-function fetchByCollectionTitle() {
-   const result = buildClient().graphQLClient.query(shop => {
-      shop.addConnection('collections', { args: { first: 10, query: 'title:Test' } }, collection => {
-         collection.addConnection('products', { args: { first: 10, query: 'title:Aerodynamic Aluminum Bottle' } }, product => {
-            product.add('id')
-            product.add('title')
-            product.add('availableForSale')
-            product.add('createdAt')
-
-            product.add('description')
-            product.add('descriptionHtml')
-            product.add('handle')
-            product.add('onlineStoreUrl')
-            product.add('productType')
-            product.add('publishedAt')
-            product.add('updatedAt')
-            product.add('vendor')
-
-            // product.add('images')
-            product.addConnection('images', { args: { first: 50 } }, image => {
-               image.add('altText')
-               image.add('src')
-            })
-            product.add('options', option => {
-               option.add('name')
-               option.add('values')
-            })
-
-            product.addConnection('variants', variants => {
-               variants.add('id')
-               variants.add('product')
-               variants.add('title')
-               variants.add('price')
-               variants.add('availableForSale')
-               variants.add('compareAtPrice')
-               variants.add('handle')
-               variants.add('selectedOptions')
-               variants.add('sku')
-               variants.add('weight')
-               variants.add('image', image => {
-                  image.add('src')
-                  image.add('id')
-                  image.add('altText')
-               })
-            })
-
-            // product.addConnection('options',
-         })
-      })
-   })
-
-   return buildClient().graphQLClient.send(result)
-}
-
 /*
 
 Add product fields to the GQL query
@@ -161,6 +103,8 @@ function addCollectionFields(collection, connectionParams) {
    */
 
    if (connectionParams) {
+      console.log('products connectionParams', connectionParams)
+
       collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
          // product.add('title')
 
@@ -224,6 +168,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
          queryParams.first = 10
       }
 
+      console.log('graphQuery type', type)
+      console.log('graphQuery queryParams', queryParams)
+      console.log('graphQuery connectionParams', connectionParams)
+
       const [requestError, response] = await to(
          client.graphQLClient.send(
             client.graphQLClient.query(root => {
@@ -231,6 +179,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
             })
          )
       )
+
+      console.log('requestError', requestError)
+      console.log('response', response)
 
       if (requestError) {
          return reject(maybeAlterErrorMessage(requestError))
@@ -267,12 +218,10 @@ function productsQuery(root, queryParams) {
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
    root.addConnection('collections', { args: queryParams }, collection => {
+      console.log('collection', collection)
+
       addCollectionFields(collection, connectionParams)
    })
-}
-
-function getProduct(id) {
-   return fetchProductByID(id, buildClient())
 }
 
 function refetchLineItems(ids, client) {
@@ -331,10 +280,6 @@ function getProductsFromIds(ids = []) {
    })
 }
 
-function getAllProducts() {
-   return fetchAllProducts(buildClient())
-}
-
 function queryProducts(params) {
    return fetchProductsByQuery(params, buildClient())
 }
@@ -343,8 +288,4 @@ function getAllTags() {
    return fetchAllTags()
 }
 
-function getProductsFromQuery(queryParams) {
-   return queryProducts(queryParams)
-}
-
-export { getProduct, getProductsFromIds, getAllProducts, queryProducts, getProductsFromQuery, getAllTags, findVariantFromSelectedOptions, fetchByCollectionTitle, graphQuery, refetchQuery }
+export { getProductsFromIds, queryProducts, getAllTags, findVariantFromSelectedOptions, graphQuery, refetchQuery }

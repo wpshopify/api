@@ -1,4 +1,3 @@
-import { buildClient } from '../client'
 import localforage from 'localforage'
 
 function maybeFetchShop(client) {
@@ -22,8 +21,4 @@ function fetchShopInfo(client) {
    return client.shop.fetchInfo()
 }
 
-function getShopInfo() {
-   return fetchShopInfo(buildClient())
-}
-
-export { getShopInfo, fetchShopInfo, maybeFetchShop }
+export { maybeFetchShop }

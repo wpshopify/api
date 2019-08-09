@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
 import to from 'await-to-js'
-import compact from 'lodash/compact'
 
 function endpointComponentOptions() {
    return 'components/options'
