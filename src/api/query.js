@@ -30,9 +30,6 @@ function addBooleanToQuery(key, val) {
       var bool_converted = val
    }
 
-   console.log('addBooleanToQuery key ', key)
-   console.log('addBooleanToQuery val ', val)
-
    return key + ':' + bool_converted
 }
 
@@ -42,15 +39,10 @@ Defaults to a phrase query which surrounds each term in double quotes
 
 */
 function addStringToQuery(key, val) {
-   console.log('addStringToQuery key ', key)
-   console.log('addStringToQuery val ', val)
-
    return key + ':' + '"' + val + '"'
 }
 
 function queryChecks(key, val, query) {
-   console.log('keykeykeykeykey', key)
-
    if (isBoolean(val) || val === 'true' || val === 'false') {
       query += addBooleanToQuery(key, val)
    } else {
@@ -69,14 +61,9 @@ function addNestedQuery(key, values, allAttrs) {
    var query = ''
    var lastKey = getLastKey(values)
    var mainKey = key
-   console.log('mainKey', mainKey)
 
    for (var key in values) {
-      console.log('addNestedQuery valuesvalues', values)
-      console.log('addNestedQuery keykey', key)
-
       query = queryChecks(mainKey, values[key], query)
-      console.log('values', values)
 
       if (values[key] !== values[lastKey]) {
          query += ' ' + getConnective(allAttrs) + ' '
@@ -95,20 +82,13 @@ function buildQuery(allAttrs) {
    var filterParams = getProductsFilterParamsFromShortcode(allAttrs)
    var validFilterParams = filterObj(filterParams)
 
-   console.log('filterParams', filterParams)
-   console.log('validFilterParams', validFilterParams)
-   console.log('allAttrs', allAttrs)
-
    if (isEmpty(validFilterParams)) {
-      console.log('EMPTY, RETURNING THIS QUERY :: ', allAttrs.query)
       return '*' // Returns the default query instead
    }
 
    var lastKey = getLastKey(validFilterParams)
 
    for (var key in validFilterParams) {
-      console.log('key ................... ', key)
-
       if (isArray(validFilterParams[key])) {
          query += addNestedQuery(key, validFilterParams[key], allAttrs)
       } else {
@@ -119,8 +99,6 @@ function buildQuery(allAttrs) {
          query += ' ' + getConnective(allAttrs) + ' '
       }
    }
-
-   console.log('query', query)
 
    return query
 }

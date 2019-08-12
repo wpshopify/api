@@ -103,8 +103,6 @@ function addCollectionFields(collection, connectionParams) {
    */
 
    if (connectionParams) {
-      console.log('products connectionParams', connectionParams)
-
       collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
          // product.add('title')
 
@@ -168,10 +166,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
          queryParams.first = 10
       }
 
-      console.log('graphQuery type', type)
-      console.log('graphQuery queryParams', queryParams)
-      console.log('graphQuery connectionParams', connectionParams)
-
       const [requestError, response] = await to(
          client.graphQLClient.send(
             client.graphQLClient.query(root => {
@@ -179,9 +173,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
             })
          )
       )
-
-      console.log('requestError', requestError)
-      console.log('response', response)
 
       if (requestError) {
          return reject(maybeAlterErrorMessage(requestError))
@@ -218,8 +209,6 @@ function productsQuery(root, queryParams) {
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
    root.addConnection('collections', { args: queryParams }, collection => {
-      console.log('collection', collection)
-
       addCollectionFields(collection, connectionParams)
    })
 }
