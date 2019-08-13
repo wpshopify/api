@@ -1,3 +1,4 @@
+import { buildClient } from '../../src/client'
 import { getProductsFromIds, queryProducts, graphQuery, refetchQuery } from '../../src/products'
 
 /*
@@ -99,21 +100,56 @@ it('Should return valid products query result', async () => {
 // })
 
 it('.....', async () => {
-   var idsResult = await graphQuery(
-      'collections',
-      {
-         first: 10,
-         query: 'title:Featured'
-      },
-      {
-         first: 2,
-         sortKey: 'TITLE'
-      }
-   )
+   const client = buildClient()
+   // console.log('buildClient', client)
+
+   // client.graphQLClient.send(
+   //    client.graphQLClient.query(root => {
+   //       root.addConnection('productTags', tags => {
+   //          console.log('tags', tags)
+   //       })
+   //    })
+   // )
+
+   // var resp = await client.graphQLClient.send(
+   //    client.graphQLClient.query(root => {
+   //       // console.log('root', root)
+
+   //       root.addConnection('products', { first: 1, query: 'title:Aerodynamic Aluminum Awesome' }, products => {
+   //          console.log('products', products)
+   //          // products.addConnection('productRecommendations', productRecommendations => {
+   //          //    console.log('productRecommendations', productRecommendations)
+   //          // })
+   //       })
+   //    })
+   // )
+
+   var params = {
+      first: 1,
+      query: 'title:Aerodynamic Aluminum Awesome'
+   }
+
+   var resp = await graphQuery('products', params)
+
+   console.log('resp', resp.model.products[0])
+
+   // var idsResult = await graphQuery('productTags')
+
+   // var idsResult = await graphQuery(
+   //    'collections',
+   //    {
+   //       first: 10,
+   //       query: 'title:Featured'
+   //    },
+   //    {
+   //       first: 2,
+   //       sortKey: 'TITLE'
+   //    }
+   // )
 
    // console.log('idsResult', idsResult.model.collections[0].refetchQuery)
 
-   const okokokok = await refetchQuery(idsResult.model.collections[0])
+   // const okokokok = await refetchQuery(idsResult.model.collections[0])
 
    // console.log('idsResult', idsResult.model.collections.length)
    // console.log('......', resulttttt.model.collections[0].products)
