@@ -131,7 +131,7 @@ it('.....', async () => {
 
    var resp = await graphQuery('products', params)
 
-   console.log('resp', resp.model.products[0])
+   //    console.log('resp', resp.model.products[0])
 
    // var idsResult = await graphQuery('productTags')
 

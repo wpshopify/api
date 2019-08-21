@@ -27,34 +27,81 @@ it('Should do stuff', async () => {
       cache: new InMemoryCache()
    })
 
+   var input = {
+      email: 'vuvafo@provmail.net',
+      password: '12345'
+   }
+
+   var customerAccessToken = '698753c7337ed105d44b77a7bf557b11'
+
+   const ACCESS_TOKEN_GENERATION = gql`
+      mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+         customerAccessTokenCreate(input: $input) {
+            userErrors {
+               field
+               message
+            }
+            customerAccessToken {
+               accessToken
+               expiresAt
+            }
+         }
+      }
+   `
+
+   const FETCH_CUSTOMER_INFO = gql`
+      query($customerAccessToken: String!) {
+         customer(customerAccessToken: $customerAccessToken) {
+            acceptsMarketing
+            createdAt
+            defaultAddress {
+               address1
+            }
+            displayName
+            email
+            firstName
+            id
+            lastIncompleteCheckout {
+               completedAt
+            }
+            lastName
+            phone
+            tags
+            updatedAt
+         }
+      }
+   `
+
+   // const [err, resp] = await to(
+   //    client.mutate({
+   //       variables: {
+   //          input: input
+   //       },
+   //       mutation: ACCESS_TOKEN_GENERATION
+   //    })
+   // )
+
+   // if (err) {
+   //    console.log('Error! ', err)
+   // } else {
+   //    // console.log('Success! ', resp)
+   //    // console.log('Success! ', resp.data)
+   //    console.log('Success! ', resp.data.customerAccessTokenCreate.customerAccessToken)
+   // }
+
    const [err, resp] = await to(
       client.query({
-         query: gql`
-            {
-               customers(first: 10) {
-                  edges {
-                     node {
-                        firstName
-                        orders(first: 10) {
-                           edges {
-                              node {
-                                 id
-                                 discountCode
-                              }
-                           }
-                        }
-                     }
-                  }
-               }
-            }
-         `
+         variables: {
+            customerAccessToken: customerAccessToken
+         },
+         query: FETCH_CUSTOMER_INFO
       })
    )
 
    if (err) {
       console.log('Error! ', err)
    } else {
-      console.log('resp', resp)
+      console.log('Success! ', resp.data.customer)
    }
 
    // expect(data)
