@@ -37,6 +37,10 @@ function endpointRegisterCustomer() {
    return 'customers/register'
 }
 
+function endpointCustomer() {
+   return 'customer'
+}
+
 /*
 
 Get Smart Collections
@@ -72,15 +76,12 @@ function registerCustomer(data = {}) {
    return post(endpointRegisterCustomer(), data)
 }
 
-/*
-
-Get Smart Collections Count
-
-Returns: promise
-
-*/
 function getCustomersCount() {
    return post(endpointCustomersCount())
 }
 
-export { getCustomersCount, getCustomers, loginCustomer, associateCustomer, resetPasswordCustomer, setPasswordCustomer, resetPasswordByUrlCustomer, registerCustomer }
+function getCustomer(data = {}) {
+   return post(endpointCustomer(), data)
+}
+
+export { getCustomersCount, getCustomers, loginCustomer, associateCustomer, resetPasswordCustomer, setPasswordCustomer, resetPasswordByUrlCustomer, registerCustomer, getCustomer }
