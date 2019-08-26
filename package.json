@@ -37,7 +37,7 @@
       "await-to-js": "^2.1.1",
       "axios": "^0.19.0",
       "core-js": "^3.2.1",
-      "graphql": "^14.5.1",
+      "graphql": "^14.5.3",
       "isomorphic-fetch": "^2.2.1",
       "jest": "^24.9.0",
       "jest-chain": "^1.1.2",
@@ -45,7 +45,7 @@
       "localforage": "^1.7.3",
       "lodash": "^4.17.15",
       "node-fetch": "^2.6.0",
-      "shopify-buy": "^2.7.0",
+      "shopify-buy": "^2.7.1",
       "store": "^2.0.12"
    }
 }
