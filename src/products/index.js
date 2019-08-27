@@ -103,12 +103,14 @@ function addCollectionFields(collection, connectionParams) {
    */
 
    if (connectionParams) {
-      collection.addConnection('products', { args: { first: connectionParams.first, sortKey: connectionParams.sortKey } }, product => {
-         // product.add('title')
+      var productsArgs = {
+         first: connectionParams.first,
+         sortKey: connectionParams.sortKey,
+         reverse: connectionParams.reverse
+      }
 
+      collection.addConnection('products', { args: productsArgs }, product => {
          addProductFields(product)
-
-         // addProductFields(product)
       })
    }
 }
