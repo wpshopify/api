@@ -41,6 +41,10 @@ function endpointCustomer() {
    return 'customer'
 }
 
+function endpointUpdateCustomerAddress() {
+   return 'customers/address/update'
+}
+
 /*
 
 Get Smart Collections
@@ -84,4 +88,18 @@ function getCustomer(data = {}) {
    return post(endpointCustomer(), data)
 }
 
-export { getCustomersCount, getCustomers, loginCustomer, associateCustomer, resetPasswordCustomer, setPasswordCustomer, resetPasswordByUrlCustomer, registerCustomer, getCustomer }
+function updateCustomerAddress(data = {}) {
+   return post(endpointUpdateCustomerAddress(), data)
+}
+export {
+   getCustomersCount,
+   getCustomers,
+   loginCustomer,
+   associateCustomer,
+   resetPasswordCustomer,
+   setPasswordCustomer,
+   resetPasswordByUrlCustomer,
+   registerCustomer,
+   getCustomer,
+   updateCustomerAddress
+}

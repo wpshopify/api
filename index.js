@@ -13,4 +13,13 @@ export { maybeAlterErrorMessage } from './src/errors'
 export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cache'
 export { getCheckoutCache, setCheckoutCache, mergeCheckoutCacheVariants, mergeCheckoutCacheLineItems } from './src/cache/checkout'
 
-export { loginCustomer, associateCustomer, resetPasswordCustomer, setPasswordCustomer, resetPasswordByUrlCustomer, registerCustomer, getCustomer } from './src/internal/customers'
+export {
+   loginCustomer,
+   associateCustomer,
+   resetPasswordCustomer,
+   setPasswordCustomer,
+   resetPasswordByUrlCustomer,
+   registerCustomer,
+   getCustomer,
+   updateCustomerAddress
+} from './src/internal/customers'
