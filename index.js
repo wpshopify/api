@@ -21,5 +21,6 @@ export {
    resetPasswordByUrlCustomer,
    registerCustomer,
    getCustomer,
-   updateCustomerAddress
+   updateCustomerAddress,
+   addCustomerAddress
 } from './src/internal/customers'

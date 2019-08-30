@@ -45,6 +45,10 @@ function endpointUpdateCustomerAddress() {
    return 'customers/address/update'
 }
 
+function endpointAddCustomerAddress() {
+   return 'customers/address/add'
+}
+
 /*
 
 Get Smart Collections
@@ -91,6 +95,11 @@ function getCustomer(data = {}) {
 function updateCustomerAddress(data = {}) {
    return post(endpointUpdateCustomerAddress(), data)
 }
+
+function addCustomerAddress(data = {}) {
+   return post(endpointAddCustomerAddress(), data)
+}
+
 export {
    getCustomersCount,
    getCustomers,
@@ -101,5 +110,6 @@ export {
    resetPasswordByUrlCustomer,
    registerCustomer,
    getCustomer,
-   updateCustomerAddress
+   updateCustomerAddress,
+   addCustomerAddress
 }
