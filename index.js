@@ -22,5 +22,6 @@ export {
    registerCustomer,
    getCustomer,
    updateCustomerAddress,
-   addCustomerAddress
+   addCustomerAddress,
+   deleteCustomerAddress
 } from './src/internal/customers'

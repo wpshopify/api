@@ -49,6 +49,10 @@ function endpointAddCustomerAddress() {
    return 'customers/address/add'
 }
 
+function endpointDeleteCustomerAddress() {
+   return 'customers/address/delete'
+}
+
 /*
 
 Get Smart Collections
@@ -100,6 +104,10 @@ function addCustomerAddress(data = {}) {
    return post(endpointAddCustomerAddress(), data)
 }
 
+function deleteCustomerAddress(data = {}) {
+   return post(endpointDeleteCustomerAddress(), data)
+}
+
 export {
    getCustomersCount,
    getCustomers,
@@ -111,5 +119,6 @@ export {
    registerCustomer,
    getCustomer,
    updateCustomerAddress,
-   addCustomerAddress
+   addCustomerAddress,
+   deleteCustomerAddress
 }
