@@ -49,6 +49,15 @@ function addProductFields(product) {
       option.add('values')
    })
 
+   //
+   // Only works if they are whitelisted first
+   //
+   // product.addConnection('metafields', { args: { first: 1 } }, metafield => {
+   //    metafield.add('namespace')
+   //    metafield.add('key')
+   //    metafield.add('value')
+   // })
+
    product.addConnection('variants', { args: { first: 250 } }, variants => {
       variants.add('id')
       variants.add('product')

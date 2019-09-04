@@ -99,9 +99,7 @@ it('Should do stuff', async () => {
    )
 
    if (err) {
-      console.log('Error! ', err)
    } else {
-      console.log('Success! ', resp.data.customer)
    }
 
    // expect(data)
