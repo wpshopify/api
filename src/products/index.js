@@ -162,8 +162,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
 
       const client = buildClient()
 
-      console.log('graphQuery client', client)
-
       if (!hasValidCredentials(client)) {
          return reject(maybeAlterErrorMessage('You still need to connect your Shopify store or the credentials are missing. Double check the "connect" tab within the plugin settings.'))
       }
@@ -182,8 +180,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
       if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
          queryParams.first = 10
       }
-
-      console.log('client', client)
 
       const [requestError, response] = await to(
          client.graphQLClient.send(

@@ -72,23 +72,6 @@ it('Should do stuff', async () => {
       }
    `
 
-   // const [err, resp] = await to(
-   //    client.mutate({
-   //       variables: {
-   //          input: input
-   //       },
-   //       mutation: ACCESS_TOKEN_GENERATION
-   //    })
-   // )
-
-   // if (err) {
-   //    console.log('Error! ', err)
-   // } else {
-   //    // console.log('Success! ', resp)
-   //    // console.log('Success! ', resp.data)
-   //    console.log('Success! ', resp.data.customerAccessTokenCreate.customerAccessToken)
-   // }
-
    const [err, resp] = await to(
       client.query({
          variables: {
