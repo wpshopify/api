@@ -2,9 +2,13 @@
    "name": "@wpshopify/api",
    "version": "0.2.0",
    "description": "A very light wrapper over the official Shopify JS Buy SDK. Tailored for WP Shopify",
-   "main": "index.js",
+   "main": "dist/index.min.js",
+   "files": [
+      "dist/index.min.js"
+   ],
    "scripts": {
-      "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'"
+      "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'",
+      "build": "webpack --config webpack.config.babel.js"
    },
    "author": "WP Shopify",
    "license": "GPL-2.0-or-later",
@@ -22,11 +26,6 @@
       "@apollo/react-hooks": "^3.1.0",
       "@babel/cli": "^7.6.0",
       "@babel/core": "^7.6.0",
-      "@babel/plugin-proposal-class-properties": "^7.5.5",
-      "@babel/plugin-proposal-json-strings": "^7.2.0",
-      "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-      "@babel/plugin-syntax-import-meta": "^7.2.0",
-      "@babel/plugin-transform-runtime": "^7.6.0",
       "@babel/polyfill": "^7.6.0",
       "@babel/preset-env": "^7.6.0",
       "@babel/preset-react": "^7.0.0",
@@ -45,6 +44,23 @@
       "lodash": "^4.17.15",
       "node-fetch": "^2.6.0",
       "shopify-buy": "^2.7.1",
-      "store": "^2.0.12"
+      "store": "^2.0.12",
+      "webpack": "^4.39.3"
+   },
+   "devDependencies": {
+      "@babel/plugin-proposal-class-properties": "^7.5.5",
+      "@babel/plugin-proposal-json-strings": "^7.2.0",
+      "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+      "@babel/plugin-syntax-import-meta": "^7.2.0",
+      "@babel/plugin-transform-react-jsx": "^7.3.0",
+      "@babel/plugin-transform-regenerator": "^7.4.5",
+      "@babel/plugin-transform-runtime": "^7.6.0",
+      "babel-loader": "^8.0.6",
+      "babel-plugin-lodash": "^3.3.4",
+      "babel-plugin-transform-imports": "^2.0.0",
+      "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+      "lodash": "^4.17.15",
+      "progress-bar-webpack-plugin": "^1.12.1",
+      "webpack-cli": "^3.3.8"
    }
 }
