@@ -4,23 +4,21 @@ import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 const config = {
    mode: 'production',
-   cache: false,
    externals: ['lodash', 'react', 'react-dom'],
    entry: {
       index: './index'
    },
    output: {
-      filename: '[name].min.js',
+      filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
-      chunkFilename: '[name].min.js',
-      jsonpFunction: 'wpshopify',
-      library: 'wpshopify',
-      libraryTarget: 'commonjs2'
+      jsonpFunction: 'wpshopifyApi',
+      library: 'wpshopifyApi',
+      libraryTarget: 'umd'
    },
    resolve: {
       extensions: ['.js', '.jsx']
    },
-   plugins: [new webpack.optimize.ModuleConcatenationPlugin(), new ProgressBarPlugin()],
+   plugins: [new ProgressBarPlugin()],
    module: {
       rules: [
          {
