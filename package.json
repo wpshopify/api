@@ -1,6 +1,6 @@
 {
    "name": "@wpshopify/api",
-   "version": "0.1.10",
+   "version": "0.2.0",
    "description": "A very light wrapper over the official Shopify JS Buy SDK. Tailored for WP Shopify",
    "main": "index.js",
    "scripts": {
