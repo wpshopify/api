@@ -7,7 +7,6 @@ import { getProductsFromIds } from '../products'
 import { getCheckoutCache } from '../cache/checkout'
 import { maybeFetchShop } from '../shop'
 import { maybeAlterErrorMessage } from '../errors'
-import localforage from 'localforage'
 
 /*
 
@@ -119,30 +118,48 @@ function createLineItemsFromVariants(options, client) {
 }
 
 function buildInstances(forceNew = false) {
+   console.log('buildInstances 1')
+
    return new Promise(async function(resolve, reject) {
       const client = buildClient()
 
+      console.log('buildInstances 2 :: client ', client)
+
       if (!client) {
+         console.log('buildInstances 3')
          return reject(client)
       }
 
       if (!hasCredsSet(client)) {
+         console.log('buildInstances 4')
          return reject('Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.')
       }
 
       const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
 
+      console.log('buildInstances 5 :: errors ', errors)
+      console.log('buildInstances 6 :: checkout ', checkout)
+      console.log('buildInstances 7 :: shop ', shop)
+      console.log('buildInstances 8 :: forceNew ', forceNew)
+
       if (errors) {
          return reject(errors)
       }
 
-      localforage.setItem('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, shop)
+      console.log('buildInstances 9 :: setCache', 'wps-shop-' + WP_Shopify.storefront.storefrontAccessToken)
+      console.log('buildInstances 10 :: setCache SHOP DATA', shop)
 
-      resolve({
+      setCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, shop)
+
+      var finalData = {
          client: client,
          checkout: checkout,
          shop: shop
-      })
+      }
+
+      console.log('buildInstances 11 :: finalData', finalData)
+
+      resolve(finalData)
    })
 }
 
