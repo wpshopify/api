@@ -1,5 +1,5 @@
 import to from 'await-to-js'
-import { getCache } from '../cache'
+import { getCache, setCache } from '../cache'
 
 function maybeFetchShop(client) {
    return new Promise(async (resolve, reject) => {
