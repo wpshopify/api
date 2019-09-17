@@ -1,6 +1,8 @@
 import isString from 'lodash/isString'
 import isError from 'lodash/isError'
 import isArray from 'lodash/isArray'
+import isObject from 'lodash/isObject'
+import has from 'lodash/has'
 
 function findErrorMessage(maybeErrorMessage) {
    let finalErrorMessage = ''
@@ -21,6 +23,18 @@ function findErrorMessage(maybeErrorMessage) {
          return maybeErrorMessage.message
       }
    }
+}
+
+function isWordPressError(response) {
+   var foundError = false
+
+   if (isObject(response) && has(response, 'data') && has(response.data, 'type')) {
+      if (response.data.type === 'error') {
+         foundError = true
+      }
+   }
+
+   return foundError
 }
 
 function maybeAlterErrorMessage(errorMessage) {
@@ -52,4 +66,4 @@ function maybeAlterErrorMessage(errorMessage) {
    return finalError
 }
 
-export { maybeAlterErrorMessage }
+export { maybeAlterErrorMessage, isWordPressError }
