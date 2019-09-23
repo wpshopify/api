@@ -4,18 +4,16 @@ import has from 'lodash/has'
 
 /*
 
-Supported filter parameters: https://help.shopify.com/en/api/graphql-admin-api/reference/queryroot#products
-
+Supported filter parameters: https://help.shopify.com/en/api/storefront-api/reference/queryroot#products-2019-07
 Search Syntax: https://help.shopify.com/en/manual/sell-online/online-store/storefront-search#prefix-search
 
-body
-handle
+available_for_sale
+created_at
 product_type
 tag
 title
-variants.barcode
-variants.sku
-variants.title
+updated_at
+variants.price
 vendor
 
 AND tag:er tag:kaosjd
