@@ -269,10 +269,10 @@ function variantsFromCache() {
 }
 
 function getUniqueProductIdsFromVariants(variants) {
-   return uniq(variants.map(lineItem => lineItem.productId))
+   return uniq(variants.map(lineItem => lineItem.product.id))
 }
 
-async function getProductIdsFromLineItems() {
+async function getProductsFromLineItems() {
    const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
 
    if (isEmpty(uniqueIds)) {
@@ -282,4 +282,4 @@ async function getProductIdsFromLineItems() {
    return await getProductsFromIds(uniqueIds)
 }
 
-export { buildInstances, buildCheckout, addLineItems, replaceLineItems, getCheckoutID, updateCheckoutAttributes, getProductIdsFromLineItems }
+export { buildInstances, buildCheckout, addLineItems, replaceLineItems, getCheckoutID, updateCheckoutAttributes, getProductsFromLineItems }

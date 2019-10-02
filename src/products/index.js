@@ -60,7 +60,12 @@ function addProductFields(product) {
 
    product.addConnection('variants', { args: { first: 250 } }, variants => {
       variants.add('id')
-      variants.add('product')
+
+      variants.add('product', options => {
+         options.add('id')
+         options.add('title')
+      })
+
       variants.add('title')
       variants.add('price')
       variants.add('availableForSale')

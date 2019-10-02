@@ -1,5 +1,5 @@
 export { buildClient } from './src/client'
-export { buildCheckout, buildInstances, replaceLineItems, updateCheckoutAttributes, getProductIdsFromLineItems } from './src/checkout'
+export { buildCheckout, buildInstances, replaceLineItems, updateCheckoutAttributes, getProductsFromLineItems } from './src/checkout'
 
 export { getProductsFromIds, queryProducts, findVariantFromSelectedOptions, graphQuery, refetchQuery } from './src/products'
 export { fetchNextPage } from './src/pagination'
