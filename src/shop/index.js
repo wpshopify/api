@@ -6,18 +6,18 @@ function maybeFetchShop(client) {
       var value = getCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken)
 
       if (value) {
-         resolve(value)
-      } else {
-         const [fetchError, fetchShop] = await to(fetchShopInfo(client))
-
-         if (fetchError) {
-            reject(fetchError)
-         }
-
-         setCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, fetchShop)
-
-         resolve(fetchShop)
+         return resolve(value)
       }
+
+      const [fetchError, fetchShop] = await to(fetchShopInfo(client))
+
+      if (fetchError) {
+         return reject(fetchError)
+      }
+
+      setCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, fetchShop)
+
+      return resolve(fetchShop)
    })
 }
 

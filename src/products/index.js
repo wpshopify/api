@@ -3,6 +3,7 @@ import { maybeAlterErrorMessage } from '../errors'
 import has from 'lodash/has'
 import isString from 'lodash/isString'
 import to from 'await-to-js'
+import { isArray } from 'util'
 
 function fetchProductByID(id, client) {
    return client.product.fetch(id)
@@ -202,7 +203,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
          return reject(maybeAlterErrorMessage(response.errors))
       }
 
-      resolve(response)
+      return resolve(response)
    })
 }
 
@@ -235,6 +236,10 @@ function collectionsQuery(root, queryParams, connectionParams = false) {
 
 function refetchLineItems(ids, client) {
    return new Promise(async (resolve, reject) => {
+      if (!ids || !isArray(ids)) {
+         return reject('No product ids found')
+      }
+
       var allPromises = ids.map(async id => {
          const [err, succ] = await to(fetchProductByID(id, client))
 
@@ -265,6 +270,7 @@ function withoutTypeErrors(results) {
 function getProductsFromIds(ids = []) {
    return new Promise(async (resolve, reject) => {
       const client = buildClient()
+
       const [productsError, products] = await to(fetchProductsByIDs(ids, client))
 
       /*
@@ -273,19 +279,17 @@ function getProductsFromIds(ids = []) {
 
       */
       if (productsError) {
-         console.error('wpshopify error 💩 ', productsError)
-
          const [refetchError, results] = await to(refetchLineItems(ids, client))
 
          if (refetchError) {
-            console.error('wpshopify error 💩 ', refetchError)
+            console.error('wpshopify error 2 💩 ', refetchError)
             return reject(maybeAlterErrorMessage(refetchError))
          }
 
-         resolve(withoutTypeErrors(results))
+         return resolve(withoutTypeErrors(results))
       }
 
-      resolve(products)
+      return resolve(products)
    })
 }
 

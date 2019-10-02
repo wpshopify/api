@@ -104,16 +104,16 @@ function createLineItemsFromVariants(options, client) {
       var [getCheckoutError, checkoutID] = await to(getCheckoutID(client))
 
       if (getCheckoutError) {
-         reject(getCheckoutError)
+         return reject(getCheckoutError)
       }
 
       var [newCartError, newCart] = await to(addLineItems(client, checkoutID, options))
 
       if (newCartError) {
-         reject(newCartError)
+         return reject(newCartError)
       }
 
-      resolve(newCart)
+      return resolve(newCart)
    })
 }
 
@@ -169,7 +169,7 @@ function replaceLineItems(lineItems) {
          return reject(maybeAlterErrorMessage(lineItemsError))
       }
 
-      resolve(lineItems)
+      return resolve(lineItems)
    })
 }
 
@@ -189,7 +189,7 @@ function updateCheckoutAttributes(attributes) {
          return reject(maybeAlterErrorMessage(checkoutAttrsError))
       }
 
-      resolve(checkoutAttrsResponse)
+      return resolve(checkoutAttrsResponse)
    })
 }
 
@@ -228,7 +228,7 @@ function buildCheckout(client, forceNew = false) {
                const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
 
                if (checkoutErrorNew) {
-                  reject(maybeAlterErrorMessage(checkoutErrorNew))
+                  return reject(maybeAlterErrorMessage(checkoutErrorNew))
                } else {
                   setCheckoutID(checkoutNew.id)
                   resolve(checkoutNew)
@@ -250,10 +250,10 @@ function buildCheckout(client, forceNew = false) {
       const [checkoutError, checkout] = await to(createCheckout(client))
 
       if (checkoutError) {
-         reject(maybeAlterErrorMessage(checkoutError))
+         return reject(maybeAlterErrorMessage(checkoutError))
       } else {
          setCheckoutID(checkout.id)
-         resolve(checkout)
+         return resolve(checkout)
       }
    })
 }
