@@ -69,8 +69,12 @@ function addProductFields(product) {
 
       variants.add('title')
       variants.add('price')
+      // variants.add('priceV2')
       variants.add('availableForSale')
       variants.add('compareAtPrice')
+      // variants.add('compareAtPriceV2')
+      variants.add('sku')
+      variants.add('weight')
 
       variants.add('selectedOptions', options => {
          options.add('name')
