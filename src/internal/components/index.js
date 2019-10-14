@@ -9,6 +9,10 @@ function endpointComponentOptions() {
    return 'components/options'
 }
 
+function endpointComponentPayload() {
+   return 'components/payload'
+}
+
 function onlyActiveComponentIds(components) {
    return filter(components, option => !isEmpty(option.componentId)).map(option => option.componentId)
 }
@@ -20,6 +24,13 @@ function createCacheNameFromIds(componentIds) {
 // Returns a promise
 function getComponentOptionsFromIds(componentOptionIds) {
    return post(endpointComponentOptions(), componentOptionIds)
+}
+
+// Returns a promise
+function cachePayload(componentPayload) {
+   console.log('componentPayload', componentPayload)
+
+   return post(endpointComponentPayload(), { data: componentPayload })
 }
 
 function findComponentsOfType(componentOptionIds, option) {
@@ -70,4 +81,4 @@ async function getComponentOptions(componentOptions) {
    return Promise.resolve(success.data)
 }
 
-export { getComponentOptions }
+export { getComponentOptions, cachePayload }
