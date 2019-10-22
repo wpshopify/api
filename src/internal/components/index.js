@@ -59,36 +59,34 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
-   
    console.log('getComponentOptions 1')
    const activeComponentIds = onlyActiveComponentIds(componentOptions)
-   
+
    console.log('getComponentOptions 2')
    const cachedResults = cachedComponentOptions(createCacheNameFromIds(activeComponentIds))
-   
-   console.log('getComponentOptions 3')
+
+   console.log('getComponentOptions 3', cachedResults)
    if (!isEmpty(cachedResults)) {
       return Promise.resolve(cachedResults)
    }
-   
+
    console.log('getComponentOptions 4')
    const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
-   
+
    console.log('getComponentOptions 5')
    if (error) {
       console.error('getComponentOptions :: ', error)
       return Promise.reject(error)
    }
-   
+
    console.log('getComponentOptions 6')
    const finalOptions = combineComponentIdWithOptions(success.data, componentOptions)
-   
+
    console.log('getComponentOptions 7')
    setCache('wps-component-options-' + createCacheNameFromIds(activeComponentIds), finalOptions)
 
    console.log('getComponentOptions 8')
    return Promise.resolve(success.data)
-   
 }
 
 export { getComponentOptions, cachePayload }
