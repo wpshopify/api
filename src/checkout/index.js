@@ -119,10 +119,10 @@ function createLineItemsFromVariants(options, client) {
 
 function buildInstances(forceNew = false) {
    return new Promise(async function(resolve, reject) {
-      console.log('buildInstances 1')
+      console.log('Getting Checkout & Shop - Start')
 
       const client = buildClient()
-      console.log('buildInstances 2')
+
       if (!client) {
          return reject(client)
       }
@@ -130,12 +130,17 @@ function buildInstances(forceNew = false) {
       if (!hasCredsSet(client)) {
          return reject('Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.')
       }
-      console.log('buildInstances 3')
+
       const [errors, [checkout, shop]] = await to(Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)]))
-      console.log('buildInstances 4')
+
       if (errors) {
          return reject(errors)
       }
+
+      console.log('checkout :: ', checkout)
+      console.log('shop :: ', shop)
+
+      console.log('Getting Checkout & Shop - End')
 
       return resolve({
          client: client,

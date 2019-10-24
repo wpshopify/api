@@ -6,9 +6,12 @@ function maybeFetchShop(client) {
       var value = getCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken)
 
       if (value) {
+         console.log('Shop is cached ... returning ...')
+
          return resolve(value)
       }
 
+      console.log('Shop is NOT cached ... getting new ...')
       const [fetchError, fetchShop] = await to(fetchShopInfo(client))
 
       if (fetchError) {
