@@ -8,8 +8,26 @@ function initClient(config) {
    })
 }
 
+function hasSessionStorage() {
+   var cached = sessionStorage.getItem('wps-storefront-creds');
+
+   if (cached) {
+      return JSON.parse(cached);
+   }
+
+   return false;
+}
+ 
 function buildClient() {
-   const creds = WP_Shopify.storefront
+
+   var cachedCreds = hasSessionStorage();
+
+   if (cachedCreds) {
+      var creds = cachedCreds
+
+   } else {
+      var creds = WP_Shopify.storefront // defaults
+   }
 
    if (!creds) {
       return noticeConfigBadCredentials()

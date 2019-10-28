@@ -3,6 +3,7 @@ import { getCache, setCache } from '../../cache'
 import isEmpty from 'lodash/isEmpty'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
+import compact from 'lodash/compact'
 import to from 'await-to-js'
 
 function endpointComponentOptions() {
@@ -27,10 +28,11 @@ function getComponentOptionsFromIds(componentOptionIds) {
 }
 
 // Returns a promise
-function cachePayload(componentPayload) {
-   console.log('cachePayload componentPayload', componentPayload)
-
-   return post(endpointComponentPayload(), { data: componentPayload })
+function cachePayload(componentPayload, cacheLength) {
+   return post(endpointComponentPayload(), {
+      data: componentPayload,
+      cacheLength: cacheLength
+   })
 }
 
 function findComponentsOfType(componentOptionIds, option) {
@@ -59,21 +61,23 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
-   console.log('getComponentOptions 1')
    const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
 
-   console.log('getComponentOptions 3')
    if (error) {
       console.error('getComponentOptions :: ', error)
       return Promise.reject(error)
    }
+   console.log('success.data', success.data)
 
-   console.log('getComponentOptions 4 success.datasuccess.data', success.data)
-   const finalOptions = combineComponentIdWithOptions(success.data, componentOptions)
+   var responseWithoutFalsey = compact(success.data)
 
-   console.log('getComponentOptions 5 finalOptionsfinalOptions', finalOptions)
+   if (isEmpty(responseWithoutFalsey)) {
+      return Promise.reject('Empty component options!')
+   }
+   console.log('responseWithoutFalsey', responseWithoutFalsey)
 
-   console.log('getComponentOptions 6')
+   const finalOptions = combineComponentIdWithOptions(responseWithoutFalsey, componentOptions)
+
    return Promise.resolve(finalOptions)
 }
 

@@ -119,8 +119,6 @@ function createLineItemsFromVariants(options, client) {
 
 function buildInstances(forceNew = false) {
    return new Promise(async function(resolve, reject) {
-      console.log('Getting Checkout & Shop - Start')
-
       const client = buildClient()
 
       if (!client) {
@@ -136,11 +134,6 @@ function buildInstances(forceNew = false) {
       if (errors) {
          return reject(errors)
       }
-
-      console.log('checkout :: ', checkout)
-      console.log('shop :: ', shop)
-
-      console.log('Getting Checkout & Shop - End')
 
       return resolve({
          client: client,
@@ -226,8 +219,6 @@ function buildCheckout(client, forceNew = false) {
 
          if (!emptyCheckoutID(existingCheckoutID)) {
             const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
-
-            console.log('checkout ...........', checkout)
 
             if (checkout === null) {
                if (!hasCredsSet(client)) {
