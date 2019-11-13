@@ -67,14 +67,12 @@ async function getComponentOptions(componentOptions) {
       console.error('getComponentOptions :: ', error)
       return Promise.reject(error)
    }
-   console.log('success.data', success.data)
 
    var responseWithoutFalsey = compact(success.data)
 
    if (isEmpty(responseWithoutFalsey)) {
       return Promise.reject('Empty component options!')
    }
-   console.log('responseWithoutFalsey', responseWithoutFalsey)
 
    const finalOptions = combineComponentIdWithOptions(responseWithoutFalsey, componentOptions)
 

@@ -9,22 +9,20 @@ function initClient(config) {
 }
 
 function hasSessionStorage() {
-   var cached = sessionStorage.getItem('wps-storefront-creds');
+   var cached = localStorage.getItem('wps-storefront-creds')
 
    if (cached) {
-      return JSON.parse(cached);
+      return JSON.parse(cached)
    }
 
-   return false;
+   return false
 }
- 
-function buildClient() {
 
-   var cachedCreds = hasSessionStorage();
+function buildClient() {
+   var cachedCreds = hasSessionStorage()
 
    if (cachedCreds) {
       var creds = cachedCreds
-
    } else {
       var creds = WP_Shopify.storefront // defaults
    }
