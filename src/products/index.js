@@ -187,8 +187,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
       )
     }
 
-    console.log("..... queryParams", queryParams)
-
     if (has(queryParams, "sortKey")) {
       queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
       queryParams.sortKey = enumValue(client, queryParams)
