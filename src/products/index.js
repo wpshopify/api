@@ -169,30 +169,37 @@ function hasValidCredentials(client) {
 
 function graphQuery(type, queryParams, connectionParams = false) {
   return new Promise(async (resolve, reject) => {
+    console.log("graphQuery 1")
+
     if (!queryParams) {
+      console.log("graphQuery 2")
       return reject(
         maybeAlterErrorMessage(
           "Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page."
         )
       )
     }
-
+    console.log("graphQuery 3")
     const client = buildClient()
+    console.log(".... client", client)
 
     if (!hasValidCredentials(client)) {
+      console.log("graphQuery 4")
       return reject(
         maybeAlterErrorMessage(
           'You still need to connect your Shopify store or the credentials are missing. Double check the "connect" tab within the plugin settings.'
         )
       )
     }
-
+    console.log("graphQuery 5")
     if (has(queryParams, "sortKey")) {
+      console.log("graphQuery 6")
       queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
       queryParams.sortKey = enumValue(client, queryParams)
     }
 
     if (has(connectionParams, "sortKey")) {
+      console.log("graphQuery 7")
       connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
       connectionParams.sortKey = enumValue(client, connectionParams)
     }

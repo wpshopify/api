@@ -1,58 +1,60 @@
-import { post } from '../request'
-import { getCache, setCache } from '../../cache'
-import isEmpty from 'lodash/isEmpty'
-import filter from 'lodash/filter'
-import find from 'lodash/find'
-import compact from 'lodash/compact'
-import to from 'await-to-js'
+import { post } from "../request"
+import { getCache, setCache } from "../../cache"
+import isEmpty from "lodash/isEmpty"
+import filter from "lodash/filter"
+import find from "lodash/find"
+import compact from "lodash/compact"
+import to from "await-to-js"
 
 function endpointComponentOptions() {
-   return 'components/options'
+  return "components/options"
 }
 
 function endpointComponentPayload() {
-   return 'components/payload'
+  return "components/payload"
 }
 
 function onlyActiveComponentIds(components) {
-   return filter(components, option => !isEmpty(option.componentId)).map(option => option.componentId)
+  return filter(components, option => !isEmpty(option.componentId)).map(
+    option => option.componentId
+  )
 }
 
 function createCacheNameFromIds(componentIds) {
-   return componentIds.join('-')
+  return componentIds.join("-")
 }
 
 // Returns a promise
 function getComponentOptionsFromIds(componentOptionIds) {
-   return post(endpointComponentOptions(), componentOptionIds)
+  return post(endpointComponentOptions(), componentOptionIds)
 }
 
 // Returns a promise
 function cachePayload(componentPayload, cacheLength) {
-   return post(endpointComponentPayload(), {
-      data: componentPayload,
-      cacheLength: cacheLength
-   })
+  return post(endpointComponentPayload(), {
+    data: componentPayload,
+    cacheLength: cacheLength
+  })
 }
 
 function findComponentsOfType(componentOptionIds, option) {
-   return find(componentOptionIds, { type: Object.keys(option)[0] })
+  return find(componentOptionIds, { type: Object.keys(option)[0] })
 }
 
 function combineComponentIdWithOptions(options, componentOptionIds) {
-   return options.map(option => {
-      var found = findComponentsOfType(componentOptionIds, option)
+  return options.map(option => {
+    var found = findComponentsOfType(componentOptionIds, option)
 
-      if (found) {
-         option.componentOptionId = found.componentOptionIds[0]
-      }
+    if (found) {
+      option.componentOptionId = found.componentOptionIds[0]
+    }
 
-      return option
-   })
+    return option
+  })
 }
 
 function cachedComponentOptions(cacheName) {
-   return getCache('wps-component-options-' + cacheName)
+  return getCache("wps-component-options-" + cacheName)
 }
 
 /*
@@ -61,22 +63,30 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
-   const [error, success] = await to(getComponentOptionsFromIds({ data: componentOptions }))
+  console.log("componentOptions", componentOptions)
 
-   if (error) {
-      console.error('getComponentOptions :: ', error)
-      return Promise.reject(error)
-   }
+  const [error, success] = await to(
+    getComponentOptionsFromIds({ data: componentOptions })
+  )
 
-   var responseWithoutFalsey = compact(success.data)
+  if (error) {
+    console.error("getComponentOptions :: ", error)
+    return Promise.reject(error)
+  }
 
-   if (isEmpty(responseWithoutFalsey)) {
-      return Promise.reject('Empty component options!')
-   }
+  var responseWithoutFalsey = compact(success.data)
+  console.log("responseWithoutFalsey", responseWithoutFalsey)
 
-   const finalOptions = combineComponentIdWithOptions(responseWithoutFalsey, componentOptions)
+  if (isEmpty(responseWithoutFalsey)) {
+    return Promise.reject("Empty component options!")
+  }
 
-   return Promise.resolve(finalOptions)
+  const finalOptions = combineComponentIdWithOptions(
+    responseWithoutFalsey,
+    componentOptions
+  )
+
+  return Promise.resolve(finalOptions)
 }
 
 export { getComponentOptions, cachePayload }

@@ -1,37 +1,41 @@
-import Client from 'shopify-buy'
-import { noticeConfigBadCredentials } from '../notices/notices'
+import Client from "shopify-buy"
+import { noticeConfigBadCredentials } from "../notices/notices"
 
 function initClient(config) {
-   return Client.buildClient({
-      domain: config.domain,
-      storefrontAccessToken: config.storefrontAccessToken
-   })
+  return Client.buildClient({
+    domain: config.domain,
+    storefrontAccessToken: config.storefrontAccessToken
+  })
 }
 
 function hasSessionStorage() {
-   var cached = localStorage.getItem('wps-storefront-creds')
+  var cached = localStorage.getItem("wps-storefront-creds")
 
-   if (cached) {
-      return JSON.parse(cached)
-   }
+  if (cached) {
+    return JSON.parse(cached)
+  }
 
-   return false
+  return false
 }
 
 function buildClient() {
-   var cachedCreds = hasSessionStorage()
+  var cachedCreds = hasSessionStorage()
 
-   if (cachedCreds) {
-      var creds = cachedCreds
-   } else {
-      var creds = WP_Shopify.storefront // defaults
-   }
+  console.log("cachedCreds", cachedCreds)
 
-   if (!creds) {
-      return noticeConfigBadCredentials()
-   }
+  if (cachedCreds) {
+    var creds = cachedCreds
+  } else {
+    var creds = WP_Shopify.storefront // defaults
+  }
 
-   return initClient(creds)
+  console.log("creds", creds)
+
+  if (!creds) {
+    return noticeConfigBadCredentials()
+  }
+
+  return initClient(creds)
 }
 
 export { buildClient }

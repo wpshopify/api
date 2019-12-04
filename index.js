@@ -18,7 +18,7 @@ export {
 } from "./src/products"
 export { fetchNextPage } from "./src/pagination"
 export { findLastCursorId, queryBuilder } from "./src/api"
-export { filterObj, commaToArray } from "./src/utils"
+export { filterObj, commaToArray, sanitizeDomainField } from "./src/utils"
 export { buildQuery } from "./src/api/query"
 export { getFilterData } from "./src/internal/products"
 export { getComponentOptions, cachePayload } from "./src/internal/components"
