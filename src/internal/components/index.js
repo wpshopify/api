@@ -63,8 +63,6 @@ Gets the component options for our react app
 
 */
 async function getComponentOptions(componentOptions) {
-  console.log("componentOptions", componentOptions)
-
   const [error, success] = await to(
     getComponentOptionsFromIds({ data: componentOptions })
   )
@@ -75,7 +73,6 @@ async function getComponentOptions(componentOptions) {
   }
 
   var responseWithoutFalsey = compact(success.data)
-  console.log("responseWithoutFalsey", responseWithoutFalsey)
 
   if (isEmpty(responseWithoutFalsey)) {
     return Promise.reject("Empty component options!")

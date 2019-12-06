@@ -42,8 +42,6 @@ function isWordPressError(response) {
 }
 
 function maybeAlterErrorMessage(errorMessage) {
-  console.log("errorMessage", errorMessage)
-
   let finalError = ""
   let foundErrorMessage = findErrorMessage(errorMessage)
 

@@ -8,28 +8,8 @@ function initClient(config) {
   })
 }
 
-function hasSessionStorage() {
-  var cached = localStorage.getItem("wps-storefront-creds")
-
-  if (cached) {
-    return JSON.parse(cached)
-  }
-
-  return false
-}
-
 function buildClient() {
-  var cachedCreds = hasSessionStorage()
-
-  console.log("cachedCreds", cachedCreds)
-
-  if (cachedCreds) {
-    var creds = cachedCreds
-  } else {
-    var creds = WP_Shopify.storefront // defaults
-  }
-
-  console.log("creds", creds)
+  const creds = WP_Shopify.storefront
 
   if (!creds) {
     return noticeConfigBadCredentials()
