@@ -29,8 +29,14 @@ function removeAllLineItems(client, checkout) {
   return client.checkout.removeLineItems(checkout.id, checkout.lineItems)
 }
 
-function createUniqueCheckout() {
-  return createCheckout(buildClient())
+function createUniqueCheckout(client = buildClient()) {
+  if (isEmpty(client)) {
+    return new Promise((resolve, reject) => {
+      return reject("Invalid client instance found")
+    })
+  }
+
+  return createCheckout(client)
 }
 
 function updateCheckoutAttributesAPI(
@@ -240,15 +246,12 @@ function updateCheckoutAttributes(attributes, existingCheckout = false) {
   var attributesCopy = attributes
 
   return new Promise(async function(resolve, reject) {
-
-      if (!existingCheckout) {
-         var [instancesError, { client, checkout }] = await to(buildInstances())
-
-      } else {
-         var [instancesError, { client }] = await to(buildInstances())
-         var checkout = existingCheckout
-      }
-
+    if (!existingCheckout) {
+      var [instancesError, { client, checkout }] = await to(buildInstances())
+    } else {
+      var [instancesError, { client }] = await to(buildInstances())
+      var checkout = existingCheckout
+    }
 
     if (instancesError) {
       return reject(maybeAlterErrorMessage(instancesError))
