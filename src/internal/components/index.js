@@ -53,10 +53,6 @@ function combineComponentIdWithOptions(options, componentOptionIds) {
   })
 }
 
-function cachedComponentOptions(cacheName) {
-  return getCache("wps-component-options-" + cacheName)
-}
-
 /*
 
 Gets the component options for our react app

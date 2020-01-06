@@ -80,6 +80,10 @@ function replaceLineItemsAPI(client, checkout, lineItems) {
   return client.checkout.replaceLineItems(checkout.id, lineItems)
 }
 
+function addDiscountAPI(client, checkout, discountCode) {
+  return client.checkout.addDiscount(checkout.id, discountCode)
+}
+
 /*
 
 Convience wrappers
@@ -207,11 +211,44 @@ function replaceLineItems(lineItems) {
   })
 }
 
-function updateCheckoutAttributes(attributes) {
+function addDiscount(discountCode, existingCheckout = false) {
+  return new Promise(async (resolve, reject) => {
+    if (!existingCheckout) {
+      var [instancesError, { client, checkout }] = await to(buildInstances())
+    } else {
+      var [instancesError, { client }] = await to(buildInstances())
+      var checkout = existingCheckout
+    }
+
+    if (instancesError) {
+      return reject(instancesError)
+    }
+
+    const [lineItemsError, lineItems] = await to(
+      addDiscountAPI(client, checkout, discountCode)
+    )
+
+    if (lineItemsError) {
+      return reject(maybeAlterErrorMessage(lineItemsError))
+    }
+
+    return resolve(lineItems)
+  })
+}
+
+function updateCheckoutAttributes(attributes, existingCheckout = false) {
   var attributesCopy = attributes
 
   return new Promise(async function(resolve, reject) {
-    var [instancesError, { client, checkout }] = await to(buildInstances())
+
+      if (!existingCheckout) {
+         var [instancesError, { client, checkout }] = await to(buildInstances())
+
+      } else {
+         var [instancesError, { client }] = await to(buildInstances())
+         var checkout = existingCheckout
+      }
+
 
     if (instancesError) {
       return reject(maybeAlterErrorMessage(instancesError))
@@ -343,5 +380,6 @@ export {
   updateCheckoutAttributes,
   getProductsFromLineItems,
   createUniqueCheckout,
-  addLineItemsAPI
+  addLineItemsAPI,
+  addDiscount
 }

@@ -6,7 +6,8 @@ export {
   updateCheckoutAttributes,
   getProductsFromLineItems,
   createUniqueCheckout,
-  addLineItemsAPI
+  addLineItemsAPI,
+  addDiscount
 } from "./src/checkout"
 
 export {
