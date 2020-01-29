@@ -1,9 +1,9 @@
-import { buildClient } from "../client"
-import { maybeAlterErrorMessage } from "../errors"
-import has from "lodash/has"
-import isString from "lodash/isString"
-import to from "await-to-js"
-import { isArray } from "util"
+import { buildClient } from '../client'
+import { maybeAlterErrorMessage } from '../errors'
+import has from 'lodash/has'
+import isString from 'lodash/isString'
+import to from 'await-to-js'
+import { isArray } from 'util'
 
 function fetchProductByID(id, client) {
   return client.product.fetch(id)
@@ -18,10 +18,7 @@ function fetchProductsByQuery(params, client) {
 }
 
 function findVariantFromSelectedOptions(product, selectedOptions) {
-  return buildClient().product.helpers.variantForOptions(
-    product,
-    selectedOptions
-  )
+  return buildClient().product.helpers.variantForOptions(product, selectedOptions)
 }
 
 /*
@@ -30,27 +27,27 @@ Add product fields to the GQL query
 
 */
 function addProductFields(product) {
-  product.add("id")
-  product.add("title")
-  product.add("availableForSale")
-  product.add("createdAt")
-  product.add("description")
-  product.add("descriptionHtml")
-  product.add("handle")
-  product.add("onlineStoreUrl")
-  product.add("productType")
-  product.add("publishedAt")
-  product.add("updatedAt")
-  product.add("vendor")
+  product.add('id')
+  product.add('title')
+  product.add('availableForSale')
+  product.add('createdAt')
+  product.add('description')
+  product.add('descriptionHtml')
+  product.add('handle')
+  product.add('onlineStoreUrl')
+  product.add('productType')
+  product.add('publishedAt')
+  product.add('updatedAt')
+  product.add('vendor')
 
-  product.addConnection("images", { args: { first: 250 } }, image => {
-    image.add("altText")
-    image.add("src")
+  product.addConnection('images', { args: { first: 250 } }, image => {
+    image.add('altText')
+    image.add('src')
   })
 
-  product.add("options", option => {
-    option.add("name")
-    option.add("values")
+  product.add('options', option => {
+    option.add('name')
+    option.add('values')
   })
 
   //
@@ -62,49 +59,49 @@ function addProductFields(product) {
   //    metafield.add('value')
   // })
 
-  product.addConnection("variants", { args: { first: 250 } }, variants => {
-    variants.add("id")
+  product.addConnection('variants', { args: { first: 250 } }, variants => {
+    variants.add('id')
 
-    variants.add("product", options => {
-      options.add("id")
-      options.add("title")
+    variants.add('product', options => {
+      options.add('id')
+      options.add('title')
     })
 
-    variants.add("title")
-    variants.add("price")
+    variants.add('title')
+    variants.add('price')
     // variants.add('priceV2')
-    variants.add("availableForSale")
-    variants.add("compareAtPrice")
+    variants.add('availableForSale')
+    variants.add('compareAtPrice')
     // variants.add('compareAtPriceV2')
-    variants.add("sku")
-    variants.add("weight")
+    variants.add('sku')
+    variants.add('weight')
 
-    variants.add("selectedOptions", options => {
-      options.add("name")
-      options.add("value")
+    variants.add('selectedOptions', options => {
+      options.add('name')
+      options.add('value')
     })
 
-    variants.add("image", image => {
-      image.add("src")
-      image.add("id")
-      image.add("altText")
+    variants.add('image', image => {
+      image.add('src')
+      image.add('id')
+      image.add('altText')
     })
   })
 }
 
 function addCollectionFields(collection, connectionParams) {
-  collection.add("id")
-  collection.add("title")
-  collection.add("description")
-  collection.add("descriptionHtml")
-  collection.add("handle")
-  collection.add("updatedAt")
+  collection.add('id')
+  collection.add('title')
+  collection.add('description')
+  collection.add('descriptionHtml')
+  collection.add('handle')
+  collection.add('updatedAt')
 
-  collection.add("image", image => {
-    image.add("id")
-    image.add("altText")
-    image.add("src")
-    image.add("originalSrc")
+  collection.add('image', image => {
+    image.add('id')
+    image.add('altText')
+    image.add('src')
+    image.add('originalSrc')
   })
 
   /*
@@ -131,7 +128,7 @@ function addCollectionFields(collection, connectionParams) {
       reverse: connectionParams.reverse
     }
 
-    collection.addConnection("products", { args: productsArgs }, product => {
+    collection.addConnection('products', { args: productsArgs }, product => {
       addProductFields(product)
     })
   }
@@ -156,7 +153,7 @@ function refetchQuery(node) {
 }
 
 function hasValidCredentials(client) {
-  if (has(client, "type") || has(client, "message")) {
+  if (has(client, 'type') || has(client, 'message')) {
     return false
   }
 
@@ -172,7 +169,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!queryParams) {
       return reject(
         maybeAlterErrorMessage(
-          "Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page."
+          'Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page.'
         )
       )
     }
@@ -187,24 +184,29 @@ function graphQuery(type, queryParams, connectionParams = false) {
       )
     }
 
-    if (has(queryParams, "sortKey")) {
+    if (has(queryParams, 'sortKey')) {
       queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
       queryParams.sortKey = enumValue(client, queryParams)
     }
 
-    if (has(connectionParams, "sortKey")) {
+    if (has(connectionParams, 'sortKey')) {
       connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
       connectionParams.sortKey = enumValue(client, connectionParams)
     }
 
     // Defaults to 10
-    if (!has(queryParams, "first") && !has(queryParams, "last")) {
+    if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
     }
 
     if (queryParams.query === undefined) {
-      queryParams.query = "*"
+      queryParams.query = '*'
     }
+
+    //  queryParams.query = 'available_for_sale:true'
+    console.log('queryParams', queryParams)
+    console.log('type', type)
+    console.log('connectionParams', connectionParams)
 
     const [requestError, response] = await to(
       client.graphQLClient.send(
@@ -218,7 +220,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
       return reject(maybeAlterErrorMessage(requestError))
     }
 
-    if (has(response, "errors")) {
+    if (has(response, 'errors')) {
       return reject(maybeAlterErrorMessage(response.errors))
     }
 
@@ -228,11 +230,11 @@ function graphQuery(type, queryParams, connectionParams = false) {
 
 function resourceQuery(root, type, queryParams, connectionParams = false) {
   switch (type) {
-    case "products":
+    case 'products':
       productsQuery(root, queryParams)
       break
 
-    case "collections":
+    case 'collections':
       collectionsQuery(root, queryParams, connectionParams)
       break
 
@@ -242,13 +244,13 @@ function resourceQuery(root, type, queryParams, connectionParams = false) {
 }
 
 function productsQuery(root, queryParams) {
-  root.addConnection("products", { args: queryParams }, product => {
+  root.addConnection('products', { args: queryParams }, product => {
     addProductFields(product)
   })
 }
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
-  root.addConnection("collections", { args: queryParams }, collection => {
+  root.addConnection('collections', { args: queryParams }, collection => {
     addCollectionFields(collection, connectionParams)
   })
 }
@@ -256,7 +258,7 @@ function collectionsQuery(root, queryParams, connectionParams = false) {
 function refetchLineItems(ids, client) {
   return new Promise(async (resolve, reject) => {
     if (!ids || !isArray(ids)) {
-      return reject("No product ids found")
+      return reject('No product ids found')
     }
 
     var allPromises = ids.map(async id => {
@@ -268,9 +270,7 @@ function refetchLineItems(ids, client) {
       return err
     })
 
-    var [allPromiseError, allPromiseResponse] = await to(
-      Promise.all(allPromises)
-    )
+    var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises))
 
     if (allPromiseError) {
       reject(allPromiseError)
@@ -303,7 +303,7 @@ function getProductsFromIds(ids = []) {
       const [refetchError, results] = await to(refetchLineItems(ids, client))
 
       if (refetchError) {
-        console.error("wpshopify error 2 💩 ", refetchError)
+        console.error('wpshopify error 2 💩 ', refetchError)
         return reject(maybeAlterErrorMessage(refetchError))
       }
 

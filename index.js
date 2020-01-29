@@ -1,4 +1,4 @@
-export { buildClient } from "./src/client"
+export { buildClient } from './src/client'
 export {
   buildCheckout,
   buildInstances,
@@ -8,7 +8,7 @@ export {
   createUniqueCheckout,
   addLineItemsAPI,
   addDiscount
-} from "./src/checkout"
+} from './src/checkout'
 
 export {
   getProductsFromIds,
@@ -16,27 +16,23 @@ export {
   findVariantFromSelectedOptions,
   graphQuery,
   refetchQuery
-} from "./src/products"
-export { fetchNextPage } from "./src/pagination"
-export { findLastCursorId, queryBuilder } from "./src/api"
-export { filterObj, commaToArray, sanitizeDomainField } from "./src/utils"
-export { buildQuery } from "./src/api/query"
-export { getFilterData } from "./src/internal/products"
-export { getComponentOptions, cachePayload } from "./src/internal/components"
-export { turnOffCacheCleared } from "./src/internal/tools"
-export { maybeAlterErrorMessage, isWordPressError } from "./src/errors"
-export {
-  setCache,
-  getCache,
-  deleteCache,
-  deleteCacheContains
-} from "./src/cache"
+} from './src/products'
+export { fetchNextPage } from './src/pagination'
+export { findLastCursorId, queryBuilder } from './src/api'
+export { filterObj, commaToArray, sanitizeDomainField } from './src/utils'
+export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/utils/api'
+export { buildQuery } from './src/api/query'
+export { getFilterData } from './src/internal/products'
+export { getComponentOptions, cachePayload } from './src/internal/components'
+export { turnOffCacheCleared } from './src/internal/tools'
+export { maybeAlterErrorMessage, isWordPressError } from './src/errors'
+export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cache'
 export {
   getCheckoutCache,
   setCheckoutCache,
   mergeCheckoutCacheVariants,
   mergeCheckoutCacheLineItems
-} from "./src/cache/checkout"
+} from './src/cache/checkout'
 
 export {
   loginCustomer,
@@ -49,4 +45,4 @@ export {
   updateCustomerAddress,
   addCustomerAddress,
   deleteCustomerAddress
-} from "./src/internal/customers"
+} from './src/internal/customers'

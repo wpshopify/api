@@ -1,5 +1,5 @@
-import Client from "shopify-buy"
-import { noticeConfigBadCredentials } from "../notices/notices"
+import Client from 'shopify-buy'
+import { noticeConfigBadCredentials } from '../notices/notices'
 
 function initClient(config) {
   return Client.buildClient({
@@ -9,7 +9,7 @@ function initClient(config) {
 }
 
 function buildClient() {
-  const creds = WP_Shopify.storefront
+  const creds = wpshopify.settings.connection.storefront
 
   if (!creds) {
     return noticeConfigBadCredentials()

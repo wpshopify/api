@@ -26,19 +26,19 @@ AND tag:er tag:kaosjd
 
 */
 function queryBuilder(params = { isPrefix: false, filter: 'title', value: '*', phrase: false }) {
-   // var query = '';
+  // var query = '';
 
-   if (!params.value) {
-      return
-   }
+  if (!params.value) {
+    return
+  }
 
-   if (params.phrase) {
-      params.value = '"' + params.value + '"'
-   } else {
-      params.value = params.value + '*'
-   }
+  if (params.phrase) {
+    params.value = '"' + params.value + '"'
+  } else {
+    params.value = params.value + '*'
+  }
 
-   return params.filter + ':' + params.value
+  return params.filter + ':' + params.value
 }
 
 /*
@@ -59,12 +59,12 @@ best_selling
 
 */
 function fetchBuilder(params) {
-   return {
-      first: params.first,
-      sortKey: params.sortKey,
-      query: params.query,
-      reverse: params.reverse
-   }
+  return {
+    first: params.first,
+    sortKey: params.sortKey,
+    query: params.query,
+    reverse: params.reverse
+  }
 }
 
 /*
@@ -73,31 +73,31 @@ Query by tag
 
 */
 function queryByTagParam(value) {
-   return queryBuilder({
-      filter: 'tag',
-      isPrefix: true,
-      value: value
-   })
+  return queryBuilder({
+    filter: 'tag',
+    isPrefix: true,
+    value: value
+  })
 }
 
 function findLastCursorId(shopifyResponse, dataType) {
-   var data = false
+  var data = false
 
-   if (has(shopifyResponse.data, dataType)) {
-      data = shopifyResponse.data[dataType]
-   }
+  if (has(shopifyResponse.data, dataType)) {
+    data = shopifyResponse.data[dataType]
+  }
 
-   if (!data || isEmpty(data.edges)) {
-      return {
-         after: ''
-      }
-   }
+  if (!data || isEmpty(data.edges)) {
+    return {
+      after: ''
+    }
+  }
 
-   var cursorId = first(data.edges).cursor
+  var cursorId = first(data.edges).cursor
 
-   return {
-      after: cursorId
-   }
+  return {
+    after: cursorId
+  }
 }
 
 export { findLastCursorId, queryBuilder }

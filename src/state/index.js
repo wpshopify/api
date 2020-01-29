@@ -1,6 +1,6 @@
-// const getRestAPINonce = () => WP_Shopify.API.nonce;
+// const getRestAPINonce = () => wpshopify.api.nonce;
 
-// const getRestAPIPrefix = () => WP_Shopify.API.restUrl + WP_Shopify.API.namespace + '/';
+// const getRestAPIPrefix = () => wpshopify.api.restUrl + wpshopify.api.namespace + '/';
 
 // export {
 //    getRestAPINonce,

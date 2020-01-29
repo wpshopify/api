@@ -2,27 +2,32 @@ import to from 'await-to-js'
 import { getCache, setCache } from '../cache'
 
 function maybeFetchShop(client) {
-   return new Promise(async (resolve, reject) => {
-      var value = getCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken)
+  return new Promise(async (resolve, reject) => {
+    var value = getCache(
+      'wps-shop-' + wpshopify.settings.connection.storefront.storefrontAccessToken
+    )
 
-      if (value) {
-         return resolve(value)
-      }
+    if (value) {
+      return resolve(value)
+    }
 
-      const [fetchError, fetchShop] = await to(fetchShopInfo(client))
+    const [fetchError, fetchShop] = await to(fetchShopInfo(client))
 
-      if (fetchError) {
-         return reject(fetchError)
-      }
+    if (fetchError) {
+      return reject(fetchError)
+    }
 
-      setCache('wps-shop-' + WP_Shopify.storefront.storefrontAccessToken, fetchShop)
+    setCache(
+      'wps-shop-' + wpshopify.settings.connection.storefront.storefrontAccessToken,
+      fetchShop
+    )
 
-      return resolve(fetchShop)
-   })
+    return resolve(fetchShop)
+  })
 }
 
 function fetchShopInfo(client) {
-   return client.shop.fetchInfo()
+  return client.shop.fetchInfo()
 }
 
 export { maybeFetchShop }
