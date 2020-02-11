@@ -1,23 +1,27 @@
-import { post } from '../request'
+import { get, post } from '../request'
 
 function endpointSmartCollections() {
-   return 'smart_collections'
+  return 'smart_collections'
 }
 
 function endpointSmartCollectionsCount() {
-   return 'smart_collections/count'
+  return 'smart_collections/count'
 }
 
 function endpointCustomCollections() {
-   return 'custom_collections'
+  return 'custom_collections'
 }
 
 function endpointCustomCollectionsCount() {
-   return 'custom_collections/count'
+  return 'custom_collections/count'
 }
 
 function endpointAllCollections() {
-   return 'collections'
+  return 'collections'
+}
+
+function endpointSettingSelectedCollections() {
+  return 'settings/selected_collections'
 }
 
 /*
@@ -28,7 +32,7 @@ Returns: promise
 
 */
 function getCustomCollections(data = {}) {
-   return post(endpointCustomCollections(), data)
+  return post(endpointCustomCollections(), data)
 }
 
 /*
@@ -39,7 +43,7 @@ Returns: promise
 
 */
 function getSmartCollectionsCount() {
-   return post(endpointSmartCollectionsCount())
+  return post(endpointSmartCollectionsCount())
 }
 
 /*
@@ -50,7 +54,7 @@ Returns: promise
 
 */
 function getCustomCollectionsCount() {
-   return post(endpointCustomCollectionsCount())
+  return post(endpointCustomCollectionsCount())
 }
 
 /*
@@ -61,7 +65,22 @@ Returns: promise
 
 */
 function getAllCollections() {
-   return post(endpointAllCollections())
+  return post(endpointAllCollections())
 }
 
-export { getSmartCollectionsCount, getCustomCollectionsCount, getCustomCollections, getAllCollections }
+function getSelectedCollections() {
+  return get(endpointSettingSelectedCollections())
+}
+
+function getSelectedAndAllCollections() {
+  return Promise.all([getAllCollections(), getSelectedCollections()])
+}
+
+export {
+  getSmartCollectionsCount,
+  getCustomCollectionsCount,
+  getCustomCollections,
+  getAllCollections,
+  getSelectedCollections,
+  getSelectedAndAllCollections
+}

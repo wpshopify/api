@@ -1,11 +1,7 @@
-import React from 'react';
-import { buildClient } from './client';
-import { buildCheckout } from './checkout';
+import { buildClient } from './client'
+import { buildCheckout } from './checkout'
 
-const ClientContext = React.createContext(buildClient());
-const CheckoutContext = React.createContext(buildCheckout());
+const ClientContext = wp.element.createContext(buildClient())
+const CheckoutContext = wp.element.createContext(buildCheckout())
 
-export {
-   ClientContext,
-   CheckoutContext
-}
+export { ClientContext, CheckoutContext }
