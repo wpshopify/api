@@ -15,7 +15,8 @@ export {
   queryProducts,
   findVariantFromSelectedOptions,
   graphQuery,
-  refetchQuery
+  refetchQuery,
+  enumMake
 } from './src/products'
 export { fetchNextPage } from './src/pagination'
 export { findLastCursorId, queryBuilder } from './src/api'

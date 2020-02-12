@@ -138,6 +138,11 @@ function enumValue(client, params) {
   return client.graphQLClient.enum(params.sortKey)
 }
 
+function enumMake(val) {
+  var client = buildClient()
+  return client.graphQLClient.enum(val)
+}
+
 function maybeUppercaseSortKey(sortKey) {
   if (isString(sortKey)) {
     return sortKey.toUpperCase()
@@ -204,9 +209,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
     }
 
     //  queryParams.query = 'available_for_sale:true'
-    console.log('queryParams', queryParams)
-    console.log('type', type)
-    console.log('connectionParams', connectionParams)
 
     const [requestError, response] = await to(
       client.graphQLClient.send(
@@ -215,6 +217,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
         })
       )
     )
+
+    console.log('requestError', requestError)
+    console.log('response', response)
 
     if (requestError) {
       return reject(maybeAlterErrorMessage(requestError))
@@ -328,5 +333,6 @@ export {
   getAllTags,
   findVariantFromSelectedOptions,
   graphQuery,
-  refetchQuery
+  refetchQuery,
+  enumMake
 }
