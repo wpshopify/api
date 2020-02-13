@@ -25,7 +25,7 @@ export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/
 export { buildQuery } from './src/api/query'
 export { getFilterData } from './src/internal/products'
 export { getSelectedAndAllCollections } from './src/internal/collections'
-export { getComponentOptions, cachePayload } from './src/internal/components'
+export { cachePayload } from './src/internal/components'
 export { turnOffCacheCleared } from './src/internal/tools'
 export { maybeAlterErrorMessage, isWordPressError } from './src/errors'
 export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cache'
