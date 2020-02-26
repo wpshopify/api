@@ -20,7 +20,13 @@ export {
 } from './src/products'
 export { fetchNextPage } from './src/pagination'
 export { findLastCursorId, queryBuilder } from './src/api'
-export { filterObj, commaToArray, sanitizeDomainField } from './src/utils'
+export {
+  filterObj,
+  commaToArray,
+  sanitizeDomainField,
+  encodePayloadSettings,
+  decodePayloadSettings
+} from './src/utils'
 export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/utils/api'
 export { buildQuery } from './src/api/query'
 export { getFilterData } from './src/internal/products'
