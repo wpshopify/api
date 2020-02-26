@@ -208,7 +208,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
       queryParams.query = '*'
     }
 
-    //  queryParams.query = 'available_for_sale:true'
+    console.log('queryParams BEFORE REQUEST', queryParams)
 
     const [requestError, response] = await to(
       client.graphQLClient.send(
@@ -217,9 +217,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
         })
       )
     )
-
-    console.log('requestError', requestError)
-    console.log('response', response)
 
     if (requestError) {
       return reject(maybeAlterErrorMessage(requestError))
