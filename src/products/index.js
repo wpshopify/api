@@ -40,12 +40,12 @@ function addProductFields(product) {
   product.add('updatedAt')
   product.add('vendor')
 
-  product.addConnection('images', { args: { first: 250 } }, image => {
+  product.addConnection('images', { args: { first: 250 } }, (image) => {
     image.add('altText')
     image.add('src')
   })
 
-  product.add('options', option => {
+  product.add('options', (option) => {
     option.add('name')
     option.add('values')
   })
@@ -59,10 +59,10 @@ function addProductFields(product) {
   //    metafield.add('value')
   // })
 
-  product.addConnection('variants', { args: { first: 250 } }, variants => {
+  product.addConnection('variants', { args: { first: 250 } }, (variants) => {
     variants.add('id')
 
-    variants.add('product', options => {
+    variants.add('product', (options) => {
       options.add('id')
       options.add('title')
     })
@@ -70,18 +70,21 @@ function addProductFields(product) {
     variants.add('title')
     variants.add('price')
     // variants.add('priceV2')
+    //  variants.add('unitPrice')
+    //  variants.add('quantityAvailable')
+    //  variants.add('currentlyNotInStock')
     variants.add('availableForSale')
     variants.add('compareAtPrice')
-    // variants.add('compareAtPriceV2')
+    //  variants.add('compareAtPriceV2')
     variants.add('sku')
     variants.add('weight')
 
-    variants.add('selectedOptions', options => {
+    variants.add('selectedOptions', (options) => {
       options.add('name')
       options.add('value')
     })
 
-    variants.add('image', image => {
+    variants.add('image', (image) => {
       image.add('src')
       image.add('id')
       image.add('altText')
@@ -97,7 +100,7 @@ function addCollectionFields(collection, connectionParams) {
   collection.add('handle')
   collection.add('updatedAt')
 
-  collection.add('image', image => {
+  collection.add('image', (image) => {
     image.add('id')
     image.add('altText')
     image.add('src')
@@ -125,10 +128,10 @@ function addCollectionFields(collection, connectionParams) {
     var productsArgs = {
       first: connectionParams.first,
       sortKey: connectionParams.sortKey,
-      reverse: connectionParams.reverse
+      reverse: connectionParams.reverse,
     }
 
-    collection.addConnection('products', { args: productsArgs }, product => {
+    collection.addConnection('products', { args: productsArgs }, (product) => {
       addProductFields(product)
     })
   }
@@ -208,11 +211,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
       queryParams.query = '*'
     }
 
-    console.log('queryParams BEFORE REQUEST', queryParams)
-
     const [requestError, response] = await to(
       client.graphQLClient.send(
-        client.graphQLClient.query(root => {
+        client.graphQLClient.query((root) => {
           resourceQuery(root, type, queryParams, connectionParams)
         })
       )
@@ -246,13 +247,13 @@ function resourceQuery(root, type, queryParams, connectionParams = false) {
 }
 
 function productsQuery(root, queryParams) {
-  root.addConnection('products', { args: queryParams }, product => {
+  root.addConnection('products', { args: queryParams }, (product) => {
     addProductFields(product)
   })
 }
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
-  root.addConnection('collections', { args: queryParams }, collection => {
+  root.addConnection('collections', { args: queryParams }, (collection) => {
     addCollectionFields(collection, connectionParams)
   })
 }
@@ -263,7 +264,7 @@ function refetchLineItems(ids, client) {
       return reject('No product ids found')
     }
 
-    var allPromises = ids.map(async id => {
+    var allPromises = ids.map(async (id) => {
       const [err, succ] = await to(fetchProductByID(id, client))
 
       if (!err) {
@@ -287,7 +288,7 @@ function isTypeError(data) {
 }
 
 function withoutTypeErrors(results) {
-  return results.filter(result => !isTypeError(result))
+  return results.filter((result) => !isTypeError(result))
 }
 
 function getProductsFromIds(ids = []) {
@@ -331,5 +332,5 @@ export {
   findVariantFromSelectedOptions,
   graphQuery,
   refetchQuery,
-  enumMake
+  enumMake,
 }
