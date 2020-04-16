@@ -173,6 +173,13 @@ function hasValidCredentials(client) {
 }
 
 function graphQuery(type, queryParams, connectionParams = false) {
+  console.log('graphQuery :: type', type)
+  console.log('graphQuery :: queryParams', queryParams)
+
+  if (type === 'storefront' || type === 'search') {
+    type = 'products'
+  }
+
   return new Promise(async (resolve, reject) => {
     if (!queryParams) {
       return reject(
