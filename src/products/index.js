@@ -4,6 +4,7 @@ import has from 'lodash/has'
 import isString from 'lodash/isString'
 import to from 'await-to-js'
 import { isArray } from 'util'
+import md5 from 'js-md5'
 
 function fetchProductByID(id, client) {
   return client.product.fetch(id)
@@ -172,10 +173,71 @@ function hasValidCredentials(client) {
   return false
 }
 
-function graphQuery(type, queryParams, connectionParams = false) {
-  console.log('graphQuery :: type', type)
-  console.log('graphQuery :: queryParams', queryParams)
+function createStringFromQueryParams(queryParams) {
+  if (!queryParams.sortKey) {
+    var sortKey = ''
+  } else {
+    if (isString(queryParams.sortKey)) {
+      var sortKey = queryParams.sortKey
+    } else {
+      var sortKey = queryParams.sortKey.key
+    }
+  }
 
+  if (!queryParams.reverse) {
+    var reverse = ''
+  } else {
+    var reverse = queryParams.reverse
+  }
+
+  return queryParams.first + queryParams.query + reverse + sortKey
+}
+
+function getHashFromQueryParams(queryParams) {
+  return md5(createStringFromQueryParams(queryParams))
+}
+
+function sanitizeQueryResponse(response, type) {
+  if (type === 'storefront' || type === 'search') {
+    type = 'products'
+  }
+
+  if (!response.model) {
+    return []
+  }
+
+  return response.model[type]
+}
+
+/*
+
+Fetch NEW items
+
+*/
+function fetchNewItems(itemsState) {
+  return new Promise(async (resolve, reject) => {
+    var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
+
+    if (has(itemsState.payloadCache, hashCacheId)) {
+      resolve(itemsState.payloadCache[hashCacheId])
+    }
+
+    const [resultsError, results] = await to(
+      graphQuery(itemsState.dataType, itemsState.queryParams)
+    )
+
+    if (resultsError) {
+      reject({ type: 'error', message: resultsError })
+      return
+    }
+
+    var newItems = sanitizeQueryResponse(results, itemsState.dataType)
+
+    resolve(newItems)
+  })
+}
+
+function graphQuery(type, queryParams, connectionParams = false) {
   if (type === 'storefront' || type === 'search') {
     type = 'products'
   }
@@ -340,4 +402,5 @@ export {
   graphQuery,
   refetchQuery,
   enumMake,
+  fetchNewItems,
 }

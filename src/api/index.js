@@ -63,7 +63,7 @@ function fetchBuilder(params) {
     first: params.first,
     sortKey: params.sortKey,
     query: params.query,
-    reverse: params.reverse
+    reverse: params.reverse,
   }
 }
 
@@ -76,7 +76,7 @@ function queryByTagParam(value) {
   return queryBuilder({
     filter: 'tag',
     isPrefix: true,
-    value: value
+    value: value,
   })
 }
 
@@ -89,14 +89,14 @@ function findLastCursorId(shopifyResponse, dataType) {
 
   if (!data || isEmpty(data.edges)) {
     return {
-      after: ''
+      after: '',
     }
   }
 
   var cursorId = first(data.edges).cursor
 
   return {
-    after: cursorId
+    after: cursorId,
   }
 }
 

@@ -7,7 +7,7 @@ export {
   getProductsFromLineItems,
   createUniqueCheckout,
   addLineItemsAPI,
-  addDiscount
+  addDiscount,
 } from './src/checkout'
 
 export {
@@ -16,7 +16,8 @@ export {
   findVariantFromSelectedOptions,
   graphQuery,
   refetchQuery,
-  enumMake
+  enumMake,
+  fetchNewItems,
 } from './src/products'
 export { fetchNextPage } from './src/pagination'
 export { findLastCursorId, queryBuilder } from './src/api'
@@ -25,7 +26,7 @@ export {
   commaToArray,
   sanitizeDomainField,
   encodePayloadSettings,
-  decodePayloadSettings
+  decodePayloadSettings,
 } from './src/utils'
 export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/utils/api'
 export { buildQuery } from './src/api/query'
@@ -39,7 +40,7 @@ export {
   getCheckoutCache,
   setCheckoutCache,
   mergeCheckoutCacheVariants,
-  mergeCheckoutCacheLineItems
+  mergeCheckoutCacheLineItems,
 } from './src/cache/checkout'
 
 export {
@@ -52,5 +53,5 @@ export {
   getCustomer,
   updateCustomerAddress,
   addCustomerAddress,
-  deleteCustomerAddress
+  deleteCustomerAddress,
 } from './src/internal/customers'
