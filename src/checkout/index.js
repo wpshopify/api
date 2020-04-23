@@ -1,12 +1,13 @@
-import to from "await-to-js"
-import isEmpty from "lodash/isEmpty"
-import uniq from "lodash/uniq"
-import { buildClient } from "../client"
-import { getCache, setCache } from "../cache"
-import { getProductsFromIds } from "../products"
-import { getCheckoutCache } from "../cache/checkout"
-import { maybeFetchShop } from "../shop"
-import { maybeAlterErrorMessage } from "../errors"
+import to from 'await-to-js'
+import isEmpty from 'lodash/isEmpty'
+import uniq from 'lodash/uniq'
+import has from 'lodash/has'
+import { buildClient } from '../client'
+import { getCache, setCache } from '../cache'
+import { getProductsFromIds } from '../products'
+import { getCheckoutCache } from '../cache/checkout'
+import { maybeFetchShop } from '../shop'
+import { maybeAlterErrorMessage } from '../errors'
 
 /*
 
@@ -32,19 +33,23 @@ function removeAllLineItems(client, checkout) {
 function createUniqueCheckout(client = buildClient()) {
   if (isEmpty(client)) {
     return new Promise((resolve, reject) => {
-      return reject("Invalid client instance found")
+      reject('Invalid client instance found')
     })
   }
 
-  return createCheckout(client)
+  return new Promise(async (resolve, reject) => {
+    var [err, resp] = await to(createCheckout(client))
+
+    if (err) {
+      reject(maybeAlterErrorMessage(err))
+      return
+    }
+
+    resolve(resp)
+  })
 }
 
-function updateCheckoutAttributesAPI(
-  client,
-  checkout,
-  customAttributes = false,
-  note = false
-) {
+function updateCheckoutAttributesAPI(client, checkout, customAttributes = false, note = false) {
   let attributes = {}
 
   if (!isEmpty(customAttributes)) {
@@ -68,15 +73,11 @@ function updateCheckoutAttributesAPI(
 
 function addLineItemsAPI(client, checkout, lineItems) {
   if (!checkout) {
-    return new Promise((resolve, reject) =>
-      reject("Error: Missing checkout instance")
-    )
+    return new Promise((resolve, reject) => reject('Error: Missing checkout instance'))
   }
 
   if (!client) {
-    return new Promise((resolve, reject) =>
-      reject("Error: Missing client instance")
-    )
+    return new Promise((resolve, reject) => reject('Error: Missing client instance'))
   }
 
   return client.checkout.addLineItems(checkout.id, lineItems)
@@ -102,7 +103,7 @@ Checks if the checkout was completed by the user. Used to create a fresh checkou
 
 */
 function checkoutCompleted(checkout) {
-  if (has(checkout, "completedAt") && checkout.completedAt) {
+  if (has(checkout, 'completedAt') && checkout.completedAt) {
     return true
   } else {
     return false
@@ -110,20 +111,15 @@ function checkoutCompleted(checkout) {
 }
 
 function getCheckoutID() {
-  return getCache("wps-last-checkout-id")
+  return getCache('wps-last-checkout-id')
 }
 
 function setCheckoutID(checkoutID) {
-  return setCache("wps-last-checkout-id", checkoutID)
+  return setCache('wps-last-checkout-id', checkoutID)
 }
 
 function emptyCheckoutID(cartID) {
-  if (
-    cartID === undefined ||
-    cartID === "undefined" ||
-    cartID == false ||
-    cartID == null
-  ) {
+  if (cartID === undefined || cartID === 'undefined' || cartID == false || cartID == null) {
     return true
   } else {
     return false
@@ -136,19 +132,17 @@ Create Line Items From Variants
 
 */
 function createLineItemsFromVariants(options, client) {
-  return new Promise(async function(resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     var [getCheckoutError, checkoutID] = await to(getCheckoutID(client))
 
     if (getCheckoutError) {
-      return reject(getCheckoutError)
+      return reject(maybeAlterErrorMessage(getCheckoutError))
     }
 
-    var [newCartError, newCart] = await to(
-      addLineItems(client, checkoutID, options)
-    )
+    var [newCartError, newCart] = await to(addLineItems(client, checkoutID, options))
 
     if (newCartError) {
-      return reject(newCartError)
+      return reject(maybeAlterErrorMessage(newCartError))
     }
 
     return resolve(newCart)
@@ -156,17 +150,11 @@ function createLineItemsFromVariants(options, client) {
 }
 
 function buildInstances(forceNew = false) {
-  return new Promise(async function(resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     const client = buildClient()
 
-    if (!client) {
-      return reject(client)
-    }
-
-    if (!hasCredsSet(client)) {
-      return reject(
-        "Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again."
-      )
+    if ((has(client, 'type') && client.type === 'error') || !hasCredsSet(client)) {
+      return reject(maybeAlterErrorMessage(client))
     }
 
     const [errors, [checkout, shop]] = await to(
@@ -174,13 +162,13 @@ function buildInstances(forceNew = false) {
     )
 
     if (errors) {
-      return reject(errors)
+      return reject(maybeAlterErrorMessage(errors))
     }
 
     return resolve({
       client: client,
       checkout: checkout,
-      shop: shop
+      shop: shop,
     })
   })
 }
@@ -189,7 +177,7 @@ async function addLineItems(lineItems) {
   var [instancesError, { client, checkout }] = await to(buildInstances())
 
   if (instancesError) {
-    return new Promise((resolve, reject) => reject(instancesError))
+    return new Promise((resolve, reject) => reject(maybeAlterErrorMessage(instancesError)))
   }
 
   return addLineItemsAPI(client, checkout, lineItems)
@@ -202,7 +190,7 @@ function replaceLineItems(lineItems) {
     var [instancesError, { client, checkout }] = await to(buildInstances())
 
     if (instancesError) {
-      return reject(instancesError)
+      return reject(maybeAlterErrorMessage(instancesError))
     }
 
     const [lineItemsError, lineItems] = await to(
@@ -227,12 +215,10 @@ function addDiscount(discountCode, existingCheckout = false) {
     }
 
     if (instancesError) {
-      return reject(instancesError)
+      return reject(maybeAlterErrorMessage(instancesError))
     }
 
-    const [lineItemsError, lineItems] = await to(
-      addDiscountAPI(client, checkout, discountCode)
-    )
+    const [lineItemsError, lineItems] = await to(addDiscountAPI(client, checkout, discountCode))
 
     if (lineItemsError) {
       return reject(maybeAlterErrorMessage(lineItemsError))
@@ -245,7 +231,7 @@ function addDiscount(discountCode, existingCheckout = false) {
 function updateCheckoutAttributes(attributes, existingCheckout = false) {
   var attributesCopy = attributes
 
-  return new Promise(async function(resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     if (!existingCheckout) {
       var [instancesError, { client, checkout }] = await to(buildInstances())
     } else {
@@ -279,10 +265,7 @@ function hasCredsSet(client) {
     return false
   }
 
-  if (
-    isEmpty(client.config.domain) ||
-    isEmpty(client.config.storefrontAccessToken)
-  ) {
+  if (isEmpty(client.config.domain) || isEmpty(client.config.storefrontAccessToken)) {
     return false
   }
 
@@ -302,20 +285,20 @@ function buildCheckout(client, forceNew = false) {
       var existingCheckoutID = getCheckoutID()
 
       if (!emptyCheckoutID(existingCheckoutID)) {
-        const [checkoutError, checkout] = await to(
-          getCheckoutByID(client, existingCheckoutID)
-        )
+        const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
+
+        if (checkoutError) {
+          return reject(maybeAlterErrorMessage(checkoutError))
+        }
 
         if (checkout === null) {
           if (!hasCredsSet(client)) {
             return reject(
-              "Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again."
+              'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
             )
           }
 
-          const [checkoutErrorNew, checkoutNew] = await to(
-            createCheckout(client)
-          )
+          const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
 
           if (checkoutErrorNew) {
             return reject(maybeAlterErrorMessage(checkoutErrorNew))
@@ -335,7 +318,7 @@ function buildCheckout(client, forceNew = false) {
 
     if (!hasCredsSet(client)) {
       return reject(
-        "Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again."
+        'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
       )
     }
 
@@ -361,14 +344,14 @@ function variantsFromCache() {
 }
 
 function getUniqueProductIdsFromVariants(variants) {
-  return uniq(variants.map(lineItem => lineItem.product.id))
+  return uniq(variants.map((lineItem) => lineItem.product.id))
 }
 
 async function getProductsFromLineItems() {
   const uniqueIds = getUniqueProductIdsFromVariants(variantsFromCache())
 
   if (isEmpty(uniqueIds)) {
-    return new Promise(resolve => resolve([]))
+    return new Promise((resolve) => resolve([]))
   }
 
   return await getProductsFromIds(uniqueIds)
@@ -384,5 +367,6 @@ export {
   getProductsFromLineItems,
   createUniqueCheckout,
   addLineItemsAPI,
-  addDiscount
+  addDiscount,
+  hasCredsSet,
 }

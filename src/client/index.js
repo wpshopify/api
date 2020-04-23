@@ -1,5 +1,5 @@
-import Client from 'shopify-buy'
-// import Client from '/Users/andrew/www/devil/devilbox-new/data/www/js-buy-sdk/index.es.js'
+// import Client from 'shopify-buy'
+import Client from '/Users/andrew/www/devil/devilbox-new/data/www/js-buy-sdk/index.es.js'
 import { noticeConfigBadCredentials } from '../notices/notices'
 
 function initClient(config) {

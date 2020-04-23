@@ -14,7 +14,7 @@ function maybeFetchShop(client) {
     const [fetchError, fetchShop] = await to(fetchShopInfo(client))
 
     if (fetchError) {
-      return reject(fetchError)
+      return reject(maybeAlterErrorMessage(fetchError))
     }
 
     setCache(

@@ -1,64 +1,64 @@
 {
-   "name": "@wpshopify/api",
-   "version": "0.2.5",
-   "description": "A very light wrapper over the official Shopify JS Buy SDK. Tailored for WP Shopify",
-   "module": "index.js",
-   "scripts": {
-      "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'",
-      "build": "webpack --config webpack.config.babel.js"
-   },
-   "author": "WP Shopify",
-   "license": "GPL-2.0-or-later",
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/wpshopify/api.git"
-   },
-   "keywords": [
-      "wordpres",
-      "shopify",
-      "ecommerce",
-      "woocommerce"
-   ],
-   "dependencies": {
-      "@apollo/react-hooks": "^3.1.5",
-      "@babel/cli": "^7.8.4",
-      "@babel/core": "^7.9.0",
-      "@babel/polyfill": "^7.8.7",
-      "@babel/preset-env": "^7.9.5",
-      "@babel/preset-react": "^7.9.4",
-      "@babel/register": "^7.9.0",
-      "@babel/runtime": "^7.9.2",
-      "apollo-boost": "^0.4.7",
-      "apollo-link-context": "^1.0.20",
-      "await-to-js": "^2.1.1",
-      "axios": "^0.19.2",
-      "core-js": "^3.6.5",
-      "graphql": "^15.0.0",
-      "isomorphic-fetch": "^2.2.1",
-      "jest": "^25.3.0",
-      "jest-chain": "^1.1.5",
-      "jest-extended": "^0.11.5",
-      "lodash": "^4.17.15",
-      "node-fetch": "^2.6.0",
-      "shopify-buy": "^2.9.3",
-      "store": "^2.0.12",
-      "webpack": "^4.42.1"
-   },
-   "devDependencies": {
-      "@babel/plugin-proposal-class-properties": "^7.8.3",
-      "@babel/plugin-proposal-json-strings": "^7.8.3",
-      "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-      "@babel/plugin-syntax-import-meta": "^7.8.3",
-      "@babel/plugin-transform-react-jsx": "^7.9.4",
-      "@babel/plugin-transform-regenerator": "^7.8.7",
-      "@babel/plugin-transform-runtime": "^7.9.0",
-      "babel-loader": "^8.1.0",
-      "babel-plugin-lodash": "^3.3.4",
-      "babel-plugin-transform-imports": "^2.0.0",
-      "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-      "js-md5": "^0.7.3",
-      "lodash": "^4.17.15",
-      "progress-bar-webpack-plugin": "^2.1.0",
-      "webpack-cli": "^3.3.11"
-   }
+  "name": "@wpshopify/api",
+  "version": "0.2.5",
+  "description": "A very light wrapper over the official Shopify JS Buy SDK. Tailored for WP Shopify",
+  "module": "index.js",
+  "scripts": {
+    "tests-integration": "jest --watch --detectOpenHandles -c='tests/jest.config.integration.json'",
+    "build": "webpack --config webpack.config.babel.js"
+  },
+  "author": "WP Shopify",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpshopify/api.git"
+  },
+  "keywords": [
+    "wordpres",
+    "shopify",
+    "ecommerce",
+    "woocommerce"
+  ],
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/register": "^7.9.0",
+    "@babel/runtime": "^7.9.2",
+    "apollo-boost": "^0.4.7",
+    "apollo-link-context": "^1.0.20",
+    "await-to-js": "^2.1.1",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.5",
+    "graphql": "^15.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "jest": "^25.4.0",
+    "jest-chain": "^1.1.5",
+    "jest-extended": "^0.11.5",
+    "lodash": "^4.17.15",
+    "node-fetch": "^2.6.0",
+    "shopify-buy": "^2.9.3",
+    "store": "^2.0.12",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-json-strings": "^7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.8.3",
+    "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@babel/plugin-transform-regenerator": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-transform-imports": "^2.0.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "js-md5": "^0.7.3",
+    "lodash": "^4.17.15",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "webpack-cli": "^3.3.11"
+  }
 }

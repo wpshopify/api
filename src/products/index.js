@@ -72,7 +72,7 @@ function addProductFields(product) {
     variants.add('price')
     // variants.add('priceV2')
     //  variants.add('unitPrice')
-    //  variants.add('quantityAvailable')
+    variants.add('quantityAvailable')
     //  variants.add('currentlyNotInStock')
     variants.add('availableForSale')
     variants.add('compareAtPrice')
@@ -216,6 +216,20 @@ Fetch NEW items
 */
 function fetchNewItems(itemsState) {
   return new Promise(async (resolve, reject) => {
+    console.log('itemsState', itemsState)
+
+    if (!itemsState) {
+      console.error(
+        'WP Shopify error: Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.'
+      )
+
+      reject({
+        type: 'error',
+        message:
+          'Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.',
+      })
+    }
+
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
@@ -227,7 +241,7 @@ function fetchNewItems(itemsState) {
     )
 
     if (resultsError) {
-      reject({ type: 'error', message: resultsError })
+      reject({ type: 'error', message: maybeAlterErrorMessage(resultsError) })
       return
     }
 
@@ -345,7 +359,7 @@ function refetchLineItems(ids, client) {
     var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises))
 
     if (allPromiseError) {
-      reject(allPromiseError)
+      reject(maybeAlterErrorMessage(allPromiseError))
     }
 
     resolve(allPromiseResponse)
@@ -366,16 +380,13 @@ function getProductsFromIds(ids = []) {
 
     const [productsError, products] = await to(fetchProductsByIDs(ids, client))
 
-    /*
-      
-      If productsError, most likely the product was hidden from the sales channel
-
-      */
+    // If productsError, most likely the product was hidden from the sales channel
     if (productsError) {
+      console.error('WP Shopify Error fetchProductsByIDs', productsError)
       const [refetchError, results] = await to(refetchLineItems(ids, client))
 
       if (refetchError) {
-        console.error('wpshopify error 2 💩 ', refetchError)
+        console.error('WP Shopify Error refetchLineItems', refetchError)
         return reject(maybeAlterErrorMessage(refetchError))
       }
 
