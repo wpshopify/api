@@ -30,7 +30,7 @@ export {
 } from './src/utils'
 export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/utils/api'
 export { buildQuery } from './src/api/query'
-export { getFilterData } from './src/internal/products'
+export { getFilterData, getVariantInventoryManagement } from './src/internal/products'
 export { getSelectedAndAllCollections } from './src/internal/collections'
 export { cachePayload } from './src/internal/components'
 export { turnOffCacheCleared } from './src/internal/tools'

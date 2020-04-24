@@ -5,8 +5,6 @@ import isObject from 'lodash/isObject'
 import has from 'lodash/has'
 
 function findErrorMessage(maybeErrorMessage) {
-  console.log('findErrorMessage', maybeErrorMessage)
-
   let finalErrorMessage = ''
 
   if (isString(maybeErrorMessage)) {
