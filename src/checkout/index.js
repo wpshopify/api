@@ -6,7 +6,6 @@ import { buildClient } from '../client'
 import { getCache, setCache } from '../cache'
 import { getProductsFromIds } from '../products'
 import { getCheckoutCache } from '../cache/checkout'
-import { maybeFetchShop } from '../shop'
 import { maybeAlterErrorMessage } from '../errors'
 
 /*
@@ -157,9 +156,7 @@ function buildInstances(forceNew = false) {
       return reject(maybeAlterErrorMessage(client))
     }
 
-    const [errors, [checkout, shop]] = await to(
-      Promise.all([buildCheckout(client, forceNew), maybeFetchShop(client)])
-    )
+    const [errors, checkout] = await to(buildCheckout(client, forceNew))
 
     if (errors) {
       return reject(maybeAlterErrorMessage(errors))
@@ -168,7 +165,6 @@ function buildInstances(forceNew = false) {
     return resolve({
       client: client,
       checkout: checkout,
-      shop: shop,
     })
   })
 }
@@ -272,62 +268,82 @@ function hasCredsSet(client) {
   return true
 }
 
-/*
-
-Fetch Cart
-Returns: Promise
-
-*/
 function buildCheckout(client, forceNew = false) {
+  console.log('buildCheckout 1')
   return new Promise(async (resolve, reject) => {
-    if (!forceNew) {
-      // Calls LS
-      var existingCheckoutID = getCheckoutID()
-
-      if (!emptyCheckoutID(existingCheckoutID)) {
-        const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
-
-        if (checkoutError) {
-          return reject(maybeAlterErrorMessage(checkoutError))
-        }
-
-        if (checkout === null) {
-          if (!hasCredsSet(client)) {
-            return reject(
-              'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
-            )
-          }
-
-          const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
-
-          if (checkoutErrorNew) {
-            return reject(maybeAlterErrorMessage(checkoutErrorNew))
-          } else {
-            setCheckoutID(checkoutNew.id)
-            resolve(checkoutNew)
-          }
-        }
-
-        if (checkoutError) {
-          return reject(maybeAlterErrorMessage(checkoutError))
-        } else {
-          return resolve(checkout)
-        }
-      }
-    }
-
+    console.log('buildCheckout 2')
     if (!hasCredsSet(client)) {
+      console.log('buildCheckout 3')
       return reject(
         'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
       )
     }
 
-    const [checkoutError, checkout] = await to(createCheckout(client))
+    if (forceNew) {
+      const [checkoutError, checkout] = await to(createCheckout(client))
+      console.log('buildCheckout 7')
 
+      if (checkoutError) {
+        console.log('buildCheckout 8')
+        return reject(maybeAlterErrorMessage(checkoutError))
+      } else {
+        console.log('buildCheckout 9')
+        setCheckoutID(checkout.id)
+        return resolve(checkout)
+      }
+    }
+
+    console.log('buildCheckout 4')
+    const existingCheckoutID = getCheckoutID()
+    console.log('buildCheckout 5')
+    if (emptyCheckoutID(existingCheckoutID)) {
+      console.log('buildCheckout 6')
+      const [checkoutError, checkout] = await to(createCheckout(client))
+      console.log('buildCheckout 7')
+      if (checkoutError) {
+        console.log('buildCheckout 8')
+        return reject(maybeAlterErrorMessage(checkoutError))
+      } else {
+        console.log('buildCheckout 9')
+        setCheckoutID(checkout.id)
+        return resolve(checkout)
+      }
+    }
+
+    console.log('buildCheckout 10')
+    const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
+    console.log('buildCheckout 11')
     if (checkoutError) {
+      console.log('buildCheckout 12')
+      return reject(maybeAlterErrorMessage(checkoutError))
+    }
+    console.log('buildCheckout 13')
+    if (checkout === null) {
+      console.log('buildCheckout 14')
+      if (!hasCredsSet(client)) {
+        console.log('buildCheckout 15')
+        return reject(
+          'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
+        )
+      }
+      console.log('buildCheckout 16')
+      const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
+      console.log('buildCheckout 17')
+      if (checkoutErrorNew) {
+        console.log('buildCheckout 18')
+        return reject(maybeAlterErrorMessage(checkoutErrorNew))
+      } else {
+        console.log('buildCheckout 19')
+        setCheckoutID(checkoutNew.id)
+        resolve(checkoutNew)
+      }
+    }
+    console.log('buildCheckout 20')
+    if (checkoutError) {
+      console.log('buildCheckout 21')
       return reject(maybeAlterErrorMessage(checkoutError))
     } else {
-      setCheckoutID(checkout.id)
+      console.log('buildCheckout 22')
       return resolve(checkout)
     }
   })

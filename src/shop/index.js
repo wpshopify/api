@@ -1,7 +1,8 @@
 import to from 'await-to-js'
 import { getCache, setCache } from '../cache'
+import { buildClient } from '../client'
 
-function maybeFetchShop(client) {
+function maybeFetchShop(client = buildClient()) {
   return new Promise(async (resolve, reject) => {
     var value = getCache(
       'wps-shop-' + wpshopify.settings.connection.storefront.storefrontAccessToken

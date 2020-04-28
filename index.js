@@ -20,6 +20,7 @@ export {
   fetchNewItems,
 } from './src/products'
 export { fetchNextPage } from './src/pagination'
+export { maybeFetchShop } from './src/shop'
 export { findLastCursorId, queryBuilder } from './src/api'
 export {
   filterObj,

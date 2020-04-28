@@ -48,6 +48,8 @@ function maybeAlterErrorMessage(errorMessage) {
   let finalError = ''
   let error = findErrorMessage(errorMessage)
 
+  console.error('WP Shopify Error raw: ', error)
+
   if (error.includes('TypeError: Failed to fetch')) {
     finalError =
       'Uh oh, it looks like your Shopify credentials are incorrect. Please double check your domain and storefront access token within the plugin settings and try again.'
@@ -70,6 +72,9 @@ function maybeAlterErrorMessage(errorMessage) {
   } else if (error.includes('Missing credentials Client object')) {
     finalError =
       'Hmm, it looks like you still need to connect your Shopify store or the credentials are wrong / missing. Please double check the "connect" tab within the plugin settings.'
+  } else if (error.includes('Parse error on "}" (RCURLY)')) {
+    finalError =
+      'Hmm, it looks like you may be trying to access a field on the Storefront API that does not exist.'
   } else {
     finalError = error
   }

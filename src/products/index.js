@@ -41,7 +41,7 @@ function addProductFields(product) {
   product.add('updatedAt')
   product.add('vendor')
 
-  product.addConnection('images', { args: { first: 250 } }, (image) => {
+  product.addConnection('images', { args: { first: 50 } }, (image) => {
     image.add('altText')
     image.add('src')
   })
@@ -60,7 +60,7 @@ function addProductFields(product) {
   //    metafield.add('value')
   // })
 
-  product.addConnection('variants', { args: { first: 250 } }, (variants) => {
+  product.addConnection('variants', { args: { first: 50 } }, (variants) => {
     variants.add('id')
 
     variants.add('product', (options) => {
@@ -70,13 +70,23 @@ function addProductFields(product) {
 
     variants.add('title')
     variants.add('price')
-    // variants.add('priceV2')
+    //  variants.add('priceV2')
+    variants.add('priceV2', (price) => {
+      price.add('amount')
+      price.add('currencyCode')
+    })
+
     //  variants.add('unitPrice')
     //  variants.add('quantityAvailable')
     //  variants.add('currentlyNotInStock')
     variants.add('availableForSale')
     variants.add('compareAtPrice')
-    //  variants.add('compareAtPriceV2')
+
+    variants.add('compareAtPriceV2', (price) => {
+      price.add('amount')
+      price.add('currencyCode')
+    })
+
     variants.add('sku')
     //  variants.add('fulfillmentService')
     //  variants.add('inventoryManagement')
@@ -218,8 +228,6 @@ Fetch NEW items
 */
 function fetchNewItems(itemsState) {
   return new Promise(async (resolve, reject) => {
-    console.log('itemsState', itemsState)
-
     if (!itemsState) {
       console.error(
         'WP Shopify error: Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.'
@@ -296,13 +304,11 @@ function graphQuery(type, queryParams, connectionParams = false) {
       queryParams.query = '*'
     }
 
-    const [requestError, response] = await to(
-      client.graphQLClient.send(
-        client.graphQLClient.query((root) => {
-          resourceQuery(root, type, queryParams, connectionParams)
-        })
-      )
-    )
+    var query = client.graphQLClient.query((root) => {
+      resourceQuery(root, type, queryParams, connectionParams)
+    })
+
+    const [requestError, response] = await to(client.graphQLClient.send(query))
 
     if (requestError) {
       return reject(maybeAlterErrorMessage(requestError))
