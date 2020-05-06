@@ -136,6 +136,7 @@ function addCollectionFields(collection, connectionParams) {
    https://help.shopify.com/en/api/graphql-admin-api/reference/enum/productcollectionsortkeys
 
    */
+  console.log('---------------- connectionParams', connectionParams)
 
   if (connectionParams) {
     var productsArgs = {
@@ -227,6 +228,8 @@ Fetch NEW items
 
 */
 function fetchNewItems(itemsState) {
+  console.log('fetchNewItemsfetchNewItemsfetchNewItems itemsState', itemsState)
+
   return new Promise(async (resolve, reject) => {
     if (!itemsState) {
       console.error(
@@ -240,14 +243,18 @@ function fetchNewItems(itemsState) {
       })
     }
 
+    console.log('fetchNewItems itemsState.queryParams', itemsState.queryParams)
+
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
+
+    console.log('fetchNewItems hashCacheId', hashCacheId)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
       resolve(itemsState.payloadCache[hashCacheId])
     }
 
     const [resultsError, results] = await to(
-      graphQuery(itemsState.dataType, itemsState.queryParams)
+      graphQuery(itemsState.dataType, itemsState.queryParams, itemsState.connectionParams)
     )
 
     if (resultsError) {
@@ -262,6 +269,8 @@ function fetchNewItems(itemsState) {
 }
 
 function graphQuery(type, queryParams, connectionParams = false) {
+  console.log('>>>>>>>>>>>>>>>>>> graphQuery connectionParams', connectionParams)
+
   if (type === 'storefront' || type === 'search') {
     type = 'products'
   }
@@ -299,10 +308,14 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
     }
+    console.log('queryParams b', queryParams)
+    if (queryParams.query === undefined || queryParams.query === '') {
+      console.log('HYEYEYEYEYEYEYEYEYEYEEYEYEYE')
 
-    if (queryParams.query === undefined) {
       queryParams.query = '*'
     }
+    console.log('queryParams a', queryParams)
+    console.log('typetypetype', type)
 
     var query = client.graphQLClient.query((root) => {
       resourceQuery(root, type, queryParams, connectionParams)
