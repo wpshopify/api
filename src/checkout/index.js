@@ -32,7 +32,7 @@ function removeAllLineItems(client, checkout) {
 function createUniqueCheckout(client = buildClient()) {
   if (isEmpty(client)) {
     return new Promise((resolve, reject) => {
-      reject('Invalid client instance found')
+      reject(wp.i18n.__('Invalid client instance found', 'wpshopify'))
     })
   }
 
@@ -72,11 +72,15 @@ function updateCheckoutAttributesAPI(client, checkout, customAttributes = false,
 
 function addLineItemsAPI(client, checkout, lineItems) {
   if (!checkout) {
-    return new Promise((resolve, reject) => reject('Error: Missing checkout instance'))
+    return new Promise((resolve, reject) =>
+      reject(wp.i18n.__('Error: Missing checkout instance', 'wpshopify'))
+    )
   }
 
   if (!client) {
-    return new Promise((resolve, reject) => reject('Error: Missing client instance'))
+    return new Promise((resolve, reject) =>
+      reject(wp.i18n.__('Error: Missing client instance', 'wpshopify'))
+    )
   }
 
   return client.checkout.addLineItems(checkout.id, lineItems)
@@ -275,7 +279,10 @@ function buildCheckout(client, forceNew = false) {
     if (!hasCredsSet(client)) {
       console.log('buildCheckout 3')
       return reject(
-        'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
+        wp.i18n.__(
+          'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.',
+          'wpshopify'
+        )
       )
     }
 
@@ -323,7 +330,10 @@ function buildCheckout(client, forceNew = false) {
       if (!hasCredsSet(client)) {
         console.log('buildCheckout 15')
         return reject(
-          'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.'
+          wp.i18n.__(
+            'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.',
+            'wpshopify'
+          )
         )
       }
       console.log('buildCheckout 16')

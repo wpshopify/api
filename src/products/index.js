@@ -238,8 +238,10 @@ function fetchNewItems(itemsState) {
 
       reject({
         type: 'error',
-        message:
+        message: wp.i18n.__(
           'Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.',
+          'wpshopify'
+        ),
       })
     }
 
@@ -279,7 +281,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!queryParams) {
       return reject(
         maybeAlterErrorMessage(
-          'Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page.'
+          wp.i18n.__(
+            'Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page.',
+            'wpshopify'
+          )
         )
       )
     }
@@ -289,7 +294,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!hasValidCredentials(client)) {
       return reject(
         maybeAlterErrorMessage(
-          'You still need to connect your Shopify store or the credentials are missing. Double check the "connect" tab within the plugin settings.'
+          wp.i18n.__(
+            'You still need to connect your Shopify store or the credentials are missing. Double check the "connect" tab within the plugin settings.',
+            'wpshopify'
+          )
         )
       )
     }
@@ -308,7 +316,7 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
     }
-    console.log('queryParams b', queryParams)
+    console.log('query ................. ', queryParams.query)
     if (queryParams.query === undefined || queryParams.query === '') {
       console.log('HYEYEYEYEYEYEYEYEYEYEEYEYEYE')
 
@@ -365,7 +373,7 @@ function collectionsQuery(root, queryParams, connectionParams = false) {
 function refetchLineItems(ids, client) {
   return new Promise(async (resolve, reject) => {
     if (!ids || !isArray(ids)) {
-      return reject('No product ids found')
+      return reject(wp.i18n.__('No product ids found', 'wpshopify'))
     }
 
     var allPromises = ids.map(async (id) => {

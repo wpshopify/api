@@ -2,11 +2,13 @@ import to from 'await-to-js'
 import { getCache, setCache } from '../cache'
 import { buildClient } from '../client'
 
+function getShopCache() {
+  return getCache('wps-shop-' + wpshopify.settings.connection.storefront.storefrontAccessToken)
+}
+
 function maybeFetchShop(client = buildClient()) {
   return new Promise(async (resolve, reject) => {
-    var value = getCache(
-      'wps-shop-' + wpshopify.settings.connection.storefront.storefrontAccessToken
-    )
+    var value = getShopCache()
 
     if (value) {
       return resolve(value)
@@ -31,4 +33,4 @@ function fetchShopInfo(client) {
   return client.shop.fetchInfo()
 }
 
-export { maybeFetchShop }
+export { maybeFetchShop, getShopCache }
