@@ -66,7 +66,7 @@ function combineFilterTypes(selections, filterTypes, connectiveValue) {
       if (isString(selections[filterType])) {
         return filterType + ':' + '"' + selections[filterType] + '"'
       } else {
-        return selections[filterType].map(function(value, i, arr) {
+        return selections[filterType].map(function (value, i, arr) {
           if (arr.length - 1 !== i) {
             var connective = ' ' + connectiveValue.toUpperCase()
           } else {
@@ -82,8 +82,10 @@ function combineFilterTypes(selections, filterTypes, connectiveValue) {
 
 function buildQueryFromSelections(options) {
   var selections = {}
+  console.log('>>>>>>>>>>>>>>>>> options', options)
 
   selections.titles = options.title
+  selections.collection = options.collection ? options.collection : false
   selections.tags = options.tag
   selections.vendors = options.vendor
   selections.types = options.productType
@@ -104,11 +106,22 @@ function buildQueryStringFromSelections(selections, connective) {
   )
 
   if (has(normalizedSelects, 'available_for_sale')) {
+    console.log('available_for_sale 1')
+
     if (!selections.available_for_sale) {
+      console.log('available_for_sale 2')
       newQuery += ' available_for_sale:false'
     } else {
-      if (selections.available_for_sale[0] === true) {
+      console.log('available_for_sale 3', selections)
+      if (selections.available_for_sale === true || selections.available_for_sale === 'true') {
+        console.log('available_for_sale 4')
         newQuery += ' available_for_sale:true'
+      } else if (
+        selections.available_for_sale === false ||
+        selections.available_for_sale === 'false'
+      ) {
+        console.log('available_for_sale 5')
+        newQuery += ' available_for_sale:false'
       }
     }
   }

@@ -105,6 +105,18 @@ function addProductFields(product) {
   })
 }
 
+function addProductsCollectionsFields(collection, queryParams) {
+  var productsArgs = {
+    first: queryParams.first,
+    sortKey: queryParams.sortKey,
+    reverse: queryParams.reverse,
+  }
+
+  collection.addConnection('products', { args: productsArgs }, (product) => {
+    addProductFields(product)
+  })
+}
+
 function addCollectionFields(collection, connectionParams) {
   collection.add('id')
   collection.add('title')
@@ -249,6 +261,7 @@ function fetchNewItems(itemsState) {
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
 
+    console.log('itemsState.payloadCache', itemsState.payloadCache)
     console.log('fetchNewItems hashCacheId', hashCacheId)
 
     if (has(itemsState.payloadCache, hashCacheId)) {
@@ -258,6 +271,9 @@ function fetchNewItems(itemsState) {
     const [resultsError, results] = await to(
       graphQuery(itemsState.dataType, itemsState.queryParams, itemsState.connectionParams)
     )
+
+    console.log('graphQuery ::::::: results', results)
+    console.log('graphQuery ::::::: resultsError', resultsError)
 
     if (resultsError) {
       reject({ type: 'error', message: maybeAlterErrorMessage(resultsError) })
@@ -270,11 +286,46 @@ function fetchNewItems(itemsState) {
   })
 }
 
+function isSearchingForCollections(query) {
+  return query.includes('collection:')
+}
+
+function modQueryForProductsCollections(query) {
+  return query.replace(/collection:/g, 'title:')
+}
+
+function isProductsCollectionsQuery(type, queryParams) {
+  return type === 'products' && isSearchingForCollections(queryParams.query)
+}
+
+function modResponseProductsCollections(response) {
+  return {
+    model: {
+      products: response.model.collections.length ? response.model.collections[0].products : [],
+    },
+  }
+}
+
 function graphQuery(type, queryParams, connectionParams = false) {
+  //   connectionParams.query = 'available_for_sale:true'
+
   console.log('>>>>>>>>>>>>>>>>>> graphQuery connectionParams', connectionParams)
 
   if (type === 'storefront' || type === 'search') {
     type = 'products'
+  }
+
+  if (queryParams.query === undefined || queryParams.query === '') {
+    queryParams.query = '*'
+  }
+
+  if (isProductsCollectionsQuery(type, queryParams)) {
+    var hasProductsCollectionsQuery = true
+    queryParams.query = modQueryForProductsCollections(queryParams.query)
+    type = 'productsCollections'
+    console.log('YUP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11', queryParams)
+  } else {
+    var hasProductsCollectionsQuery = false
   }
 
   return new Promise(async (resolve, reject) => {
@@ -316,20 +367,20 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
     }
-    console.log('query ................. ', queryParams.query)
-    if (queryParams.query === undefined || queryParams.query === '') {
-      console.log('HYEYEYEYEYEYEYEYEYEYEEYEYEYE')
 
-      queryParams.query = '*'
-    }
-    console.log('queryParams a', queryParams)
-    console.log('typetypetype', type)
+    console.log('::: resourceQuery ::: TYPE', type)
+    console.log('::: resourceQuery ::: QUERY PARAMS', queryParams)
+    console.log('::: resourceQuery ::: CONNECTION PARAMS', connectionParams)
 
     var query = client.graphQLClient.query((root) => {
       resourceQuery(root, type, queryParams, connectionParams)
     })
 
+    console.log('::: resourceQuery ::: FINAL QUERY', query)
+
     const [requestError, response] = await to(client.graphQLClient.send(query))
+
+    console.log('::: resourceQuery ::: RESPONSE', response)
 
     if (requestError) {
       return reject(maybeAlterErrorMessage(requestError))
@@ -337,6 +388,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
 
     if (has(response, 'errors')) {
       return reject(maybeAlterErrorMessage(response.errors))
+    }
+
+    if (hasProductsCollectionsQuery) {
+      return resolve(modResponseProductsCollections(response))
     }
 
     return resolve(response)
@@ -347,6 +402,10 @@ function resourceQuery(root, type, queryParams, connectionParams = false) {
   switch (type) {
     case 'products':
       productsQuery(root, queryParams)
+      break
+
+    case 'productsCollections':
+      productsCollectionsQuery(root, queryParams)
       break
 
     case 'collections':
@@ -368,6 +427,16 @@ function collectionsQuery(root, queryParams, connectionParams = false) {
   root.addConnection('collections', { args: queryParams }, (collection) => {
     addCollectionFields(collection, connectionParams)
   })
+}
+
+function productsCollectionsQuery(root, queryParams) {
+  root.addConnection(
+    'collections',
+    { args: { query: queryParams.query, first: 1 } },
+    (collection) => {
+      addProductsCollectionsFields(collection, queryParams)
+    }
+  )
 }
 
 function refetchLineItems(ids, client) {
