@@ -85,7 +85,7 @@ function buildQueryFromSelections(options) {
   console.log('>>>>>>>>>>>>>>>>> options', options)
 
   selections.titles = options.title
-  selections.collection = options.collection ? options.collection : false
+  selections.collection = options.collection ? options.collection[0] : false
   selections.tags = options.tag
   selections.vendors = options.vendor
   selections.types = options.productType
@@ -100,6 +100,7 @@ function buildQueryStringFromSelections(selections, connective) {
   }
 
   const normalizedSelects = normalizeKeysForShopifyQuery(selections)
+  console.log('normalizedSelectsnormalizedSelects', normalizedSelects)
 
   let newQuery = stringifyFilterTypes(
     combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects), connective)
@@ -129,6 +130,8 @@ function buildQueryStringFromSelections(selections, connective) {
   if (newQuery === '') {
     newQuery = '*'
   }
+
+  console.log('///// newQuery', newQuery)
 
   return newQuery
 }
