@@ -5,7 +5,7 @@ import { hasCredsSet } from '../checkout'
 function fetchNextPage(payload) {
   if (!payload || !payload.length) {
     return new Promise(function (resolve, reject) {
-      return reject('No existing payload found')
+      return reject(wp.i18n.__('No existing payload found', 'wpshopify'))
     })
   }
 

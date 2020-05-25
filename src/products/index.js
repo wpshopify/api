@@ -148,7 +148,6 @@ function addCollectionFields(collection, connectionParams) {
    https://help.shopify.com/en/api/graphql-admin-api/reference/enum/productcollectionsortkeys
 
    */
-  console.log('---------------- connectionParams', connectionParams)
 
   if (connectionParams) {
     var productsArgs = {
@@ -240,8 +239,6 @@ Fetch NEW items
 
 */
 function fetchNewItems(itemsState) {
-  console.log('fetchNewItemsfetchNewItemsfetchNewItems itemsState', itemsState)
-
   return new Promise(async (resolve, reject) => {
     if (!itemsState) {
       console.error(
@@ -256,8 +253,6 @@ function fetchNewItems(itemsState) {
         ),
       })
     }
-
-    console.log('fetchNewItems itemsState.queryParams', itemsState.queryParams)
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
 
@@ -333,11 +328,8 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (queryParams.query === undefined || queryParams.query === '') {
       queryParams.query = '*'
     }
-    console.log('type', type)
-    console.log('queryParams', queryParams)
-    if (isProductsCollectionsQuery(type, queryParams)) {
-      console.log('isProductsCollectionsQuery', isProductsCollectionsQuery)
 
+    if (isProductsCollectionsQuery(type, queryParams)) {
       var hasProductsCollectionsQuery = true
       queryParams.query = modQueryForProductsCollections(queryParams.query)
       type = 'productsCollections'

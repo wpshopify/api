@@ -273,11 +273,8 @@ function hasCredsSet(client) {
 }
 
 function buildCheckout(client, forceNew = false) {
-  console.log('buildCheckout 1')
   return new Promise(async (resolve, reject) => {
-    console.log('buildCheckout 2')
     if (!hasCredsSet(client)) {
-      console.log('buildCheckout 3')
       return reject(
         wp.i18n.__(
           'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.',
@@ -288,47 +285,36 @@ function buildCheckout(client, forceNew = false) {
 
     if (forceNew) {
       const [checkoutError, checkout] = await to(createCheckout(client))
-      console.log('buildCheckout 7')
 
       if (checkoutError) {
-        console.log('buildCheckout 8')
         return reject(maybeAlterErrorMessage(checkoutError))
       } else {
-        console.log('buildCheckout 9')
         setCheckoutID(checkout.id)
         return resolve(checkout)
       }
     }
 
-    console.log('buildCheckout 4')
     const existingCheckoutID = getCheckoutID()
-    console.log('buildCheckout 5')
+
     if (emptyCheckoutID(existingCheckoutID)) {
-      console.log('buildCheckout 6')
       const [checkoutError, checkout] = await to(createCheckout(client))
-      console.log('buildCheckout 7')
+
       if (checkoutError) {
-        console.log('buildCheckout 8')
         return reject(maybeAlterErrorMessage(checkoutError))
       } else {
-        console.log('buildCheckout 9')
         setCheckoutID(checkout.id)
         return resolve(checkout)
       }
     }
 
-    console.log('buildCheckout 10')
     const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID))
-    console.log('buildCheckout 11')
+
     if (checkoutError) {
-      console.log('buildCheckout 12')
       return reject(maybeAlterErrorMessage(checkoutError))
     }
-    console.log('buildCheckout 13')
+
     if (checkout === null) {
-      console.log('buildCheckout 14')
       if (!hasCredsSet(client)) {
-        console.log('buildCheckout 15')
         return reject(
           wp.i18n.__(
             'Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again.',
@@ -336,24 +322,20 @@ function buildCheckout(client, forceNew = false) {
           )
         )
       }
-      console.log('buildCheckout 16')
+
       const [checkoutErrorNew, checkoutNew] = await to(createCheckout(client))
-      console.log('buildCheckout 17')
+
       if (checkoutErrorNew) {
-        console.log('buildCheckout 18')
         return reject(maybeAlterErrorMessage(checkoutErrorNew))
       } else {
-        console.log('buildCheckout 19')
         setCheckoutID(checkoutNew.id)
         resolve(checkoutNew)
       }
     }
-    console.log('buildCheckout 20')
+
     if (checkoutError) {
-      console.log('buildCheckout 21')
       return reject(maybeAlterErrorMessage(checkoutError))
     } else {
-      console.log('buildCheckout 22')
       return resolve(checkout)
     }
   })

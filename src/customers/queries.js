@@ -30,18 +30,4 @@ const FETCH_CUSTOMER_INFO = gql`
   }
 `
 
-const PRODUCT_STOCK_QUANTITY = gql`
-  query() {
-    products(first: 10) {
-      variants(first: 1) {
-        edges {
-          node {
-            quantityAvailable
-          }
-        }
-      }
-    }
-  }
-`
-
 export { FETCH_CUSTOMER_INFO }
