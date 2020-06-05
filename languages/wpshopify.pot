@@ -1,0 +1,99 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-05-26T03:57:42+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: wpshopify\n"
+
+#: src/checkout/index.js:35
+msgid "Invalid client instance found"
+msgstr ""
+
+#: src/checkout/index.js:76
+msgid "Error: Missing checkout instance"
+msgstr ""
+
+#: src/checkout/index.js:82
+msgid "Error: Missing client instance"
+msgstr ""
+
+#: src/checkout/index.js:279
+#: src/checkout/index.js:319
+msgid "Oops, it looks like you still need to set your Shopify API credentials. Please add these within the plugin settings and try again."
+msgstr ""
+
+#: src/errors/index.js:26
+msgid "Missing credentials Client object"
+msgstr ""
+
+#: src/errors/index.js:52
+msgid "Uh oh, it looks like your Shopify credentials are incorrect. Please double check your domain and storefront access token within the plugin settings and try again."
+msgstr ""
+
+#: src/errors/index.js:57
+msgid "Uh oh, it appears that invalid product ids were used. Please clear your browser cache and reload the page."
+msgstr ""
+
+#: src/errors/index.js:62
+msgid "Uh oh, it looks like an error occurred. Please contact the plugin developer with this message to fix."
+msgstr ""
+
+#: src/errors/index.js:67
+msgid "Uh oh, it looks like a network error occurred. Please ensure that your site is using a valid HTTPS certificate on all pages."
+msgstr ""
+
+#: src/errors/index.js:76
+msgid "Uh oh, it looks like an invalid lineitems data type was found. Please clear your cache and try again."
+msgstr ""
+
+#: src/errors/index.js:81
+#: src/notices/notices.js:14
+msgid "Hmm, it looks like you still need to connect your Shopify store or the credentials are wrong / missing. Please double check the \"connect\" tab within the plugin settings."
+msgstr ""
+
+#: src/errors/index.js:86
+msgid "Hmm, it looks like you may be trying to access a field on the Storefront API that does not exist."
+msgstr ""
+
+#: src/notices/notices.js:4
+msgid "Uh oh, we were unable to locate the product you attempted to update. Please clear your browser cache and try again."
+msgstr ""
+
+#: src/notices/notices.js:24
+msgid "Unable to connect to store. This could be because your network is down or your browser is blocking cookies. A possible <a href=\"https://wpshop.io/docs\" target=\"_blank\">solution can be found here</a>. Try disabling any browser extensions and clearing your browser cache."
+msgstr ""
+
+#: src/notices/notices.js:34
+msgid "Unable to flush the store cache. Please clear your browser cache and reload the page."
+msgstr ""
+
+#: src/notices/notices.js:44
+msgid "Unable to create new session after checking out. Please clear your browser cache and reload the page."
+msgstr ""
+
+#: src/pagination/index.js:8
+msgid "No existing payload found"
+msgstr ""
+
+#: src/products/index.js:250
+msgid "Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again."
+msgstr ""
+
+#: src/products/index.js:303
+msgid "Uh oh, it looks your query params are invalid. Please clear your browser cache and reload the page."
+msgstr ""
+
+#: src/products/index.js:316
+msgid "You still need to connect your Shopify store or the credentials are missing. Double check the \"connect\" tab within the plugin settings."
+msgstr ""
+
+#: src/products/index.js:421
+msgid "No product ids found"
+msgstr ""
