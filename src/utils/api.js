@@ -52,6 +52,16 @@ function stringifyFilterTypes(filterTypes) {
   return joinedTypes.join(' ')
 }
 
+function isPrefixSearch(value) {
+  var lastChar = value.slice(-1)
+
+  if (lastChar === '*') {
+    return true
+  }
+
+  return false
+}
+
 function combineFilterTypes(selections, filterTypes, connectiveValue) {
   return compact(
     filterTypes.map((filterType, index) => {
@@ -64,7 +74,10 @@ function combineFilterTypes(selections, filterTypes, connectiveValue) {
       }
 
       if (isString(selections[filterType])) {
-        return filterType + ':' + '"' + selections[filterType] + '"'
+        if (isPrefixSearch(selections[filterType])) {
+        } else {
+          return filterType + ':' + '"' + selections[filterType] + '"'
+        }
       } else {
         return selections[filterType].map(function (value, i, arr) {
           if (arr.length - 1 !== i) {
@@ -73,7 +86,11 @@ function combineFilterTypes(selections, filterTypes, connectiveValue) {
             var connective = ''
           }
 
-          return filterType + ':' + '"' + value + '"' + connective
+          if (isPrefixSearch(value)) {
+            return filterType + ':' + value + connective
+          } else {
+            return filterType + ':' + '"' + value + '"' + connective
+          }
         })
       }
     })
@@ -89,20 +106,27 @@ function buildQueryFromSelections(options) {
   selections.vendors = options.vendor
   selections.types = options.productType
   selections.available_for_sale = options.availableForSale
+  console.log('options', options)
 
   return buildQueryStringFromSelections(selections, options.connective)
 }
 
 function buildQueryStringFromSelections(selections, connective) {
+  console.log('selections', selections)
+
   if (isEmpty(selections)) {
     return '*'
   }
 
   const normalizedSelects = normalizeKeysForShopifyQuery(selections)
 
+  console.log('normalizedSelects', normalizedSelects)
+
   let newQuery = stringifyFilterTypes(
     combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects), connective)
   )
+
+  console.log('newQuery', newQuery)
 
   if (has(normalizedSelects, 'available_for_sale')) {
     if (!selections.available_for_sale) {
