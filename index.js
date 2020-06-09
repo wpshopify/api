@@ -35,6 +35,7 @@ export { getFilterData, getVariantInventoryManagement } from './src/internal/pro
 export { getSelectedAndAllCollections } from './src/internal/collections'
 export { cachePayload } from './src/internal/components'
 export { turnOffCacheCleared } from './src/internal/tools'
+export { fetchMaskedConnection } from './src/internal/connection'
 export { maybeAlterErrorMessage, isWordPressError } from './src/errors'
 export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cache'
 export {

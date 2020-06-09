@@ -1,24 +1,19 @@
-import { post } from '../request';
+import { post } from '../request'
 
-
-function endpointConnection() {
-   return 'connection';
-}
-
-function endpointConnectionDelete() {
-   return 'connection/delete';
+function endpointConnectionMask() {
+  return 'connection/mask'
 }
 
 function endpointConnectionCheck() {
-   return 'connection/check';
+  return 'connection/check'
 }
-
 
 function checkConnection(params) {
-   return post(endpointConnectionCheck(), params);
+  return post(endpointConnectionCheck(), params)
 }
 
-
-export {
-   checkConnection
+function fetchMaskedConnection(params) {
+  return post(endpointConnectionMask(), params)
 }
+
+export { checkConnection, fetchMaskedConnection }
