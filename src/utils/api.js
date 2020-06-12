@@ -106,27 +106,20 @@ function buildQueryFromSelections(options) {
   selections.vendors = options.vendor
   selections.types = options.productType
   selections.available_for_sale = options.availableForSale
-  console.log('options', options)
 
   return buildQueryStringFromSelections(selections, options.connective)
 }
 
 function buildQueryStringFromSelections(selections, connective) {
-  console.log('selections', selections)
-
   if (isEmpty(selections)) {
     return '*'
   }
 
   const normalizedSelects = normalizeKeysForShopifyQuery(selections)
 
-  console.log('normalizedSelects', normalizedSelects)
-
   let newQuery = stringifyFilterTypes(
     combineFilterTypes(normalizedSelects, Object.keys(normalizedSelects), connective)
   )
-
-  console.log('newQuery', newQuery)
 
   if (has(normalizedSelects, 'available_for_sale')) {
     if (!selections.available_for_sale) {
