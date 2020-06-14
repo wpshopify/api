@@ -8,6 +8,7 @@ export {
   createUniqueCheckout,
   addLineItemsAPI,
   addDiscount,
+  removeDiscount,
 } from './src/checkout'
 
 export {
