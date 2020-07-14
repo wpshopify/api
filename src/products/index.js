@@ -239,6 +239,8 @@ Fetch NEW items
 
 */
 function fetchNewItems(itemsState) {
+  console.log('itemsState', itemsState)
+
   return new Promise(async (resolve, reject) => {
     if (!itemsState) {
       console.error(
@@ -351,6 +353,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
     if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
       queryParams.first = 10
     }
+
+    // Force to int just in case
+    queryParams.first = parseInt(queryParams.first)
 
     var query = client.graphQLClient.query((root) => {
       resourceQuery(root, type, queryParams, connectionParams)
