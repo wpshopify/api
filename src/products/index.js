@@ -239,8 +239,6 @@ Fetch NEW items
 
 */
 function fetchNewItems(itemsState) {
-  console.log('itemsState', itemsState)
-
   return new Promise(async (resolve, reject) => {
     if (!itemsState) {
       console.error(
