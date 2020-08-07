@@ -34,7 +34,7 @@ export { buildQueryStringFromSelections, buildQueryFromSelections } from './src/
 export { buildQuery } from './src/api/query'
 export { getFilterData, getVariantInventoryManagement } from './src/internal/products'
 export { getSelectedAndAllCollections } from './src/internal/collections'
-export { cachePayload } from './src/internal/components'
+export { getTemplate } from './src/internal/components'
 export { turnOffCacheCleared } from './src/internal/tools'
 export { fetchMaskedConnection } from './src/internal/connection'
 export { maybeAlterErrorMessage, isWordPressError } from './src/errors'

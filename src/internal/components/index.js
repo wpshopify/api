@@ -1,14 +1,13 @@
 import { post } from '../request'
 
-function endpointComponentPayload() {
-  return 'components/payload'
+function endpointComponentTemplate() {
+  return 'components/template'
 }
 
-function cachePayload(componentPayload, cacheLength) {
-  return post(endpointComponentPayload(), {
-    data: componentPayload,
-    cacheLength: cacheLength
+function getTemplate(templateName) {
+  return post(endpointComponentTemplate(), {
+    data: templateName,
   })
 }
 
-export { cachePayload }
+export { getTemplate }
