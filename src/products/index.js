@@ -1,25 +1,25 @@
-import { buildClient } from '../client'
-import { maybeAlterErrorMessage } from '../errors'
-import has from 'lodash/has'
-import isString from 'lodash/isString'
-import to from 'await-to-js'
-import { isArray } from 'util'
-import md5 from 'js-md5'
+import { buildClient } from '../client';
+import { maybeAlterErrorMessage } from '../errors';
+import has from 'lodash/has';
+import isString from 'lodash/isString';
+import to from 'await-to-js';
+import { isArray } from 'util';
+import md5 from 'js-md5';
 
 function fetchProductByID(id, client) {
-  return client.product.fetch(id)
+  return client.product.fetch(id);
 }
 
 function fetchProductsByIDs(ids, client) {
-  return client.product.fetchMultiple(ids)
+  return client.product.fetchMultiple(ids);
 }
 
 function fetchProductsByQuery(params, client) {
-  return client.product.fetchQuery(params)
+  return client.product.fetchQuery(params);
 }
 
 function findVariantFromSelectedOptions(product, selectedOptions) {
-  return buildClient().product.helpers.variantForOptions(product, selectedOptions)
+  return buildClient().product.helpers.variantForOptions(product, selectedOptions);
 }
 
 /*
@@ -28,28 +28,28 @@ Add product fields to the GQL query
 
 */
 function addProductFields(product) {
-  product.add('id')
-  product.add('title')
-  product.add('availableForSale')
-  product.add('createdAt')
-  product.add('description')
-  product.add('descriptionHtml')
-  product.add('handle')
-  product.add('onlineStoreUrl')
-  product.add('productType')
-  product.add('publishedAt')
-  product.add('updatedAt')
-  product.add('vendor')
+  product.add('id');
+  product.add('title');
+  product.add('availableForSale');
+  product.add('createdAt');
+  product.add('description');
+  product.add('descriptionHtml');
+  product.add('handle');
+  product.add('onlineStoreUrl');
+  product.add('productType');
+  product.add('publishedAt');
+  product.add('updatedAt');
+  product.add('vendor');
 
   product.addConnection('images', { args: { first: 50 } }, (image) => {
-    image.add('altText')
-    image.add('src')
-  })
+    image.add('altText');
+    image.add('src');
+  });
 
   product.add('options', (option) => {
-    option.add('name')
-    option.add('values')
-  })
+    option.add('name');
+    option.add('values');
+  });
 
   //
   // Only works if they are whitelisted first
@@ -61,48 +61,48 @@ function addProductFields(product) {
   // })
 
   product.addConnection('variants', { args: { first: 50 } }, (variants) => {
-    variants.add('id')
+    variants.add('id');
 
     variants.add('product', (options) => {
-      options.add('id')
-      options.add('title')
-    })
+      options.add('id');
+      options.add('title');
+    });
 
-    variants.add('title')
-    variants.add('price')
+    variants.add('title');
+    variants.add('price');
     //  variants.add('priceV2')
     variants.add('priceV2', (price) => {
-      price.add('amount')
-      price.add('currencyCode')
-    })
+      price.add('amount');
+      price.add('currencyCode');
+    });
 
     //  variants.add('unitPrice')
     //  variants.add('quantityAvailable')
     //  variants.add('currentlyNotInStock')
-    variants.add('availableForSale')
-    variants.add('compareAtPrice')
+    variants.add('availableForSale');
+    variants.add('compareAtPrice');
 
     variants.add('compareAtPriceV2', (price) => {
-      price.add('amount')
-      price.add('currencyCode')
-    })
+      price.add('amount');
+      price.add('currencyCode');
+    });
 
-    variants.add('sku')
+    variants.add('sku');
     //  variants.add('fulfillmentService')
     //  variants.add('inventoryManagement')
-    variants.add('weight')
+    variants.add('weight');
 
     variants.add('selectedOptions', (options) => {
-      options.add('name')
-      options.add('value')
-    })
+      options.add('name');
+      options.add('value');
+    });
 
     variants.add('image', (image) => {
-      image.add('src')
-      image.add('id')
-      image.add('altText')
-    })
-  })
+      image.add('src');
+      image.add('id');
+      image.add('altText');
+    });
+  });
 }
 
 function addProductsCollectionsFields(collection, queryParams) {
@@ -110,27 +110,27 @@ function addProductsCollectionsFields(collection, queryParams) {
     first: queryParams.first,
     sortKey: queryParams.sortKey,
     reverse: queryParams.reverse,
-  }
+  };
 
   collection.addConnection('products', { args: productsArgs }, (product) => {
-    addProductFields(product)
-  })
+    addProductFields(product);
+  });
 }
 
 function addCollectionFields(collection, connectionParams) {
-  collection.add('id')
-  collection.add('title')
-  collection.add('description')
-  collection.add('descriptionHtml')
-  collection.add('handle')
-  collection.add('updatedAt')
+  collection.add('id');
+  collection.add('title');
+  collection.add('description');
+  collection.add('descriptionHtml');
+  collection.add('handle');
+  collection.add('updatedAt');
 
   collection.add('image', (image) => {
-    image.add('id')
-    image.add('altText')
-    image.add('src')
-    image.add('originalSrc')
-  })
+    image.add('id');
+    image.add('altText');
+    image.add('src');
+    image.add('originalSrc');
+  });
 
   /*
    
@@ -154,83 +154,83 @@ function addCollectionFields(collection, connectionParams) {
       first: connectionParams.first,
       sortKey: connectionParams.sortKey,
       reverse: connectionParams.reverse,
-    }
+    };
 
     collection.addConnection('products', { args: productsArgs }, (product) => {
-      addProductFields(product)
-    })
+      addProductFields(product);
+    });
   }
 }
 
 function enumValue(client, params) {
-  return client.graphQLClient.enum(params.sortKey)
+  return client.graphQLClient.enum(params.sortKey);
 }
 
 function enumMake(val) {
-  var client = buildClient()
-  return client.graphQLClient.enum(val)
+  var client = buildClient();
+  return client.graphQLClient.enum(val);
 }
 
 function maybeUppercaseSortKey(sortKey) {
   if (isString(sortKey)) {
-    return sortKey.toUpperCase()
+    return sortKey.toUpperCase();
   }
 
-  return sortKey
+  return sortKey;
 }
 
 function refetchQuery(node) {
-  const client = buildClient()
+  const client = buildClient();
 
-  return client.graphQLClient.refetch(node)
+  return client.graphQLClient.refetch(node);
 }
 
 function hasValidCredentials(client) {
   if (has(client, 'type') || has(client, 'message')) {
-    return false
+    return false;
   }
 
   if (client.config.domain && client.config.storefrontAccessToken) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 function createStringFromQueryParams(queryParams) {
   if (!queryParams.sortKey) {
-    var sortKey = ''
+    var sortKey = '';
   } else {
     if (isString(queryParams.sortKey)) {
-      var sortKey = queryParams.sortKey
+      var sortKey = queryParams.sortKey;
     } else {
-      var sortKey = queryParams.sortKey.key
+      var sortKey = queryParams.sortKey.key;
     }
   }
 
   if (!queryParams.reverse) {
-    var reverse = ''
+    var reverse = '';
   } else {
-    var reverse = queryParams.reverse
+    var reverse = queryParams.reverse;
   }
 
-  return queryParams.first + queryParams.query + reverse + sortKey
+  return queryParams.first + queryParams.query + reverse + sortKey;
 }
 
 function getHashFromQueryParams(queryParams) {
-  return md5(createStringFromQueryParams(queryParams))
+  return md5(createStringFromQueryParams(queryParams));
 }
 
 function sanitizeQueryResponse(response, type) {
   if (type === 'storefront' || type === 'search') {
-    type = 'products'
+    type = 'products';
   }
 
   if (!response.model) {
-    return []
+    return [];
   }
 
-  return response.model[type]
+  return response.model[type];
 }
 
 /*
@@ -243,7 +243,7 @@ function fetchNewItems(itemsState) {
     if (!itemsState) {
       console.error(
         'WP Shopify error: Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.'
-      )
+      );
 
       reject({
         type: 'error',
@@ -251,40 +251,40 @@ function fetchNewItems(itemsState) {
           'Uh oh, no query parameters were passed for fetchNewItems. Please clear your browser cache and try again.',
           'wpshopify'
         ),
-      })
+      });
     }
 
-    var hashCacheId = getHashFromQueryParams(itemsState.queryParams)
+    var hashCacheId = getHashFromQueryParams(itemsState.queryParams);
 
     if (has(itemsState.payloadCache, hashCacheId)) {
-      resolve(itemsState.payloadCache[hashCacheId])
+      resolve(itemsState.payloadCache[hashCacheId]);
     }
 
     const [resultsError, results] = await to(
       graphQuery(itemsState.dataType, itemsState.queryParams, itemsState.connectionParams)
-    )
+    );
 
     if (resultsError) {
-      reject({ type: 'error', message: maybeAlterErrorMessage(resultsError) })
-      return
+      reject({ type: 'error', message: maybeAlterErrorMessage(resultsError) });
+      return;
     }
 
-    var newItems = sanitizeQueryResponse(results, itemsState.dataType)
+    var newItems = sanitizeQueryResponse(results, itemsState.dataType);
 
-    resolve(newItems)
-  })
+    resolve(newItems);
+  });
 }
 
 function isSearchingForCollections(query) {
-  return query.includes('collection:')
+  return query.includes('collection:');
 }
 
 function modQueryForProductsCollections(query) {
-  return query.replace(/collection:/g, 'title:')
+  return query.replace(/collection:/g, 'title:');
 }
 
 function isProductsCollectionsQuery(type, queryParams) {
-  return type === 'products' && isSearchingForCollections(queryParams.query)
+  return type === 'products' && isSearchingForCollections(queryParams.query);
 }
 
 function modResponseProductsCollections(response) {
@@ -292,7 +292,7 @@ function modResponseProductsCollections(response) {
     model: {
       products: response.model.collections.length ? response.model.collections[0].products : [],
     },
-  }
+  };
 }
 
 function graphQuery(type, queryParams, connectionParams = false) {
@@ -305,10 +305,10 @@ function graphQuery(type, queryParams, connectionParams = false) {
             'wpshopify'
           )
         )
-      )
+      );
     }
 
-    const client = buildClient()
+    const client = buildClient();
 
     if (!hasValidCredentials(client)) {
       return reject(
@@ -318,94 +318,94 @@ function graphQuery(type, queryParams, connectionParams = false) {
             'wpshopify'
           )
         )
-      )
+      );
     }
 
     if (type === 'storefront' || type === 'search') {
-      type = 'products'
+      type = 'products';
     }
 
     if (queryParams.query === undefined || queryParams.query === '') {
-      queryParams.query = '*'
+      queryParams.query = '*';
     }
 
     if (isProductsCollectionsQuery(type, queryParams)) {
-      var hasProductsCollectionsQuery = true
-      queryParams.query = modQueryForProductsCollections(queryParams.query)
-      type = 'productsCollections'
+      var hasProductsCollectionsQuery = true;
+      queryParams.query = modQueryForProductsCollections(queryParams.query);
+      type = 'productsCollections';
     } else {
-      var hasProductsCollectionsQuery = false
+      var hasProductsCollectionsQuery = false;
     }
 
     if (has(queryParams, 'sortKey')) {
-      queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey)
-      queryParams.sortKey = enumValue(client, queryParams)
+      queryParams.sortKey = maybeUppercaseSortKey(queryParams.sortKey);
+      queryParams.sortKey = enumValue(client, queryParams);
     }
 
     if (has(connectionParams, 'sortKey')) {
-      connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey)
-      connectionParams.sortKey = enumValue(client, connectionParams)
+      connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey);
+      connectionParams.sortKey = enumValue(client, connectionParams);
     }
 
     // Defaults to 10
     if (!has(queryParams, 'first') && !has(queryParams, 'last')) {
-      queryParams.first = 10
+      queryParams.first = 10;
     }
 
     // Force to int just in case
-    queryParams.first = parseInt(queryParams.first)
+    queryParams.first = parseInt(queryParams.first);
 
     var query = client.graphQLClient.query((root) => {
-      resourceQuery(root, type, queryParams, connectionParams)
-    })
+      resourceQuery(root, type, queryParams, connectionParams);
+    });
 
-    const [requestError, response] = await to(client.graphQLClient.send(query))
+    const [requestError, response] = await to(client.graphQLClient.send(query));
 
     if (requestError) {
-      return reject(maybeAlterErrorMessage(requestError))
+      return reject(maybeAlterErrorMessage(requestError));
     }
 
     if (has(response, 'errors')) {
-      return reject(maybeAlterErrorMessage(response.errors))
+      return reject(maybeAlterErrorMessage(response.errors));
     }
 
     if (hasProductsCollectionsQuery) {
-      return resolve(modResponseProductsCollections(response))
+      return resolve(modResponseProductsCollections(response));
     }
 
-    return resolve(response)
-  })
+    return resolve(response);
+  });
 }
 
 function resourceQuery(root, type, queryParams, connectionParams = false) {
   switch (type) {
     case 'products':
-      productsQuery(root, queryParams)
-      break
+      productsQuery(root, queryParams);
+      break;
 
     case 'productsCollections':
-      productsCollectionsQuery(root, queryParams)
-      break
+      productsCollectionsQuery(root, queryParams);
+      break;
 
     case 'collections':
-      collectionsQuery(root, queryParams, connectionParams)
-      break
+      collectionsQuery(root, queryParams, connectionParams);
+      break;
 
     default:
-      break
+      break;
   }
 }
 
 function productsQuery(root, queryParams) {
   root.addConnection('products', { args: queryParams }, (product) => {
-    addProductFields(product)
-  })
+    addProductFields(product);
+  });
 }
 
 function collectionsQuery(root, queryParams, connectionParams = false) {
   root.addConnection('collections', { args: queryParams }, (collection) => {
-    addCollectionFields(collection, connectionParams)
-  })
+    addCollectionFields(collection, connectionParams);
+  });
 }
 
 function productsCollectionsQuery(root, queryParams) {
@@ -413,73 +413,73 @@ function productsCollectionsQuery(root, queryParams) {
     'collections',
     { args: { query: queryParams.query, first: 1 } },
     (collection) => {
-      addProductsCollectionsFields(collection, queryParams)
+      addProductsCollectionsFields(collection, queryParams);
     }
-  )
+  );
 }
 
 function refetchLineItems(ids, client) {
   return new Promise(async (resolve, reject) => {
     if (!ids || !isArray(ids)) {
-      return reject(wp.i18n.__('No product ids found', 'wpshopify'))
+      return reject(wp.i18n.__('No product ids found', 'wpshopify'));
     }
 
     var allPromises = ids.map(async (id) => {
-      const [err, succ] = await to(fetchProductByID(id, client))
+      const [err, succ] = await to(fetchProductByID(id, client));
 
       if (!err) {
-        return succ
+        return succ;
       }
-      return err
-    })
+      return err;
+    });
 
-    var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises))
+    var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises));
 
     if (allPromiseError) {
-      reject(maybeAlterErrorMessage(allPromiseError))
+      reject(maybeAlterErrorMessage(allPromiseError));
     }
 
-    resolve(allPromiseResponse)
-  })
+    resolve(allPromiseResponse);
+  });
 }
 
 function isTypeError(data) {
-  return data instanceof Error
+  return data instanceof Error;
 }
 
 function withoutTypeErrors(results) {
-  return results.filter((result) => !isTypeError(result))
+  return results.filter((result) => !isTypeError(result));
 }
 
 function getProductsFromIds(ids = []) {
   return new Promise(async (resolve, reject) => {
-    const client = buildClient()
+    const client = buildClient();
 
-    const [productsError, products] = await to(fetchProductsByIDs(ids, client))
+    const [productsError, products] = await to(fetchProductsByIDs(ids, client));
 
     // If productsError, most likely the product was hidden from the sales channel
     if (productsError) {
-      console.error('WP Shopify Error fetchProductsByIDs', productsError)
-      const [refetchError, results] = await to(refetchLineItems(ids, client))
+      console.error('WP Shopify Error fetchProductsByIDs', productsError);
+      const [refetchError, results] = await to(refetchLineItems(ids, client));
 
       if (refetchError) {
-        console.error('WP Shopify Error refetchLineItems', refetchError)
-        return reject(maybeAlterErrorMessage(refetchError))
+        console.error('WP Shopify Error refetchLineItems', refetchError);
+        return reject(maybeAlterErrorMessage(refetchError));
       }
 
-      return resolve(withoutTypeErrors(results))
+      return resolve(withoutTypeErrors(results));
     }
 
-    return resolve(products)
-  })
+    return resolve(products);
+  });
 }
 
 function queryProducts(params) {
-  return fetchProductsByQuery(params, buildClient())
+  return fetchProductsByQuery(params, buildClient());
 }
 
 function getAllTags() {
-  return fetchAllTags()
+  return fetchAllTags();
 }
 
 export {
@@ -491,4 +491,4 @@ export {
   refetchQuery,
   enumMake,
   fetchNewItems,
-}
+};
