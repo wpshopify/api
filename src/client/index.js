@@ -1,21 +1,23 @@
-import Client from 'shopify-buy'
-import { noticeConfigBadCredentials } from '../notices/notices'
+import Client from 'shopify-buy';
+import { noticeConfigBadCredentials } from '../notices/notices';
 
 function initClient(config) {
-  return Client.buildClient({
-    domain: config.domain,
-    storefrontAccessToken: config.storefrontAccessToken,
-  })
+  return Client.buildClient(
+    wp.hooks.applyFilters('misc.shop.credentials', {
+      domain: config.domain,
+      storefrontAccessToken: config.storefrontAccessToken,
+    })
+  );
 }
 
 function buildClient() {
-  const creds = wpshopify.settings.connection.storefront
+  const creds = wpshopify.settings.connection.storefront;
 
   if (!creds) {
-    return noticeConfigBadCredentials()
+    return noticeConfigBadCredentials();
   }
 
-  return initClient(creds)
+  return initClient(creds);
 }
 
-export { buildClient }
+export { buildClient };
