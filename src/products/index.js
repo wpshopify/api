@@ -3,7 +3,7 @@ import { maybeAlterErrorMessage } from '../errors';
 import has from 'lodash/has';
 import isString from 'lodash/isString';
 import to from 'await-to-js';
-import { isArray } from 'util';
+import { isArray } from 'lodash/isArray';
 import md5 from 'js-md5';
 
 function fetchProductByID(id, client) {
@@ -253,6 +253,7 @@ function fetchNewItems(itemsState) {
         ),
       });
     }
+    console.log('itemsState', itemsState);
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams);
 
@@ -356,6 +357,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
     queryParams.first = parseInt(queryParams.first);
 
     var query = client.graphQLClient.query((root) => {
+      console.log('queryParams', queryParams);
+      console.log('connectionParams', connectionParams);
+
       resourceQuery(root, type, queryParams, connectionParams);
     });
 
