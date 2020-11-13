@@ -253,7 +253,6 @@ function fetchNewItems(itemsState) {
         ),
       });
     }
-    console.log('itemsState', itemsState);
 
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams);
 
@@ -357,9 +356,6 @@ function graphQuery(type, queryParams, connectionParams = false) {
     queryParams.first = parseInt(queryParams.first);
 
     var query = client.graphQLClient.query((root) => {
-      console.log('queryParams', queryParams);
-      console.log('connectionParams', connectionParams);
-
       resourceQuery(root, type, queryParams, connectionParams);
     });
 
