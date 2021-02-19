@@ -1,6 +1,6 @@
-import isEmpty from 'lodash/isEmpty'
-import first from 'lodash/first'
-import has from 'lodash/has'
+import isEmpty from 'lodash/isEmpty';
+import first from 'lodash/first';
+import has from 'lodash/has';
 
 /*
 
@@ -29,16 +29,16 @@ function queryBuilder(params = { isPrefix: false, filter: 'title', value: '*', p
   // var query = '';
 
   if (!params.value) {
-    return
+    return;
   }
 
   if (params.phrase) {
-    params.value = '"' + params.value + '"'
+    params.value = '"' + params.value + '"';
   } else {
-    params.value = params.value + '*'
+    params.value = params.value + '*';
   }
 
-  return params.filter + ':' + params.value
+  return params.filter + ':' + params.value;
 }
 
 /*
@@ -64,7 +64,7 @@ function fetchBuilder(params) {
     sortKey: params.sortKey,
     query: params.query,
     reverse: params.reverse,
-  }
+  };
 }
 
 /*
@@ -77,27 +77,29 @@ function queryByTagParam(value) {
     filter: 'tag',
     isPrefix: true,
     value: value,
-  })
+  });
 }
 
 function findLastCursorId(shopifyResponse, dataType) {
-  var data = false
+  var data = false;
+
+  if (dataType === 'storefront') {
+    dataType = 'products';
+  }
 
   if (has(shopifyResponse.data, dataType)) {
-    data = shopifyResponse.data[dataType]
+    data = shopifyResponse.data[dataType];
   }
 
   if (!data || isEmpty(data.edges)) {
-    return {
-      after: '',
-    }
+    return false;
   }
 
-  var cursorId = first(data.edges).cursor
+  var cursorId = first(data.edges).cursor;
 
   return {
     after: cursorId,
-  }
+  };
 }
 
-export { findLastCursorId, queryBuilder }
+export { findLastCursorId, queryBuilder };

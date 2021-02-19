@@ -50,6 +50,12 @@ function isWordPressError(response) {
       }
     } else {
       if (has(response.data, 'data')) {
+        if (has(response.data, 'success')) {
+          if (!response.data.success) {
+            foundError = true;
+          }
+        }
+
         if (response.data.data[0].code === 'error') {
           foundError = true;
         }
