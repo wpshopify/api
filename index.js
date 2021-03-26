@@ -19,6 +19,7 @@ export {
   refetchQuery,
   enumMake,
   fetchNewItems,
+  queryProductsFromIds,
 } from './src/products';
 export { fetchNextPage } from './src/pagination';
 export { maybeFetchShop, getShopCache } from './src/shop';

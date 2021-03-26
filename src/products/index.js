@@ -60,7 +60,7 @@ function addProductFields(product) {
   //    metafield.add('value')
   // })
 
-  product.addConnection('variants', { args: { first: 50 } }, (variants) => {
+  product.addConnection('variants', { args: { first: 100 } }, (variants) => {
     variants.add('id');
 
     variants.add('product', (options) => {
@@ -70,15 +70,11 @@ function addProductFields(product) {
 
     variants.add('title');
     variants.add('price');
-    //  variants.add('priceV2')
     variants.add('priceV2', (price) => {
       price.add('amount');
       price.add('currencyCode');
     });
 
-    //  variants.add('unitPrice')
-    //  variants.add('quantityAvailable')
-    //  variants.add('currentlyNotInStock')
     variants.add('availableForSale');
     variants.add('compareAtPrice');
 
@@ -88,8 +84,6 @@ function addProductFields(product) {
     });
 
     variants.add('sku');
-    //  variants.add('fulfillmentService')
-    //  variants.add('inventoryManagement')
     variants.add('weight');
 
     variants.add('selectedOptions', (options) => {
@@ -482,7 +476,27 @@ function getAllTags() {
   return fetchAllTags();
 }
 
+function createProductIdQuery(productIds) {
+  return productIds.reduce((acc, id, index, arr) => {
+    if (index === arr.length - 1) {
+      return acc.concat('id:' + id);
+    } else {
+      return acc.concat('id:' + id + ' OR ');
+    }
+  }, '');
+}
+
+function queryProductsFromIds(productIds = []) {
+  return graphQuery('products', {
+    query: createProductIdQuery(productIds),
+    sortKey: 'title',
+    first: productIds.length,
+    reverse: false,
+  });
+}
+
 export {
+  queryProductsFromIds,
   getProductsFromIds,
   queryProducts,
   getAllTags,
