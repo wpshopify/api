@@ -264,7 +264,7 @@ function fetchNewItems(itemsState) {
     }
 
     var newItems = sanitizeQueryResponse(results, itemsState.dataType);
-
+    console.log('....... onSuccess :: fetchNewItems');
     resolve(newItems);
   });
 }

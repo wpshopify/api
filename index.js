@@ -9,6 +9,7 @@ export {
   addLineItemsAPI,
   addDiscount,
   removeDiscount,
+  useCheckout,
 } from './src/checkout';
 
 export {
