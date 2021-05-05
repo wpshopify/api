@@ -248,6 +248,8 @@ function fetchNewItems(itemsState) {
       });
     }
 
+    console.log('........itemsState.queryParams', itemsState.queryParams);
+
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams);
 
     if (has(itemsState.payloadCache, hashCacheId)) {
@@ -264,7 +266,7 @@ function fetchNewItems(itemsState) {
     }
 
     var newItems = sanitizeQueryResponse(results, itemsState.dataType);
-    console.log('....... onSuccess :: fetchNewItems');
+
     resolve(newItems);
   });
 }

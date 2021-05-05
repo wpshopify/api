@@ -1,4 +1,3 @@
-import { useQuery } from 'react-query';
 import to from 'await-to-js';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
@@ -16,10 +15,6 @@ Direct API functions
 */
 function createCheckout(client) {
   return client.checkout.create();
-}
-
-function useCheckout(client = buildClient()) {
-  return useQuery('checkout', () => client.checkout.create());
 }
 
 function getCheckoutByID(client, existingCheckoutID) {
@@ -412,5 +407,4 @@ export {
   removeDiscount,
   addDiscount,
   hasCredsSet,
-  useCheckout,
 };
