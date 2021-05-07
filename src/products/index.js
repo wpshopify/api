@@ -248,8 +248,6 @@ function fetchNewItems(itemsState) {
       });
     }
 
-    console.log('........itemsState.queryParams', itemsState.queryParams);
-
     var hashCacheId = getHashFromQueryParams(itemsState.queryParams);
 
     if (has(itemsState.payloadCache, hashCacheId)) {
