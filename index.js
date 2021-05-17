@@ -59,3 +59,5 @@ export {
   addCustomerAddress,
   deleteCustomerAddress,
 } from './src/internal/customers';
+
+export { queryOptionsNoRefetch } from './src/queries';
