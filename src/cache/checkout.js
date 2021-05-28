@@ -44,8 +44,26 @@ function getUniqueValuesOfKey(array, key) {
   }, []);
 }
 
+function setCorrectQuantity(lineItem, lineItemOptions) {
+  if (lineItemOptions.minQuantity) {
+    if (lineItem.quantity < lineItemOptions.minQuantity) {
+      lineItem.quantity = lineItemOptions.minQuantity;
+    }
+  }
+
+  if (lineItemOptions.maxQuantity) {
+    if (lineItem.quantity > lineItemOptions.maxQuantity) {
+      lineItem.quantity = lineItemOptions.maxQuantity;
+    }
+  }
+
+  return lineItem;
+}
+
 // Assumption: every item in existingLineItems will be unique
-function mergeCheckoutCacheLineItems(existingLineItems, newLineItems) {
+function mergeCheckoutCacheLineItems(existingLineItems, newLineItems, lineItemOptions) {
+  console.log('mergeCheckoutCacheLineItems 1');
+
   const hasExistingNewLineItems = differenceWith(
     newLineItems,
     existingLineItems,
@@ -53,22 +71,41 @@ function mergeCheckoutCacheLineItems(existingLineItems, newLineItems) {
       return array1.variantId === array2.variantId;
     }
   );
-
+  console.log('mergeCheckoutCacheLineItems 2', hasExistingNewLineItems);
   // Whatever was added is completely new ...
   if (!isEmpty(hasExistingNewLineItems)) {
-    return existingLineItems.concat(newLineItems);
-  }
+    console.log('newLineItems', newLineItems);
 
+    var nenwww = newLineItems.map((item) => setCorrectQuantity(item, lineItemOptions));
+
+    console.log('nenwww', nenwww);
+
+    let lineItemsUpdated = existingLineItems.concat(nenwww);
+    console.log('........... lineItemsUpdated', lineItemsUpdated);
+
+    return lineItemsUpdated;
+  }
+  console.log('mergeCheckoutCacheLineItems 3');
   return existingLineItems.map((existingLineItem) => {
-    var found = find(newLineItems, function (o) {
+    var foundLineItem = find(newLineItems, function (o) {
       return o.variantId === existingLineItem.variantId;
     });
 
-    if (found) {
-      existingLineItem.quantity = Number(existingLineItem.quantity) + Number(found.quantity);
-    }
+    if (foundLineItem) {
+      console.log('sup', lineItemOptions);
 
-    return existingLineItem;
+      foundLineItem.quantity = Number(existingLineItem.quantity) + Number(foundLineItem.quantity);
+
+      console.log('??????foundLineItem', foundLineItem);
+
+      var aspdaoskd = setCorrectQuantity(foundLineItem, lineItemOptions);
+
+      console.log('aspdaoskd', aspdaoskd);
+
+      return aspdaoskd;
+    }
+    console.log('mergeCheckoutCacheLineItems 4');
+    return setCorrectQuantity(existingLineItem, lineItemOptions);
   });
 }
 
