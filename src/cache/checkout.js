@@ -1,4 +1,4 @@
-import { getCache, setCache } from './index';
+import { getCache, setCache, deleteCache } from './index';
 import uniqBy from 'lodash/uniqBy';
 import find from 'lodash/find';
 import differenceWith from 'lodash/differenceWith';
@@ -25,6 +25,10 @@ function getCheckoutCache(checkoutID) {
 
 function setCheckoutCache(checkoutID, checkoutCache) {
   return setCache('wps-checkout-cache-' + checkoutID, checkoutCache);
+}
+
+function deleteCheckoutCache(checkoutID) {
+  return deleteCache('wps-checkout-cache-' + checkoutID);
 }
 
 /*
@@ -61,50 +65,35 @@ function setCorrectQuantity(lineItem, lineItemOptions) {
 }
 
 // Assumption: every item in existingLineItems will be unique
-function mergeCheckoutCacheLineItems(existingLineItems, newLineItems, lineItemOptions) {
-  console.log('mergeCheckoutCacheLineItems 1');
-
+function mergeCheckoutCacheLineItems(checkoutCache, newLineItems, lineItemOptions) {
   const hasExistingNewLineItems = differenceWith(
     newLineItems,
-    existingLineItems,
+    checkoutCache.lineItems,
     function (array1, array2) {
       return array1.variantId === array2.variantId;
     }
   );
-  console.log('mergeCheckoutCacheLineItems 2', hasExistingNewLineItems);
+
+  var existingLineItemOptions = checkoutCache.lineItemOptions;
+
   // Whatever was added is completely new ...
   if (!isEmpty(hasExistingNewLineItems)) {
-    console.log('newLineItems', newLineItems);
-
     var nenwww = newLineItems.map((item) => setCorrectQuantity(item, lineItemOptions));
 
-    console.log('nenwww', nenwww);
-
-    let lineItemsUpdated = existingLineItems.concat(nenwww);
-    console.log('........... lineItemsUpdated', lineItemsUpdated);
-
-    return lineItemsUpdated;
+    return checkoutCache.lineItems.concat(nenwww);
   }
-  console.log('mergeCheckoutCacheLineItems 3');
-  return existingLineItems.map((existingLineItem) => {
+
+  return checkoutCache.lineItems.map((existingLineItem) => {
     var foundLineItem = find(newLineItems, function (o) {
       return o.variantId === existingLineItem.variantId;
     });
 
     if (foundLineItem) {
-      console.log('sup', lineItemOptions);
-
       foundLineItem.quantity = Number(existingLineItem.quantity) + Number(foundLineItem.quantity);
 
-      console.log('??????foundLineItem', foundLineItem);
-
-      var aspdaoskd = setCorrectQuantity(foundLineItem, lineItemOptions);
-
-      console.log('aspdaoskd', aspdaoskd);
-
-      return aspdaoskd;
+      return setCorrectQuantity(foundLineItem, lineItemOptions);
     }
-    console.log('mergeCheckoutCacheLineItems 4');
+
     return setCorrectQuantity(existingLineItem, lineItemOptions);
   });
 }
@@ -112,6 +101,7 @@ function mergeCheckoutCacheLineItems(existingLineItems, newLineItems, lineItemOp
 export {
   getCheckoutCache,
   setCheckoutCache,
+  deleteCheckoutCache,
   mergeCheckoutCacheVariants,
   mergeCheckoutCacheLineItems,
 };

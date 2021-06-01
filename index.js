@@ -43,6 +43,7 @@ export { setCache, getCache, deleteCache, deleteCacheContains } from './src/cach
 export {
   getCheckoutCache,
   setCheckoutCache,
+  deleteCheckoutCache,
   mergeCheckoutCacheVariants,
   mergeCheckoutCacheLineItems,
 } from './src/cache/checkout';
