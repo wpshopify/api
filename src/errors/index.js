@@ -134,6 +134,13 @@ function maybeAlterErrorMessage(errorMessage) {
 
   console.error('WP Shopify Error raw: ', error);
 
+  if (!error) {
+    return wp.i18n.__(
+      'An unkown error occured. Please clear your browser cache and try again.',
+      'wpshopify'
+    );
+  }
+
   if (error.includes('TypeError: Failed to fetch')) {
     finalError = wp.i18n.__(
       'Uh oh, it looks like your Shopify credentials are incorrect. Please double check your domain and storefront access token within the plugin settings and try again.',

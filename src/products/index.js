@@ -269,7 +269,10 @@ function fetchNewItems(itemsState) {
   });
 }
 
-function isSearchingForCollections(query) {
+function isSearchingForCollections(query = '') {
+  if (!query) {
+    return false;
+  }
   return query.includes('collection:');
 }
 
@@ -476,7 +479,10 @@ function getAllTags() {
   return fetchAllTags();
 }
 
-function createProductIdQuery(productIds) {
+function createProductIdQuery(productIds = []) {
+  if (!productIds) {
+    return '*';
+  }
   return productIds.reduce((acc, id, index, arr) => {
     if (index === arr.length - 1) {
       return acc.concat('id:' + id);
