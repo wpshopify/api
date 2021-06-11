@@ -31,14 +31,13 @@ function deleteCheckoutCache(checkoutID) {
   return deleteCache('wps-checkout-cache-' + checkoutID);
 }
 
-/*
-
-lineItems: [{GraphQL object}, {GraphQL object}]
-newVariant: {GraphQL object}
-
-*/
 function mergeCheckoutCacheVariants(existingCache, newVariant) {
-  return uniqBy(existingCache.concat(existingCache, newVariant), 'id');
+  if (!existingCache) {
+    var result = newVariant;
+  } else {
+    var result = existingCache.concat(existingCache, newVariant);
+  }
+  return uniqBy(result, 'id');
 }
 
 function getUniqueValuesOfKey(array, key) {
@@ -79,6 +78,10 @@ function mergeCheckoutCacheLineItems(checkoutCache, newLineItems, lineItemOption
   // Whatever was added is completely new ...
   if (!isEmpty(hasExistingNewLineItems)) {
     var nenwww = newLineItems.map((item) => setCorrectQuantity(item, lineItemOptions));
+
+    if (!checkoutCache || !checkoutCache.lineItems) {
+      return nenwww;
+    }
 
     return checkoutCache.lineItems.concat(nenwww);
   }

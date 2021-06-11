@@ -66,6 +66,8 @@ function addProductFields(product) {
     variants.add('product', (options) => {
       options.add('id');
       options.add('title');
+      options.add('vendor');
+      options.add('productType');
     });
 
     variants.add('title');
@@ -484,6 +486,10 @@ function createProductIdQuery(productIds = []) {
     return '*';
   }
   return productIds.reduce((acc, id, index, arr) => {
+    if (!acc) {
+      acc = '';
+    }
+
     if (index === arr.length - 1) {
       return acc.concat('id:' + id);
     } else {
