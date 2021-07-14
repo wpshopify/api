@@ -19,7 +19,10 @@ function fetchProductsByQuery(params, client) {
 }
 
 function findVariantFromSelectedOptions(product, selectedOptions) {
-  return buildClient().product.helpers.variantForOptions(product, selectedOptions);
+  return buildClient().product.helpers.variantForOptions(
+    product,
+    selectedOptions
+  );
 }
 
 /*
@@ -257,7 +260,11 @@ function fetchNewItems(itemsState) {
     }
 
     const [resultsError, results] = await to(
-      graphQuery(itemsState.dataType, itemsState.queryParams, itemsState.connectionParams)
+      graphQuery(
+        itemsState.dataType,
+        itemsState.queryParams,
+        itemsState.connectionParams
+      )
     );
 
     if (resultsError) {
@@ -289,7 +296,9 @@ function isProductsCollectionsQuery(type, queryParams) {
 function modResponseProductsCollections(response) {
   return {
     model: {
-      products: response.model.collections.length ? response.model.collections[0].products : [],
+      products: response.model.collections.length
+        ? response.model.collections[0].products
+        : [],
     },
   };
 }
@@ -342,7 +351,9 @@ function graphQuery(type, queryParams, connectionParams = false) {
     }
 
     if (has(connectionParams, 'sortKey')) {
-      connectionParams.sortKey = maybeUppercaseSortKey(connectionParams.sortKey);
+      connectionParams.sortKey = maybeUppercaseSortKey(
+        connectionParams.sortKey
+      );
       connectionParams.sortKey = enumValue(client, connectionParams);
     }
 
@@ -432,7 +443,9 @@ function refetchLineItems(ids, client) {
       return err;
     });
 
-    var [allPromiseError, allPromiseResponse] = await to(Promise.all(allPromises));
+    var [allPromiseError, allPromiseResponse] = await to(
+      Promise.all(allPromises)
+    );
 
     if (allPromiseError) {
       reject(maybeAlterErrorMessage(allPromiseError));
