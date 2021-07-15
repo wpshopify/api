@@ -48,7 +48,12 @@ function createUniqueCheckout(client = buildClient()) {
   });
 }
 
-function updateCheckoutAttributesAPI(client, checkout, customAttributes = false, note = false) {
+function updateCheckoutAttributesAPI(
+  client,
+  checkout,
+  customAttributes = false,
+  note = false
+) {
   let attributes = {};
 
   if (!isEmpty(customAttributes)) {
@@ -126,7 +131,12 @@ function setCheckoutID(checkoutID) {
 }
 
 function emptyCheckoutID(cartID) {
-  if (cartID === undefined || cartID === 'undefined' || cartID == false || cartID == null) {
+  if (
+    cartID === undefined ||
+    cartID === 'undefined' ||
+    cartID == false ||
+    cartID == null
+  ) {
     return true;
   } else {
     return false;
@@ -146,7 +156,9 @@ function createLineItemsFromVariants(options, client) {
       return reject(maybeAlterErrorMessage(getCheckoutError));
     }
 
-    var [newCartError, newCart] = await to(addLineItems(client, checkoutID, options));
+    var [newCartError, newCart] = await to(
+      addLineItems(client, checkoutID, options)
+    );
 
     if (newCartError) {
       return reject(maybeAlterErrorMessage(newCartError));
@@ -160,7 +172,10 @@ function buildInstances(forceNew = false) {
   return new Promise(async function (resolve, reject) {
     const client = buildClient();
 
-    if ((has(client, 'type') && client.type === 'error') || !hasCredsSet(client)) {
+    if (
+      (has(client, 'type') && client.type === 'error') ||
+      !hasCredsSet(client)
+    ) {
       return reject(maybeAlterErrorMessage(client));
     }
 
@@ -181,7 +196,9 @@ async function addLineItems(lineItems) {
   var [instancesError, { client, checkout }] = await to(buildInstances());
 
   if (instancesError) {
-    return new Promise((resolve, reject) => reject(maybeAlterErrorMessage(instancesError)));
+    return new Promise((resolve, reject) =>
+      reject(maybeAlterErrorMessage(instancesError))
+    );
   }
 
   return addLineItemsAPI(client, checkout, lineItems);
@@ -247,7 +264,9 @@ function removeDiscount(existingCheckout = false) {
       return reject(maybeAlterErrorMessage(instancesError));
     }
 
-    const [newCheckoutError, newCheckout] = await to(removeDiscountAPI(client, checkout));
+    const [newCheckoutError, newCheckout] = await to(
+      removeDiscountAPI(client, checkout)
+    );
 
     if (newCheckoutError) {
       return reject(maybeAlterErrorMessage(newCheckoutError));
@@ -294,7 +313,10 @@ function hasCredsSet(client) {
     return false;
   }
 
-  if (isEmpty(client.config.domain) || isEmpty(client.config.storefrontAccessToken)) {
+  if (
+    isEmpty(client.config.domain) ||
+    isEmpty(client.config.storefrontAccessToken)
+  ) {
     return false;
   }
 
@@ -336,7 +358,9 @@ function buildCheckout(client, forceNew = false) {
       }
     }
 
-    const [checkoutError, checkout] = await to(getCheckoutByID(client, existingCheckoutID));
+    const [checkoutError, checkout] = await to(
+      getCheckoutByID(client, existingCheckoutID)
+    );
 
     if (checkoutError) {
       return reject(maybeAlterErrorMessage(checkoutError));
@@ -381,6 +405,12 @@ function variantsFromCache() {
 }
 
 function getUniqueProductIdsFromVariants(variants) {
+  if (isEmpty(variants)) {
+    return false;
+  }
+
+  console.log('??variants', variants);
+
   return uniq(variants.map((lineItem) => lineItem.product.id));
 }
 
