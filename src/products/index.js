@@ -503,6 +503,16 @@ function createProductIdQuery(productIds = []) {
       acc = '';
     }
 
+    var decoded = atob(id);
+
+    if (decoded.includes('gid://shopify/Product/')) {
+      var productSplit = decoded.split('gid://shopify/Product/');
+
+      var productIds = productSplit.filter(Boolean);
+
+      id = productIds[0];
+    }
+
     if (index === arr.length - 1) {
       return acc.concat('id:' + id);
     } else {

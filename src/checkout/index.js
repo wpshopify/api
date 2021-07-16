@@ -409,8 +409,6 @@ function getUniqueProductIdsFromVariants(variants) {
     return false;
   }
 
-  console.log('??variants', variants);
-
   return uniq(variants.map((lineItem) => lineItem.product.id));
 }
 
